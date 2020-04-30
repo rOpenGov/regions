@@ -1,0 +1,26 @@
+Package: regions
+Title: Processing Regional Statistics
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Daniel",
+           family = "Antal",
+           role = c("aut", "cre"),
+           email = "daniel.antal@ceemid.eu",
+           comment = c(ORCID = "0000-0001-7513-6760"))
+Description: Various helper functions to keep track of regional boundary changes
+    imputations and other general processing tasks with regional data. 
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.0
+Depends: 
+    R (>= 2.10)
+Imports: 
+    dplyr,
+    testthat,
+    magrittr
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

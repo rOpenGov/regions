@@ -1,0 +1,62 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# regions
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+The goal of regions is to help the validation, imputation and boundary tracking of regional statistical data.   
+
+## Installation
+
+You can install the development version from [GitHub](https://github.com/) with:
+
+```{r install}
+# install.packages("devtools")
+devtools::install_github("antaldaniel/regions")
+```
+
+## Motivation
+
+Most economic, social and environmental situations and developments have a specific territorial dimension. Their statistical representations, which generalize many individual data points by aggregating, averaging or other means corresponds to a territory.
+
+We are used to relatively constant territories in the forms of national boundaries. While national boundaries do change almost every year somewhere on Earth, lower level territorial units, such as administrative divisions within a country, ranked below a province, region, or state, are changing very frequently. Such changes make the creation of time series, data panels, or data joins a very painful task in practice. For example, the regional boundaries within the European Union change on average every three years, so a panel or time series of data has to account for about three boundary changes that raise various comparability problems.
+
+## Example
+
+This is a basic example which shows you how to impute data from a larger territorial unit, such as a national statistic, to lower territorial units:
+
+```{r example}
+library(regions)
+upstream <- data.frame ( country_code =  rep( "AU", 3),
+                         year = c(2018:2020),
+                         my_var  = c(10,12,11)
+                       )
+
+downstream <- australia_states
+
+impute_down ( upstream_data  = upstream,
+              downstream_data = downstream,
+              country_var = "country_code",
+              regional_code = "geo_code",
+              values_var = "my_var",
+              time_var = "year" )
+```
+
+
+## Code of Conduct
+
+Please note that the regions project is released with a [Contributor Code of Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.

@@ -5,11 +5,13 @@
 
 <!-- badges: start -->
 
+“[![Last-changedate](https://img.shields.io/badge/last%20change-2020--05--02-yellowgreen.svg)](/commits/master)”
 [![Codecov test
 coverage](https://codecov.io/gh/antaldaniel/regions/branch/master/graph/badge.svg)](https://codecov.io/gh/antaldaniel/regions?branch=master)
 [![Project Status: WIP – Initial development is in progress, but there
 has not yet been a stable, usable release suitable for the
 public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
+“[![license](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)”
 
 <!-- badges: end -->
 

@@ -104,6 +104,7 @@ impute_down <- function( upstream_data = NULL,
     }
     upstream_df$impute_method = paste0("actual")
   }
+  
   ### Downstream data ---------------------------------------------------
   downstream_df <- dplyr:: mutate_if(downstream_data, is.factor, as.character)
   if ( country_var %in% names(downstream_df) ) {

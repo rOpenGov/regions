@@ -42,6 +42,59 @@ time_var = NULL
 upstream_method_var = NULL
 downstream_method_var = NULL
 
+test_that("exception handling (erros) work", {
+  expect_error(impute_down ( 
+    upstream_data  = upstream1,
+    downstream_data = downstream1,
+    values_var = 'values',
+    country_var = 'country_code',
+    time_var = 'year')
+  )
+  expect_error(impute_down ( 
+    upstream_data  = upstream1,
+    downstream_data = downstream1,
+    regional_code = "regcode",
+    values_var = 'my_var',
+    country_var = 'country_code',
+    time_var = 'year')
+  )
+  expect_error(impute_down ( 
+    upstream_data  = upstream1,
+    downstream_data = downstream1,
+    regional_code = "regcode",
+    values_var = 'my_var',
+    country_var = 'country_code',
+    time_var = 'time')
+  )
+  expect_error(impute_down ( 
+    upstream_data  = upstream1,
+    downstream_data = downstream1,
+    regional_code = "regcode",
+    values_var = 'my_var',
+    country_var = 'country',
+    time_var = 'year')
+  )
+  expect_error(impute_down ( 
+    upstream_data  = upstream1,
+    downstream_data = downstream1,
+    regional_code = "regcode",
+    values_var = 'my_var',
+    country_var = 'country_code',
+    time_var = 'year', 
+    upstream_method_var = "upmethod")
+  )
+  expect_error(impute_down ( 
+    upstream_data  = upstream1,
+    downstream_data = downstream1,
+    regional_code = "regcode",
+    values_var = 'my_var',
+    country_var = 'country_code',
+    time_var = 'year', 
+    downstream_method_var = "downmethod")
+  )
+})
+
+
 imputed1  <- impute_down ( 
               upstream_data  = upstream1,
               downstream_data = downstream1,

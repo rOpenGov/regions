@@ -3,7 +3,7 @@
 #' @param dat A data frame with a 2-character geo variable to be validated
 #' @param geo_var Defaults to \code{"geo"}. The variable that contains the
 #' 2 character geo codes to be validated.
-#' @importFrom dplyr mutate rename select
+#' @importFrom dplyr mutate rename select mutate_if case_when
 #' @importFrom tidyselect one_of
 #' @importFrom countrycode countrycode
 #' @examples{
@@ -28,18 +28,18 @@ validate_nuts_country <- function ( dat, geo_var = "geo") {
     select ( one_of ( original_names )) %>%
     rename ( !! geo_var := geo ) %>%
     mutate ( iso2c = geo ) %>%
-    mutate ( iso2c = case_when ( 
+    mutate ( iso2c = dplyr::case_when ( 
       iso2c == "UK" ~ "GB",
       iso2c == "EL" ~ "GR", 
       iso2c == "XK" ~ "RS", #only to avoid warning
       TRUE ~ iso2c)) %>%
     mutate ( iso3c = countrycode::countrycode(iso2c, "iso2c", "iso3c")) %>%
-    mutate ( typology = case_when ( 
+    mutate ( typology = dplyr::case_when ( 
       is.na(iso3c)  & nchar(geo) == 2 ~ "invalid_country_code" ,
       !is.na(iso3c) & nchar(geo) == 2 ~ "country", 
       is.na(iso3c)  & nchar(geo) != 2  ~ typology 
     ))
   
   validate_country_df %>%
-    select ( one_of(original_names))
+    select ( one_of(original_names) )
 }

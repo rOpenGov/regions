@@ -16,7 +16,7 @@ validate_nuts_country (test_df )
 
 test_that("nuts_country_validation_works", {
   expect_equal(validate_nuts_country (small_df)$typology, 
-               c(rep ("country",6),NA_character_, "invalid_country_code")
+               c(rep ("country",6), NA_character_, "invalid_country_code")
                )
 })
 
@@ -25,7 +25,7 @@ test_that("Warning for NLD and ZZ", {
 })
 
 test_that("Correct structure returned", {
-  expect_equal(names(validate_nuts_country(dat = small_df)), 
+  expect_equal(names(validate_nuts_country(dat = small_df[1:6,])), 
                c("geo", "values", "notes", "typology"))
 })
 

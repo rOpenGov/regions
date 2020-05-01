@@ -14,7 +14,7 @@ upstream2 <- data.frame ( country_code =  c(rep( "AU", 2),
                                           "note3", NA_character_)
 )
 
-
+utils::data('australia_states', package = 'regions')
 downstream1 <- australia_states
 
 downstream2 <- data.frame (

@@ -16,6 +16,8 @@
 #' @importFrom tidyselect one_of
 #' @importFrom countrycode countrycode
 #' @importFrom purrr quietly
+#' @importFrom glue glue
+#' @importFrom magrittr %>%
 #' @return The original data frame.
 #' @family validate functions
 #' @examples{
@@ -32,7 +34,9 @@
 
 validate_nuts_country <- function ( dat, geo_var = "geo" ) {
   
-  dat <-  mutate_if ( dat, is.factor, as.character )
+  geo <- iso2c <- NULL
+
+  dat <-  dplyr::mutate_if ( dat, is.factor, as.character )
   if (! "typology" %in% names(dat) ) {
     dat$typology <- NA_character_
   }
@@ -41,24 +45,23 @@ validate_nuts_country <- function ( dat, geo_var = "geo" ) {
   
   quiet_country_codes <- purrr::quietly(countrycode::countrycode)
   
-  quiet_country_codes (validate_country_df$iso2c, "iso2c", "iso3c")
-  
   validate_country_df <- dat %>%
-    select ( one_of ( original_names )) %>%
-    rename ( !! geo_var := geo ) %>%
-    mutate ( iso2c = geo ) %>%
-    mutate ( iso2c = dplyr::case_when ( 
+    dplyr::select ( one_of ( original_names )) %>%
+    #rename ( !! geo_var := geo ) %>%
+    dplyr::rename ( geo = glue::glue ( geo_var) ) %>%
+    dplyr::mutate ( iso2c = geo ) %>%
+    dplyr::mutate ( iso2c = dplyr::case_when ( 
       iso2c == "UK" ~ "GB",
       iso2c == "EL" ~ "GR", 
       iso2c == "XK" ~ "GR", #only to avoid warning
       TRUE ~ iso2c)) %>%
-    mutate ( iso3c = quiet_country_codes (iso2c, "iso2c", "iso3c")$result) %>%
-    mutate ( typology = dplyr::case_when ( 
+    dplyr::mutate ( iso3c = quiet_country_codes (iso2c, "iso2c", "iso3c")$result) %>%
+    dplyr::mutate ( typology = dplyr::case_when ( 
       is.na(iso3c)  & nchar(geo) == 2 ~ "invalid_country_code" ,
       !is.na(iso3c) & nchar(geo) == 2 ~ "country", 
       is.na(iso3c)  & nchar(geo) != 2  ~ typology 
     ))
   
   validate_country_df %>%
-    select ( one_of(original_names) )
+    dplyr::select ( one_of(original_names) )
 }

@@ -23,8 +23,11 @@ Imports:
     countrycode,
     tidyselect,
     utils,
-    purrr
+    purrr,
+    rlang,
+    glue
 Suggests: 
     knitr,
-    rmarkdown
+    rmarkdown,
+    covr
 VignetteBuilder: knitr

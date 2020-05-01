@@ -16,6 +16,7 @@ knitr::opts_chunk$set(
 # regions
 
 <!-- badges: start -->
+[![Codecov test coverage](https://codecov.io/gh/antaldaniel/regions/branch/master/graph/badge.svg)](https://codecov.io/gh/antaldaniel/regions?branch=master)
 <!-- badges: end -->
 
 The goal of regions is to help the validation, imputation and boundary tracking of regional statistical data.   

@@ -55,6 +55,8 @@ validate_nuts_region <- function ( dat,
                                    geo_var = "geo",
                                    nuts_year = 2016 ) {
   
+  typology2 <- nuts <- all_valid_nuts_codes <- typology <- NULL
+  
   if ( ! nuts_year %in% c(1999,2003,2006,2010,2013,2016,2021)) {
     stop('"nuts_year" = ', nuts_year, " is an invalid parameter."  )
   }

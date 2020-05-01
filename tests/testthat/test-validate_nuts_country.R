@@ -1,3 +1,4 @@
+
 test_df <- data.frame ( 
   geo = c('AL', 'AT', 'BE', 'BG', 'CH', 'CY',
           'CZ', 'DE', 'DK', 'EE', 'EL', 'ES', 
@@ -12,17 +13,18 @@ small_df <- data.frame (
   values = runif(8), 
   notes = paste0("notes", 1:8))
 
-validate_nuts_country (test_df )
+test_that("multiplication works", {
+  expect_equal(validate_nuts_country(small_df)$typology, 
+               c(rep ("country",6), NA_character_, "invalid_country_code")
+  )
+})
 
 test_that("nuts_country_validation_works", {
   expect_equal(validate_nuts_country (small_df)$typology, 
                c(rep ("country",6), NA_character_, "invalid_country_code")
-               )
+  )
 })
 
-test_that("Warning for NLD and ZZ", {
-  expect_warning(validate_nuts_country (small_df)  )
-})
 
 test_that("Correct structure returned", {
   expect_equal(names(validate_nuts_country(dat = small_df[1:6,])), 

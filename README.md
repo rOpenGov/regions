@@ -5,6 +5,12 @@
 
 <!-- badges: start -->
 
+[![Codecov test
+coverage](https://codecov.io/gh/antaldaniel/regions/branch/master/graph/badge.svg)](https://codecov.io/gh/antaldaniel/regions?branch=master)
+[![Project Status: WIP – Initial development is in progress, but there
+has not yet been a stable, usable release suitable for the
+public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
+
 <!-- badges: end -->
 
 The goal of regions is to help the validation, imputation and boundary
@@ -18,27 +24,6 @@ You can install the development version from
 ``` r
 # install.packages("devtools")
 devtools::install_github("antaldaniel/regions")
-#> Downloading GitHub repo antaldaniel/regions@master
-#> pkgbuild (1.0.6 -> 1.0.7) [CRAN]
-#> Installing 1 packages: pkgbuild
-#> Installing package into 'C:/Users/Daniel Antal/OneDrive - Visegrad Investments/_package/regions/packrat/lib/x86_64-w64-mingw32/3.6.3'
-#> (as 'lib' is unspecified)
-#> package 'pkgbuild' successfully unpacked and MD5 sums checked
-#> 
-#> The downloaded binary packages are in
-#>  C:\Users\Daniel Antal\AppData\Local\Temp\RtmpojoRFY\downloaded_packages
-#>          checking for file 'C:\Users\Daniel Antal\AppData\Local\Temp\RtmpojoRFY\remotes218c27c71f3c\antaldaniel-regions-72606a8/DESCRIPTION' ...     checking for file 'C:\Users\Daniel Antal\AppData\Local\Temp\RtmpojoRFY\remotes218c27c71f3c\antaldaniel-regions-72606a8/DESCRIPTION' ...   v  checking for file 'C:\Users\Daniel Antal\AppData\Local\Temp\RtmpojoRFY\remotes218c27c71f3c\antaldaniel-regions-72606a8/DESCRIPTION' (692ms)
-#>       -  preparing 'regions':
-#>      checking DESCRIPTION meta-information ...     checking DESCRIPTION meta-information ...   v  checking DESCRIPTION meta-information
-#>       -  checking for LF line-endings in source and make files and shell scripts (361ms)
-#>       -  checking for empty or unneeded directories
-#>   Removed empty directory      Removed empty directory 'regions/packrat'
-#>       -  looking to see if a 'data/datalist' file should be added
-#>       -  building 'regions_0.0.0.9000.tar.gz'
-#>      
-#> 
-#> Installing package into 'C:/Users/Daniel Antal/OneDrive - Visegrad Investments/_package/regions/packrat/lib/x86_64-w64-mingw32/3.6.3'
-#> (as 'lib' is unspecified)
 ```
 
 ## Motivation

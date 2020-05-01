@@ -11,6 +11,7 @@ knitr::opts_chunk$set(
   fig.path = "man/figures/README-",
   out.width = "100%"
 )
+
 ```
 
 # regions
@@ -28,7 +29,7 @@ The goal of regions is to help the validation, imputation and boundary tracking 
 
 You can install the development version from [GitHub](https://github.com/) with:
 
-```{r install}
+```{r install, eval=FALSE}
 # install.packages("devtools")
 devtools::install_github("antaldaniel/regions")
 ```

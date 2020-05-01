@@ -21,7 +21,9 @@ Imports:
     testthat,
     magrittr,
     countrycode,
-    tidyselect
+    tidyselect,
+    utils,
+    purrr
 Suggests: 
     knitr,
     rmarkdown

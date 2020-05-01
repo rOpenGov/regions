@@ -6,8 +6,15 @@
 \title{regions: A package for working with regional statistics.}
 \description{
 The foo package provides three categories of important functions:
-foo, bar and baz.
+validate, impute and aggregate.
 }
+\section{validate functions}{
+
+The validate functions validate the comformity of a typological
+(geographical) label with a certain typology.  Currently the EU statistical
+NUTS typologies and countries are implemented.
+}
+
 \section{impute functions}{
 
 The impute functions impute data from one regional unit to a different

@@ -15,6 +15,7 @@
 #' @importFrom dplyr mutate rename select mutate_if case_when
 #' @importFrom tidyselect one_of
 #' @importFrom countrycode countrycode
+#' @importFrom purrr quietly
 #' @return The original data frame.
 #' @family validate functions
 #' @examples{
@@ -26,7 +27,8 @@
 #'  ## NLD is an ISO 3-character code and is not validated.
 #'  validate_nuts_country(my_dat)
 #' }
-#' 
+#' @export
+
 
 validate_nuts_country <- function ( dat, geo_var = "geo" ) {
   

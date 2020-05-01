@@ -36,7 +36,6 @@ my_dat <- data.frame (
  ## NLD is an ISO 3-character code and is not validated.
  validate_nuts_country(my_dat)
 }
-
 }
 \seealso{
 Other validate functions: 

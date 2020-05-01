@@ -49,6 +49,7 @@
 #' 
 #' validate_nuts_region (my_reg_data, nuts_year = 2003)
 #' }
+#' @export
 
 validate_nuts_region <- function ( dat, 
                                    geo_var = "geo",
@@ -69,7 +70,7 @@ validate_nuts_region <- function ( dat,
   validate_nuts_country(dat) %>%
     dplyr::rename ( typology2 = typology ) %>%
     dplyr::rename ( geo = !! geo_var )  %>%
-    mutate_if(is.factor, as.character) %>% 
+    dplyr::mutate_if(is.factor, as.character) %>% 
     left_join (  all_valid_nuts_codes[filtering, ],
                 by = geo_var ) %>%
     mutate ( typology = ifelse (is.na(typology), 

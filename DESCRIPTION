@@ -19,7 +19,8 @@ Depends:
 Imports: 
     dplyr,
     testthat,
-    magrittr
+    magrittr,
+    countrycode
 Suggests: 
     knitr,
     rmarkdown

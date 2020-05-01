@@ -20,7 +20,8 @@ Imports:
     dplyr,
     testthat,
     magrittr,
-    countrycode
+    countrycode,
+    tidyselect
 Suggests: 
     knitr,
     rmarkdown

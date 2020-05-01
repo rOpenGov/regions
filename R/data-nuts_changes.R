@@ -8,5 +8,6 @@
 #'   \item{typology}{country, NUTS1, NUTS2 or NUTS3}
 #'   \item{nuts_year}{year of the NUTS definition or version}
 #'   \item{change_year}{when the geo code changed}
+#'   \item{iso2c}{Two character ISO standard country codes.}
 #' }
 "nuts_recoded"

@@ -1,5 +1,3 @@
-
-
 test <- data.frame ( 
   geo  =  c("FR", "DEE32", "UKI3" ,
             "HU12", "DED", 

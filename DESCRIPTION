@@ -27,10 +27,10 @@ Imports:
     purrr,
     rlang,
     glue,
-    stats
+    stats,
+    tidyr
 Suggests: 
     knitr,
     rmarkdown,
-    covr,
-    tidyr
+    covr
 VignetteBuilder: knitr

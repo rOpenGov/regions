@@ -7,8 +7,9 @@ Authors@R:
            role = c("aut", "cre"),
            email = "daniel.antal@ceemid.eu",
            comment = c(ORCID = "0000-0001-7513-6760"))
-Description: Various helper functions to keep track of regional boundary changes
-    imputations and other general processing tasks with regional data. 
+Description: Validating sub-national statistical typologies, imputations and
+    re-aggregations, projections of regional statistics to create meaningful
+    data panels and time series. 
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

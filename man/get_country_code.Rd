@@ -7,13 +7,13 @@
 get_country_code(geo, typology = "NUTS")
 }
 \arguments{
+\item{geo}{A character variable with geo codes.}
+
 \item{typology}{Currently the following typologies are supported:
 \code{"NUTS1"}, \code{"NUTS2"}, \code{"NUTS3"} or \code{"NUTS"} for any of
 the NUTS typologies. The technical typology \code{"NUTS0"}
 can be used to translate Eurostat country codes to ISO 3166-1 alpha-2
 country codes.}
-
-\item{dat}{A data frame with a 2-character geo variable to be validated}
 }
 \value{
 The ISO 3166-1 alpha-2 codes of the countries.

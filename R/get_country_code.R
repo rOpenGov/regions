@@ -2,7 +2,7 @@
 #'
 #' The function identifies the sub-national geographical identifiers from 
 #' known typologies and returns the ISO 3166-1 alpha-2 country codes.
-#' @param dat A data frame with a 2-character geo variable to be validated
+#' @param geo A character variable with geo codes.
 #' @param typology Currently the following typologies are supported:
 #' \code{"NUTS1"}, \code{"NUTS2"}, \code{"NUTS3"} or \code{"NUTS"} for any of
 #' the NUTS typologies. The technical typology \code{"NUTS0"} 

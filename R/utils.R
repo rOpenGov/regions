@@ -1,4 +1,5 @@
 #' Validate Parameter 'dat'
+#' @param dat A data frame input to be validated.
 
 validate_data_frame <- function(dat) {
   

@@ -6,6 +6,9 @@
 \usage{
 validate_data_frame(dat)
 }
+\arguments{
+\item{dat}{A data frame input to be validated.}
+}
 \description{
 Validate Parameter 'dat'
 }

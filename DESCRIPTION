@@ -29,7 +29,8 @@ Imports:
 Suggests: 
     knitr,
     rmarkdown,
-    covr
+    covr,
+    tidyr
 VignetteBuilder: 
     knitr,
     dplyr,

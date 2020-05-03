@@ -9,6 +9,7 @@
 #'   \item{typology}{country, NUTS1, NUTS2 or NUTS3}
 #'   \item{start_year}{The year when the code was first used}
 #'   \item{end_year}{The year when the code was last used}
+#'   \item{code_1999}{NUTS code in the 2003 definition}
 #'   \item{code_2003}{NUTS code in the 2003 definition}
 #'   \item{code_2006}{NUTS code in the 2006 definition}
 #'   \item{code_2010}{NUTS code in the 2010 definition}

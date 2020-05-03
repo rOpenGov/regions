@@ -8,6 +8,7 @@
 #' @param target_nuts_year Defaults to 2013
 #' @importFrom dplyr mutate select mutate_if left_join distinct vars
 #' @importFrom dplyr bind_cols bind_rows ungroup group_by_at summarize
+#' @importFrom dplyr rename
 #' @importFrom tidyselect one_of starts_with
 #' @importFrom tidyr unite pivot_longer
 #' @importFrom purrr set_names
@@ -31,8 +32,8 @@ recode_nuts <- function( dat,
                          source_nuts_year = 2016,
                          target_nuts_year = 2013 ) {
   
-  . <- nuts <- nut_changes <- target <- geo <- typology <- NULL
-  years <- typology_change <- min_years <- max_years <- NULL
+  . <- nuts <- nuts_changes <- target <- geo <- typology <- NULL
+  years <- typology_change <- min_year <- max_year <- NULL
   
   target_code <- paste0("code_", target_nuts_year)
   source_code <- paste0("source_", target_nuts_year)
@@ -41,7 +42,7 @@ recode_nuts <- function( dat,
   
   if ( geo_var != "geo" ) {
     dat <- dat %>%
-      rename ( geo = !! geo_var )
+      dplyr::rename ( geo = !! geo_var )
   }
  
   utils::data (all_valid_nuts_codes, package ="regions", 

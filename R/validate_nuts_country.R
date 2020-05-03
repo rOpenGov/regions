@@ -36,7 +36,7 @@ validate_nuts_country <- function ( dat, geo_var = "geo" ) {
   
   geo <- geo_temp <- iso2c <- NULL
   
- validate_data_frame(dat)
+  validate_data_frame(dat)
 
   dat <-  dplyr::mutate_if ( dat, is.factor, as.character )
   if (! "typology" %in% names(dat) ) {
@@ -71,9 +71,7 @@ validate_nuts_country <- function ( dat, geo_var = "geo" ) {
       is.na(iso3c)  & nchar(geo) != 2  ~ typology 
     ))
   
-   
-  
-  if ( use_geo_temp ) {
+  if ( use_temp_geo == TRUE ) {
     validate_country_df <- validate_country_df %>%
       purrr::set_names(c("geo", geo_var, "typology", "iso2c", "iso3c"))
     

@@ -1,0 +1,66 @@
+---
+title: "Validating Your Typology"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Validating Your Typology}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, message=FALSE, warnings=FALSE}
+library(regions)
+data(daily_internet_users)
+require(dplyr)
+require(tidyr)
+```
+
+The `daily_internet_users` data set is created by this code: 
+
+```{r example, eval=FALSE}
+isoc_r_iuse_i<- eurostat::get_eurostat("isoc_r_iuse_i",
+                       time_format = "num") 
+
+names ( daily_internet_ )
+daily_internet_users <- isoc_r_iuse_i  %>%
+  dplyr::filter ( unit == "PC_IND",          # percentage of individuals
+                  indic_is == "I_IDAY") %>%  # daily internet users
+  dplyr::select (geo, time, values )
+```
+
+Simply downloading a regional statistics from the Eurostat data warehouse and placing the observation on the same map does not work.  If you look into the data, you may realize that the geo codes of French, Lithuanian or Hungarian regions, to name a few, do not match in the years 2012 and 2018. 
+
+Let's have a look at these countries in two years, using the helper function `get_country_code`.  The year 2012 is coded with the `NUTS2010` typology and the year 2018 with the `NUTS2016` typology. Then we use the 
+`valideate_nuts_region` function with the default `NUTS2016` (which is currently valid in the European Union) and the obsolete `NUTS2010` definitions. 
+
+```{r testvalidate}
+test <- daily_internet_users  %>% 
+  mutate ( country_code = get_country_code(geo = geo) ) %>%
+  dplyr::filter ( time %in% c(2012, 2018),
+                  country_code %in% c("FR", "HU", "LT")) %>%
+  mutate ( time = paste0("Y", time )) %>%
+  pivot_wider (., names_from ="time", values_from = "values") %>%
+  validate_nuts_region() %>%  # default year the current valid 2016
+  validate_nuts_region(.,  nuts_year = 2010 )
+```
+
+The following NUTS regions codes are not valid in the 2010 definition. These sub-national divisions were defined in 2013 or 2016. Some of these regional boundaries did not change, but got new codes after altering the administrative divisions of France. Some of the seemingly missing 2012 data can be found under different codes.
+
+```{r new}
+# only first 10 regions are printed
+head(test [ ! test$valid_2010, ], 10)
+```
+
+And there are two regions that are not valid in 2016, because these typologies were changed. Vilnius and Budapest, two big cities, were detached from their larger containing regional units. 
+
+```{r old}
+test [ ! test$valid_2016, ]
+```
+
+Especially in the case of Budapest and Central Hungary, the comparative data can be produced for different boundary definitions, because the boundary change was simple.  (Budapest was removed from Central Hungary.) In Lithuania, the change was not more complex, but unfortunately it cut through a far less rarely used typology level, NUTS3. While the change is simple, the replacement data is usually not published. 

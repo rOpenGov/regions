@@ -50,7 +50,17 @@ The xxxx package is mainly aimed at validating and imputing regional statistical
 
 ## Typical Problems 
 
-### Disaggregation And Projection
+### Conformity With Various Typologies
+
+The `validate` function family helps in finding out to conformity of your regional coding with various typologies. In the first CRAN release, only Eurostat typologies are coded, but some of the functions can be used with outher typologies, for example, with the `ISO-3166-1` and `ISO-3166-2` typologies. OECD uses the NUTS typologies for the EU member states, so these typologies are the most frequently used in international statistics.
+
+Eurostat offers so-called correspondence tables to follow boundary changes, recoding and relabelling for all NUTS changes since the formalization of the NUTS typology.  Unfortunately, these Excel tables do not conform with the requirements of tidy data, and their vocabulary for is not standardized, either.  For example, recoding changes are often labelled as recoding, recoding and renaming, code change, Code change, etc.
+
+The `data-raw` library contains these Excel tables and very long data wrangling code that unifies the relevant vocabulary of these Excel files and brings the tables into a single, tidy format , starting with the definition `NUTS1999`.  The resulting data file `nuts_changes` is included in the `regions` package. It already contains the changes that will come into force in 2021.
+
+The vignette Validating Your Typology gives a real-life example to the use of these functions. Validations are the starting points for [Recoding and re-labelling](#recoding), [Aggregation And Re-Aggregation ](#aggregation) and [Disaggregation And Projection](#projection) operations.
+
+### Disaggregation And Projection {#projection}
 
 Another good example is statistical data that is derived from representative surveys.  Such surveys in the European Union are usually designed to be representative of the natural or legal persons within a national boundary. The sample design and the sample size usually does guarantee that sub-samples remain representative.  For example, the Eurostat statistical product xxxxx is based on the xxxxx.  This survey is designed to be representative for the German population, and with certain compromise, it is a reliable estimate of the federal states of Germany like Bavaria. However, it is unlikely to be representative of further subdivisions of Bavaria – neither the sampling nor the sample size make it likely that the respondents from xxxxx represent well the population of xxxx.
 
@@ -60,13 +70,14 @@ The function `impute_down` creates a generic solution to the problem when we wan
 
 A special case of this projection is the creation of comparable data for small countries.  Within the European Union, some small members states do not have NUTS1 and NUTS2 level divisions because of their size, but it is appropriate to keep their national data in comparision with similar sized units.  We can add national (often referred to as technically NUTS0 level) data about Andorra, Cyprus, Estonia, Iceland, Kosovo, Liechtenstein, Luxemburg, Malta, Montenegro to NUTS1 and NUTS2 level datasets. Their data is often present in Eurostat datasets even they are not members of the European Union.
 
-### Recoding and re-labelling
+### Recoding and re-labelling {#recoding}
 
 In the European Union, the most frequent regional statistical change is ‘recoding’ and ‘relabelling’.  Such changes do not affect the statistical data, only the statistical metadata.  For example, when Greece is changing the definition of two regional units, it may re-code or re-label all other unchanged units to avoid misunderstandings in regional data tables.   
 Many of Eurostat’s regional datasets contain recoded geographical IDs that violate the definition of tidy data. For example, a dataset may contain xxxx for xxxx, and xxxx.  Without knowing the vocabulary of the metadata for the NUTS2013 and NUTS2016 regional boundary definitions, the users of such data tables do not know that in fact these data make a time series, because they refer to the same region under a different regional code. 
 The xxx functions  of the xxxx package take care of this problem.  In these cases, naivly bringing a data table to a tidy format creates a lot of seaming missing data. These data, however, should not be imputed because the actual, seemingly missing data can be found under different labels. By harmonizing the row (or column) IDs, we can create a truly tidy, and often complete data table. 
 
-## Aggregation And Re-Aggregation
+
+## Aggregation And Re-Aggregation {#aggregation}
 
 The European Union sometimes publishes data on NUTS2 level regions, but not on the larger NUTS1 level macroregions or provinces.  In many cases, this information is fully present in the NUTS2 datasets, and a simple aggregation can produce a NUTS1 level dataset, because each NUTS2 region is strictly assigned to one broader NUTS1 marcoregion.  For count-type data, we can simply aggregate the constituent NUTS2 level data to NUTS1 level.
 
@@ -75,7 +86,6 @@ A frequent problem is the re-assignment of a smaller territorial units, such as 
 ### Additive Reconfiguration of Territorial Units
 Xxxxxx
 Again, in these cases what we are doing is not imputation in the strict sense.  Adding together Vilnius and xxxxx creates the xxxxxx; xxxxx and Budapest creates xxxxxx. Because this is an error-prone procedure, we create tidy, filled dataset that clearly indicate the ex-post data manipulation in this case. 
-
 
 ### Boundary Changes With No Solution
 

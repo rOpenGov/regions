@@ -29,6 +29,7 @@
 #'  \code{2013}, the currently used \code{2016} and the already 
 #'  announced and defined \code{2021}.
 #' @importFrom dplyr mutate select mutate_if left_join distinct_all
+#' @importFrom dplyr bind_cols
 #' @importFrom tidyselect one_of
 #' @importFrom purrr set_names
 #' @importFrom utils data 
@@ -68,10 +69,21 @@ validate_nuts_region <- function ( dat,
   utils::data (all_valid_nuts_codes, package ="regions", 
                envir = environment())
   
-  filtering <-  grepl( as.character( nuts_year), 
-                       all_valid_nuts_codes$nuts )
- 
-  validate_nuts_country(dat) %>%
+  filtering <- grepl( as.character( nuts_year), 
+                      all_valid_nuts_codes$nuts )
+  
+  if ( "typology" %in% original_names) {
+    replace_names <- c(original_names, "nuts",
+                       paste0("valid_", nuts_year))
+  } else {
+    replace_names <- c(original_names, "typology", "nuts",
+                       paste0("valid_", nuts_year) )
+  }
+  replace_names 
+  
+  replace_valid <- 
+  
+  return_df <- validate_nuts_country(dat) %>%
     dplyr::rename ( typology2 = typology ) %>%
     dplyr::rename ( geo = !! geo_var )  %>%
     dplyr::mutate_if(is.factor, as.character) %>% 
@@ -82,12 +94,17 @@ validate_nuts_region <- function ( dat,
                                 typology)) %>%
     mutate ( nuts = ifelse(is.na(nuts)& typology == "country",
                            yes  = unique(nuts[which(!is.na(unique(nuts)))]),
-                           no = nuts)) %>%
+                           no = nuts)) %>%  ## countries may not be EU countries
     select ( -one_of("typology2")) %>%
-    mutate ( valid =  !is.na(nuts)) %>%
-    purrr::set_names ( c(original_names, "typology", "nuts",
-                         paste0("valid_", nuts_year) )) %>%
+    mutate ( valid =  !is.na(nuts))  
+  
+  names(return_df)[which(names(return_df) =='valid')] <- paste0("valid_", nuts_year)
+  
+
+  return_df %>% 
     dplyr::select ( -one_of("nuts") ) %>%
-    dplyr::distinct_all ()
+    dplyr::distinct_all () %>%
+    dplyr::select ( -starts_with("valid") ) %>%
+    dplyr::bind_cols( return_df %>%  dplyr::select ( starts_with("valid") ) )
   
 }

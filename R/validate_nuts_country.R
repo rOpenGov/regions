@@ -12,7 +12,7 @@
 #' @param dat A data frame with a 2-character geo variable to be validated
 #' @param geo_var Defaults to \code{"geo"}. The variable that contains the
 #' 2 character geo codes to be validated.
-#' @importFrom dplyr mutate rename select mutate_if case_when
+#' @importFrom dplyr mutate rename select mutate_if case_when left_join
 #' @importFrom tidyselect one_of
 #' @importFrom countrycode countrycode
 #' @importFrom purrr quietly
@@ -34,7 +34,7 @@
 
 validate_nuts_country <- function ( dat, geo_var = "geo" ) {
   
-  geo <- geo_temp <- iso2c <- NULL
+  geo <- geo_tmp <- iso2c <- use_geo_tmp <- NULL
   
   validate_data_frame(dat)
 
@@ -44,11 +44,11 @@ validate_nuts_country <- function ( dat, geo_var = "geo" ) {
   }
   
   ## Exception when 'geo' name conflict may occur ------------------
-  if ( sum( c("geo", geo_var) %in% names(dat) ) == 2 ) {
-    use_temp_geo <- TRUE  ## 'geo' must not be present twice
-    names(dat)[which(names(dat)=="geo")] <- "geo_temp"
+  if ( geo_var != "geo" ) {
+    use_geo_tmp <- TRUE  ## 'geo' must not be present twice
+    names(dat)[which(names(dat)=="geo")] <- "geo_tmp"
   } else {
-    use_geo_temp <- FALSE
+    use_geo_tmp <- FALSE
   }
   
   original_names <- names(dat)
@@ -72,11 +72,11 @@ validate_nuts_country <- function ( dat, geo_var = "geo" ) {
       is.na(iso3c)  & nchar(geo) != 2  ~ typology 
     ))
   
-  if ( use_temp_geo == TRUE ) {  ## 'geo' must not be present twice
+  if ( use_geo_tmp == TRUE ) {  ## 'geo' must not be present twice
     validate_country_df <- validate_country_df %>%
       purrr::set_names(c("geo", geo_var, "typology", "iso2c", "iso3c"))
     
-    original_names <- original_names[which(original_names != "geo_temp")]
+    original_names <- original_names[which(original_names != "geo_tmp")]
   }
   
   validate_country_df %>%

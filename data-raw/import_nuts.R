@@ -538,6 +538,7 @@ nuts_changes <- nuts_changes %>%
 saveRDS(nuts_changes, file.path("data-raw", "nuts_changes.rds"), 
         version = 2)
 
+usethis::use_data ( nuts_changes, overwrite =TRUE )
 
 usethis::use_data ( all_valid_nuts_codes , overwrite =TRUE )
 

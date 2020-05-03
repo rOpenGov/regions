@@ -2,20 +2,23 @@
 #' 
 #' @param dat A data frame with a 3-5 character \code{geo_var} variable
 #' to be validated.
-#' @param geo_var Defaults to \code{"geo"}. The variable that contains the
-#' 3-5 character geo codes to be validated.
+#' @param geo_var Defaults to \code{"geo"}. The variable that contains 
+#' the 3-5 character geo codes to be validated.
 #' @param source_nuts_year Defaults to 2016
 #' @param target_nuts_year Defaults to 2013
-#' @importFrom dplyr mutate select mutate_if left_join distinct_all
-#' @importFrom dplyr bind_cols bind_rows semi_join anti_join distinct
+#' @importFrom dplyr mutate select mutate_if left_join distinct
+#' @importFrom dplyr bind_cols bind_rows ungroup
 #' @importFrom tidyselect one_of starts_with
+#' @importFrom tidyr unite pivot_longer
 #' @importFrom purrr set_names
 #' @importFrom stats complete.cases
 #' @importFrom utils data 
+#' @family recode functions
 #' @examples{
 #' recode_nuts ( data = data.frame ( 
-#'                      geo  =  c("FR", "DEE32", "UKI3" ,
-#'                       "HU12", "DED", "FRK", "FR7"), 
+#'                      geo  =  c("FR", "DEE32", "UKI3",
+#'                                "HU12", "DED", 
+#'                                "FRK", "FR7"), 
 #'                      values = runif(7, 0, 100 ),
 #'                      stringsAsFactors = FALSE), 
 #'               source_nuts_year = 2016, 
@@ -30,17 +33,16 @@ recode_nuts <- function( dat,
   
   nuts <- geo <- typology <- NULL
   
+  target_code <- paste0("code_", target_nuts_year)
+  source_code <- paste0("source_", target_nuts_year)
+  
   dat <- mutate_if ( dat, is.factor, as.character )
   
   if ( geo_var != "geo" ) {
     dat <- dat %>%
       rename ( geo = !! geo_var )
   }
-  
-  if ( !'typology' %in% names(dat) ) {
-    dat$typology <- NA_character_
-  }
-  
+ 
   utils::data (all_valid_nuts_codes, package ="regions", 
                envir = environment())
   
@@ -50,7 +52,7 @@ recode_nuts <- function( dat,
     select ( -nuts ) %>%
     distinct ( typology, geo ) %>%
     mutate ( geo2 = geo ) %>%
-    purrr::set_names ( c("typology", paste0("code_",target_nuts_year),
+    purrr::set_names ( c("typology", target_code,
                          "geo")) 
   
   codes_in_source_year <- all_valid_nuts_codes %>% 
@@ -59,93 +61,89 @@ recode_nuts <- function( dat,
     select ( -nuts ) %>%
     distinct ( typology, geo ) %>%
     mutate ( geo2 = geo ) %>%
-    purrr::set_names ( c("typology", paste0("code_",source_nuts_year),
+    purrr::set_names ( c("typology", source_code,
                          "geo")) 
   
-  join_by_vars <- names(codes_in_target_year)[names(codes_in_target_year) %in% names(dat)]
+  join_by_vars <- names(all_valid_nuts_codes)[
+    names(all_valid_nuts_codes) %in% names(dat) ]
   
-  if(length(join_by_vars)==0) {
+  if( length(join_by_vars)==0 ) {
     stop ("Cannot join with valid nuts codes, 'geo' is not present.")
   }
   
-  same_coding <- dat %>%   # coded as in target year -------------------
-  semi_join ( codes_in_target_year, 
-              by = join_by_vars ) %>%
-    left_join ( codes_in_target_year, 
-                by  = join_by_vars) %>%
-    mutate ( geo2 = geo )  %>%
-    mutate ( geo3 = geo ) %>%
-    select ( one_of("typology", "geo", "geo2", "geo3")) %>%
-    purrr::set_names ( c("typology", 
-                         "geo",
-                         paste0("code_", source_nuts_year ), 
-                         paste0("code_", target_nuts_year ))
-    ) %>%
+  target_geo_codes <- codes_in_target_year[, 
+       which(names(codes_in_target_year) == target_code)]
+  
+  target_coding <- dat %>%
+    filter ( geo %in% as.character(unlist(target_geo_codes)) ) %>%
+    left_join ( all_valid_nuts_codes, by = join_by_vars ) %>%
+    filter ( nuts == paste0("code_", target_nuts_year)) %>%
     mutate ( typology_change = NA_character_ ) %>%
-    left_join ( dat, by = 'geo')
+    select ( -one_of("nuts")) %>%
+    mutate ( geo2 = geo )
   
-  dat_with_source_coding <- dat 
-  names(dat_with_source_coding )[which(names(dat_with_source_coding )=="geo")] <- paste0("code_", source_nuts_year )
+  names(target_coding)[which(names(target_coding)=="geo2")] <- target_code
   
+  different_coding <- dat %>%
+    filter ( ! geo %in% target_coding$geo ) 
   
-  recoding  <- dat %>%   ## codes are not in the target typology --------
-  anti_join ( codes_in_target_year, 
-              by = join_by_vars ) %>%
-    left_join ( all_valid_nuts_codes, 
-                by = join_by_vars ) %>%
-    mutate ( nuts = ifelse (is.na(nuts), 
-                            yes = "missing",
-                            no  = nuts )) %>%
-    distinct ( typology, nuts, geo ) %>%
-    mutate ( geo2 = geo ) %>%
-    mutate ( row  = 1:nrow(.)) %>%
-    spread ( nuts, geo2 ) %>%
-    select ( one_of ( "typology", "geo", 
-                      paste0("code_",source_nuts_year ))) %>%
-    left_join ( nuts_changes %>%
-                  select ( one_of("typology", 
-                                  paste0("code_", source_nuts_year ), 
-                                  paste0("code_", target_nuts_year )
-                  )
-                  ), 
-                by = names(.)[names(.) %in% names(nuts_changes) ] 
-    ) %>%
-    purrr::set_names ( c("typology", "geo", "source", "target")) %>%
-    filter ( stats::complete.cases(.)) %>%
-    mutate ( typology_change = paste0( "recoded from ", source ))  
+  possible_codes <-  all_valid_nuts_codes %>%
+    filter ( geo %in% different_coding$geo ) %>%
+    mutate ( years = as.numeric(gsub("code_", "" , nuts ))) 
   
-  
-  group_var <- names
-  
-  invalid_codes <- dat %>%
-    filter ( ! geo %in% return_df$geo ) %>%
-    left_join ( all_valid_nuts_codes, 
-                by = join_by_vars ) %>%
-    mutate ( years = as.numeric(gsub("code_", "" , nuts ))) %>%
+  recoding_changes <- nuts_changes  %>%
+    select ( one_of("typology", 
+                     possible_codes$nuts, 
+                     target_code)
+             ) %>%
+    mutate ( target = unlist(.[, target_code ]) ) %>%
+    select ( -one_of(target_code)) %>%
+    pivot_longer (., cols =  starts_with('code'), 
+                  names_to = 'nuts', 
+                  values_to = 'geo')  %>%
+    filter ( geo %in% different_coding$geo ) %>%
+    filter ( !is.na(target)) %>%
+    mutate ( years  = as.numeric(gsub("code_", "", nuts))) %>%
     group_by_at ( vars(-one_of("years", "nuts"))) %>%
     summarize ( min_year = min(years, na.rm=TRUE), 
                 max_year = max(years, na.rm=TRUE)) %>%
     tidyr::unite ( typology_change, min_year, max_year, sep =   '-') %>%
-    mutate ( typology_change = paste0("Used in NUTS ", typology_change)) %>%
-    mutate  ( source = NA_character_, target = NA_character_ ) %>%
-    ungroup()
+    mutate ( typology_change = paste0("Recoded from ", 
+                                      geo, " [used in NUTS ",
+                                      typology_change, "]"))  %>%
+    ungroup() 
   
+  names(recoding_changes)[which(names(recoding_changes)=="target")] <- target_code
   
+  recoded_values <- dat %>%
+    left_join ( recoding_changes, 
+               by = names(recoding_changes)[names (recoding_changes) %in% names(dat)] ) %>%
+    filter ( !is.na(typology_change))
   
-  return_df <- bind_cols( recoding %>%
-                            select (-one_of("source", "target")), 
-                          recoding %>%
-                            select (one_of("source", "target")) %>%
-                            purrr::set_names(paste0("code_", source_nuts_year), 
-                                             paste0('code_', target_nuts_year))) %>%
-    left_join ( dat_with_source_coding , by = paste0("code_", source_nuts_year)) %>%
-    bind_rows ( same_coding ) %>%
-    bind_rows (bind_cols( invalid_codes %>%
-                            select (-one_of("source", "target")), 
-                          invalid_codes %>%
-                            select (one_of("source", "target")) %>%
-                            purrr::set_names(paste0("code_", source_nuts_year), 
-                                             paste0('code_', target_nuts_year)) )
-    )
+  different_coding_typology <- possible_codes %>%
+    mutate ( years  = as.numeric(gsub("code_", "", nuts))) %>%
+    group_by_at ( vars(-one_of("years", "nuts"))) %>%
+    summarize ( min_year = min(years, na.rm=TRUE), 
+                max_year = max(years, na.rm=TRUE)) %>%
+    tidyr::unite ( typology_change, min_year, max_year, sep =   '-') %>%
+    mutate ( typology_change = paste0("Used in NUTS ", typology_change))  %>%
+    ungroup() %>%
+    filter ( ! geo %in% recoded_values$geo )
   
+  differently_coded <- different_coding_typology %>%
+    left_join ( dat, by = geo_var ) %>%
+    mutate ( geo2 = NA_real_ ) 
+  
+  names(differently_coded)[
+    which(names(differently_coded)=="geo2")] <- target_code
+ 
+  return_values <- dplyr::bind_rows ( target_coding, 
+                                      recoded_values, 
+                                      differently_coded )
+  
+  all( dat$geo %in% return_values$geo )
+  
+  names(return_values)[which(names(return_values)=="geo")] <- geo_var
+
+  return_values   
 }

@@ -15,8 +15,8 @@ recode_nuts(
 \item{dat}{A data frame with a 3-5 character \code{geo_var} variable
 to be validated.}
 
-\item{geo_var}{Defaults to \code{"geo"}. The variable that contains the
-3-5 character geo codes to be validated.}
+\item{geo_var}{Defaults to \code{"geo"}. The variable that contains
+the 3-5 character geo codes to be validated.}
 
 \item{source_nuts_year}{Defaults to 2016}
 
@@ -25,3 +25,20 @@ to be validated.}
 \description{
 Recode Region Codes From Source To Target NUTS Typology
 }
+\examples{
+{
+recode_nuts ( data = data.frame ( 
+                     geo  =  c("FR", "DEE32", "UKI3",
+                               "HU12", "DED", 
+                               "FRK", "FR7"), 
+                     values = runif(7, 0, 100 ),
+                     stringsAsFactors = FALSE), 
+              source_nuts_year = 2016, 
+              target_nuts_year =2013)
+}
+}
+\seealso{
+Other recode functions: 
+\code{\link{get_country_code}()}
+}
+\concept{recode functions}

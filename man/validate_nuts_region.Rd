@@ -10,13 +10,13 @@ validate_nuts_region(dat, geo_var = "geo", nuts_year = 2016)
 \item{dat}{A data frame with a 3-5 character \code{geo_var} variable
 to be validated.}
 
-\item{geo_var}{Defaults to \code{"geo"}. The variable that contains the
-3-5 character geo codes to be validated.}
+\item{geo_var}{Defaults to \code{"geo"}. The variable that contains
+the 3-5 character geo codes to be validated.}
 
 \item{nuts_year}{Defaults to \code{2016}.  You can select any valid
-NUTS definition, i.e. \code{1999}, \code{2003}, \code{2006}, \code{2010},
-\code{2013}, the currently used \code{2016} and the already
-announced and defined \code{2021}.}
+NUTS definition, i.e. \code{1999}, \code{2003}, \code{2006},
+\code{2010}, \code{2013}, the currently used \code{2016} and the
+already announced and defined \code{2021}.}
 }
 \value{
 Returns the orginal \code{dat} data frame with a column that

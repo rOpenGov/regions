@@ -27,4 +27,8 @@ known typologies and returns the ISO 3166-1 alpha-2 country codes.
 get_country_code (c("EL", "GR", "DED", "HU102"))
 }
 }
+\seealso{
+Other recode functions: 
+\code{\link{recode_nuts}()}
+}
 \concept{recode functions}

@@ -19,15 +19,16 @@
 #' in smaller countries that had no \code{NUTS1} divisions.
 #' 
 #' Currently the \code{2016} is used by Eurostat, but many datasets still 
-#' contain  \code{2013} and sometimes earlier metadata. 
+#' contain  \code{2013} and sometimes earlier metadata.
+#' 
 #' @param dat A data frame with a 3-5 character \code{geo_var} variable
 #' to be validated.
-#' @param geo_var Defaults to \code{"geo"}. The variable that contains the
-#' 3-5 character geo codes to be validated.
+#' @param geo_var Defaults to \code{"geo"}. The variable that contains 
+#' the 3-5 character geo codes to be validated.
 #' @param nuts_year Defaults to \code{2016}.  You can select any valid 
-#' NUTS definition, i.e. \code{1999}, \code{2003}, \code{2006}, \code{2010},
-#'  \code{2013}, the currently used \code{2016} and the already 
-#'  announced and defined \code{2021}.
+#' NUTS definition, i.e. \code{1999}, \code{2003}, \code{2006}, 
+#' \code{2010}, \code{2013}, the currently used \code{2016} and the 
+#' already announced and defined \code{2021}.
 #' @importFrom dplyr mutate select mutate_if left_join distinct_all
 #' @importFrom dplyr bind_cols
 #' @importFrom tidyselect one_of starts_with

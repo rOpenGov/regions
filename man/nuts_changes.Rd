@@ -7,7 +7,6 @@
 \format{
 A data frame with 3097 rows and 22 variables:
 \describe{
-\item{geo}{NUTS geo identifier}
 \item{typology}{country, NUTS1, NUTS2 or NUTS3}
 \item{start_year}{The year when the code was first used}
 \item{end_year}{The year when the code was last used}

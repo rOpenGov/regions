@@ -9,7 +9,7 @@ Authors@R:
            comment = c(ORCID = "0000-0001-7513-6760"))
 Description: Validating sub-national statistical typologies, imputations and
     re-aggregations, projections of regional statistics to create meaningful
-    data panels and time series. 
+    data panels and time series. See regions.danielantal.eu for more information.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

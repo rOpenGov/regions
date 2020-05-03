@@ -5,7 +5,7 @@
 
 <!-- badges: start -->
 
-“[![Last-changedate](https://img.shields.io/badge/last%20change-2020--05--02-yellowgreen.svg)](/commits/master)”
+“[![Last-changedate](https://img.shields.io/badge/last%20change-2020--05--03-yellowgreen.svg)](/commits/master)”
 [![Codecov test
 coverage](https://codecov.io/gh/antaldaniel/regions/branch/master/graph/badge.svg)](https://codecov.io/gh/antaldaniel/regions?branch=master)
 [![Project Status: WIP – Initial development is in progress, but there
@@ -15,8 +15,37 @@ public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostat
 
 <!-- badges: end -->
 
-The goal of regions is to help the validation, imputation and boundary
-tracking of regional statistical data.
+Working with sub-national statistics has many benefits. In policymaking
+or in social sciences, it is a common practice to compare national
+statistics, which can be hugely misleading. The United States of
+America, the Federal Republic of Germany, Slovakia and Luxembourg are
+all countries, but they differ vastly in size and social homogeneity.
+Comparing Slovakia and Luxembourg to the federal states or even regions
+within Germany, or the states of Germany and the United States can
+provide more adequate insights. Statistically, the similarity of the
+aggregation level and high number of observations can allow more precise
+control of model parameters and errors. The advantages of switching from
+a national level of the analysis to a sub-national level comes with a
+huge price in data processing, validation and imputation. The package
+Regions aims to help this process.
+
+## Sub-national Statistics Have Many Challenges
+
+  - **Frequent boundary changes**: as opposed to national boundaries,
+    the territorial units, typologies are often change, and this makes
+    the validation and recoding of observation necessary across time.
+    For example, in the European Union, sub-national typologies change
+    about every three years and you have to make sure that you compare
+    the right French region in time, or, if you can make the time-wise
+    comparison at all.
+
+  - **Hierarchical aggregation and special imputation**: missingness is
+    very frequent in sub-national statistics, because they are created
+    with a serious time-lag compared to national ones, and because they
+    are often not back-casted after boundary changes. You cannot use
+    standard imputation algorithms because the observations are not
+    similarly aggregated or averaged. Often, the information is
+    seemingly missing, and it is present with an obsolete typology code.
 
 ## Installation
 
@@ -27,6 +56,9 @@ You can install the development version from
 # install.packages("devtools")
 devtools::install_github("antaldaniel/regions")
 ```
+
+You can review the complete package documentation on
+[regions.danielantal.eu](http://regions.danielantal.eu/).
 
 ## Motivation
 

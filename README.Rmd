@@ -43,6 +43,8 @@ You can install the development version from [GitHub](https://github.com/) with:
 devtools::install_github("antaldaniel/regions")
 ```
 
+You can review the complete package documentation on  [regions.danielantal.eu](http://regions.danielantal.eu/).
+
 ## Motivation
 
 Most economic, social and environmental situations and developments have a specific territorial dimension. Their statistical representations, which generalize many individual data points by aggregating, averaging or other means corresponds to a territory.

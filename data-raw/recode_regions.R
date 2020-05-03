@@ -100,8 +100,9 @@ recode_nuts <- function( dat,
     left_join ( dat, by = 'geo')
   
   dat_with_source_coding <- dat 
-  names(dat_with_source_coding )[which(names(dat_with_source_coding )=="geo")] <- paste0("code_", source_nuts_year )
-  
+  names(dat_with_source_coding )[
+    which(names(dat_with_source_coding ) =="geo")
+    ] <- paste0("code_", source_nuts_year )
   
   recoding  <- dat %>%   ## codes are not in the target typology --------
     anti_join ( codes_in_target_year, 

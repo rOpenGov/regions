@@ -31,4 +31,9 @@ test_that("Correct structure returned", {
                c("geo", "values", "notes", "typology"))
 })
 
+test_that("Error handling workds", {
+  expect_error( validate_nuts_country(dat = "character"))
+  expect_error( validate_nuts_country(dat = small_df [-(1:8), ]))
+})
+
 

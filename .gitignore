@@ -39,3 +39,4 @@ vignettes/*.pdf
 .Renviron
 docs
 data-raw/covr.R
+inst/doc

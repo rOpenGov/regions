@@ -8,6 +8,7 @@ my_reg_data <- data.frame (
 
 validate_nuts_region ( dat = my_reg_data )
 
+
 result1 <- validate_nuts_region ( 
   dat = data.frame ( 
   geo =c("BE1", "HU102")), 
@@ -23,4 +24,6 @@ test_that("invalid dates give error message", {
   expect_error(validate_nuts_region ( dat = data.frame ( 
     geo =c("BE1", "HU102")), nuts_year = 2002 )
   )
+  expect_error ( validate_nuts_region ( dat = "c", 
+                                        nut_year = 2013))
 })

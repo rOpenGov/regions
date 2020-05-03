@@ -1,0 +1,61 @@
+---
+title: "Recoding & Relabelling"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Recoding & Relabelling}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(regions)
+library(dplyr)
+library(tidyr)
+```
+
+Eurostat offers so-called correspondence tables to follow boundary changes, recoding and relabelling for all NUTS changes since the formalization of the NUTS typology.  Unfortunately, these Excel tables do not conform with the requirements of tidy data, and their vocabulary for is not standardized, either.  For example, recoding changes are often labelled as recoding, recoding and renaming, code change, Code change, etc.
+
+The `data-raw` library contains these Excel tables and very long data wrangling code that unifies the relevant vocabulary of these Excel files and brings the tables into a single, tidy format , starting with the definition `NUTS1999`.  The resulting data file `nuts_changes` is included in the `regions` package. It already contains the changes that will come into force in 2021.
+
+Let's review a few changes.  
+
+```{r changes, results='asis'}
+data(nuts_changes)
+
+nuts_changes %>%
+  mutate ( geo_16 = code_2016, 
+           geo_13 = code_2013 ) %>%
+  filter ( code_2016 %in% c("FRB", "HU11") | 
+             code_2013 %in% c("FR7", "HU10", "FR24")) %>%
+  select ( typology, geo_16, geo_13, start_year,
+           code_2013, change_2013,
+           code_2016, change_2016 ) %>%
+  pivot_longer ( cols = starts_with("code"), 
+                 names_to = 'definition', 
+                 values_to = 'code') %>%
+  pivot_longer ( cols = starts_with("change"), 
+                 names_to = 'change', 
+                 values_to = 'description')  %>%
+  filter (!is.na(description), 
+          !is.na(code)) %>%
+  select ( -change ) %>%
+  knitr::kable ()
+
+```
+
+You will not find the `geo` identifier `FRB` in any statistical data that was released before France changes its administrative boundaries and the `NUTS2016` boundary definition came into force.  However, as the description says, you may find historical data elsewhere, in a historical NUTS2-level product for the `FRB` _CENTRE — VAL DE LOIRE_ `NUTS1` region, because it is identical to the earlier `NUTS2` level region `FR24`, i.e. Central France, which was known as _Centre_ for many years before the transition to NUTS2016. The size and importance of this territorial unit is more similar to NUTS1 than NUTS2 units.
+
+Because `FRB` contains only one `FRB0`, the earlier `FR24`, it is technically identified as a NUTS2-level region, too.  You find the same data in the `NUTS2` typology. With statistical products on NUTS2 level, you can simply recode historical `FR24` data to `FRB0`, since the aggregation level and the boundaries are not changed. Furthermore, you can project this data to any NUTS1 level panel either under the earlier `FR2` NUTS1 label, if you use the old definition, or the new `FRB` label, if you use the current `NUTS2016` typology.
+
+
+
+
+
+

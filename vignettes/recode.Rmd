@@ -54,6 +54,18 @@ You will not find the `geo` identifier `FRB` in any statistical data that was re
 
 Because `FRB` contains only one `FRB0`, the earlier `FR24`, it is technically identified as a NUTS2-level region, too.  You find the same data in the `NUTS2` typology. With statistical products on NUTS2 level, you can simply recode historical `FR24` data to `FRB0`, since the aggregation level and the boundaries are not changed. Furthermore, you can project this data to any NUTS1 level panel either under the earlier `FR2` NUTS1 label, if you use the old definition, or the new `FRB` label, if you use the current `NUTS2016` typology.
 
+Let's see a hypothetical data frame with random variables. (Usually a data frame has no so many issues, so a more detailed example can be constructed this way.)
+
+```{r recode}
+test <- data.frame ( 
+  geo  =  c("FR", "DEE32", "UKI3" ,
+            "HU12", "DED", 
+            "FRK", "FR7"), 
+  values = runif(7, 0, 100 ),
+  stringsAsFactors = FALSE )
+
+
+```
 
 
 

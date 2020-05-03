@@ -4,8 +4,10 @@
 #' to be validated.
 #' @param geo_var Defaults to \code{"geo"}. The variable that contains 
 #' the 3-5 character geo codes to be validated.
-#' @param source_nuts_year Defaults to 2016
-#' @param target_nuts_year Defaults to 2013
+#' @param source_nuts_year Defaults to the current typology in force, which 
+#' is \code{2016}.
+#' @param target_nuts_year Defaults to \code{2013}, which is the most 
+#' likely use when programatically accessing data from Eurostat.
 #' @importFrom dplyr mutate select mutate_if left_join distinct vars
 #' @importFrom dplyr bind_cols bind_rows ungroup group_by_at summarize
 #' @importFrom dplyr rename
@@ -16,21 +18,22 @@
 #' @importFrom utils data 
 #' @family recode functions
 #' @examples{
-#' recode_nuts ( data = data.frame ( 
-#'                      geo  =  c("FR", "DEE32", "UKI3",
-#'                                "HU12", "DED", 
-#'                                "FRK", "FR7"), 
-#'                      values = runif(7, 0, 100 ),
-#'                      stringsAsFactors = FALSE), 
-#'               source_nuts_year = 2016, 
-#'               target_nuts_year =2013)
+#' foo <- data.frame ( 
+#'   geo  =  c("FR", "DEE32", "UKI3" ,
+#'             "HU12", "DED", 
+#'             "FRK", "FR7"), 
+#'   values = runif(7, 0, 100 ),
+#'   stringsAsFactors = FALSE )
+#' 
+#' recode_nuts(foo, source_nuts_year = 2016,
+#'                  target_nuts_year = 2013)
 #' }
 #' @export
 
 recode_nuts <- function( dat, 
                          geo_var = "geo",
-                         source_nuts_year = 2016,
-                         target_nuts_year = 2013 ) {
+                         source_nuts_year = 2013,
+                         target_nuts_year = 2016 ) {
   
   . <- nuts <- nuts_changes <- target <- geo <- typology <- NULL
   years <- typology_change <- min_year <- max_year <- NULL

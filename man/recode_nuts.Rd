@@ -27,14 +27,15 @@ Recode Region Codes From Source To Target NUTS Typology
 }
 \examples{
 {
-recode_nuts ( data = data.frame ( 
-                     geo  =  c("FR", "DEE32", "UKI3",
-                               "HU12", "DED", 
-                               "FRK", "FR7"), 
-                     values = runif(7, 0, 100 ),
-                     stringsAsFactors = FALSE), 
-              source_nuts_year = 2016, 
-              target_nuts_year =2013)
+foo <- data.frame ( 
+  geo  =  c("FR", "DEE32", "UKI3" ,
+            "HU12", "DED", 
+            "FRK", "FR7"), 
+  values = runif(7, 0, 100 ),
+  stringsAsFactors = FALSE )
+
+recode_nuts(foo, source_nuts_year = 2016,
+                 target_nuts_year = 2013)
 }
 }
 \seealso{

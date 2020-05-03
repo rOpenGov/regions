@@ -4,10 +4,8 @@
 #' to be validated.
 #' @param geo_var Defaults to \code{"geo"}. The variable that contains 
 #' the 3-5 character geo codes to be validated.
-#' @param source_nuts_year Defaults to the current typology in force, which 
+#' @param target_nuts_year Defaults to the current typology in force, which 
 #' is \code{2016}.
-#' @param target_nuts_year Defaults to \code{2013}, which is the most 
-#' likely use when programatically accessing data from Eurostat.
 #' @importFrom dplyr mutate select mutate_if left_join distinct vars
 #' @importFrom dplyr bind_cols bind_rows ungroup group_by_at summarize
 #' @importFrom dplyr rename
@@ -21,18 +19,16 @@
 #' foo <- data.frame ( 
 #'   geo  =  c("FR", "DEE32", "UKI3" ,
 #'             "HU12", "DED", 
-#'             "FRK", "FR7"), 
-#'   values = runif(7, 0, 100 ),
+#'             "FRK"), 
+#'   values = runif(6, 0, 100 ),
 #'   stringsAsFactors = FALSE )
 #' 
-#' recode_nuts(foo, source_nuts_year = 2016,
-#'                  target_nuts_year = 2013)
+#' recode_nuts(foo, target_nuts_year = 2013)
 #' }
 #' @export
 
 recode_nuts <- function( dat, 
                          geo_var = "geo",
-                         source_nuts_year = 2013,
                          target_nuts_year = 2016 ) {
   
   . <- nuts <- nuts_changes <- target <- geo <- typology <- NULL
@@ -65,16 +61,7 @@ recode_nuts <- function( dat,
     mutate ( geo2 = geo ) %>%
     purrr::set_names ( c("typology", target_code,
                          "geo")) 
-  
-  codes_in_source_year <- all_valid_nuts_codes %>% 
-    dplyr::filter (nuts == paste0("code_", source_nuts_year)) %>%
-    dplyr::filter (!is.na(geo)) %>%
-    select ( -nuts ) %>%
-    distinct ( typology, geo ) %>%
-    mutate ( geo2 = geo ) %>%
-    purrr::set_names ( c("typology", source_code,
-                         "geo")) 
-  
+
   join_by_vars <- names(all_valid_nuts_codes)[
     names(all_valid_nuts_codes) %in% names(dat) ]
   

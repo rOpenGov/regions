@@ -6,7 +6,9 @@ test <- data.frame (
   stringsAsFactors = FALSE )
 
 dat <- test 
-tested1 <- recode_nuts(test)
+tested1 <- recode_nuts(test,,
+                       source_nuts_year = 2016,
+                       target_nuts_year = 2013)
 
 test_that("all geo codes are returned", {
   expect_equal(sort(unique(tested1$geo)), sort(unique(test$geo)))

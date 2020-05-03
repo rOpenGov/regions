@@ -30,7 +30,7 @@
 #'  announced and defined \code{2021}.
 #' @importFrom dplyr mutate select mutate_if left_join distinct_all
 #' @importFrom dplyr bind_cols
-#' @importFrom tidyselect one_of
+#' @importFrom tidyselect one_of starts_with
 #' @importFrom purrr set_names
 #' @importFrom utils data 
 #' @family validate functions
@@ -102,9 +102,10 @@ validate_nuts_region <- function ( dat,
   
 
   return_df %>% 
-    dplyr::select ( -one_of("nuts") ) %>%
+    dplyr::select ( -tidyselect::one_of("nuts") ) %>%
     dplyr::distinct_all () %>%
-    dplyr::select ( -starts_with("valid") ) %>%
-    dplyr::bind_cols( return_df %>%  dplyr::select ( starts_with("valid") ) )
+    dplyr::select ( -tidyselect::starts_with("valid") ) %>%
+    dplyr::bind_cols( return_df %>%
+                        dplyr::select ( starts_with("valid") ) )
   
 }

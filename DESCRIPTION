@@ -30,4 +30,7 @@ Suggests:
     knitr,
     rmarkdown,
     covr
-VignetteBuilder: knitr
+VignetteBuilder: 
+    knitr,
+    dplyr,
+    tidyr

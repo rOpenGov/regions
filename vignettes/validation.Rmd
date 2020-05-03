@@ -16,22 +16,21 @@ knitr::opts_chunk$set(
 
 ```{r setup, message=FALSE, warnings=FALSE}
 library(regions)
+library(dplyr)
+library(tidyr)
 data(daily_internet_users)
-require(dplyr)
-require(tidyr)
 ```
 
-The `daily_internet_users` data set is created by this code: 
+The `daily_internet_users` data set is created by this code, which is not evaluated here: 
 
 ```{r example, eval=FALSE}
-isoc_r_iuse_i<- eurostat::get_eurostat("isoc_r_iuse_i",
-                       time_format = "num") 
+isoc_r_iuse_i <- eurostat::get_eurostat("isoc_r_iuse_i",
+                                        time_format = "num") 
 
-names ( daily_internet_ )
 daily_internet_users <- isoc_r_iuse_i  %>%
   dplyr::filter ( unit == "PC_IND",          # percentage of individuals
                   indic_is == "I_IDAY") %>%  # daily internet users
-  dplyr::select (geo, time, values )
+  select (geo, time, values )
 ```
 
 Simply downloading a regional statistics from the Eurostat data warehouse and placing the observation on the same map does not work.  If you look into the data, you may realize that the geo codes of French, Lithuanian or Hungarian regions, to name a few, do not match in the years 2012 and 2018. 

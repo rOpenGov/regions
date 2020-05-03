@@ -17,6 +17,8 @@
 
 get_country_code <- function(geo, typology = "NUTS") {
   
+  . <- NULL 
+  
   if ( ! typology %in% c("NUTS", "NUTS1", "NUTS2", "NUTS3", "NUTS0")) {
     stop("Currently only NUTS-like typologies are supported.")
   }

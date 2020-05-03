@@ -26,7 +26,8 @@ Imports:
     utils,
     purrr,
     rlang,
-    glue
+    glue,
+    stats
 Suggests: 
     knitr,
     rmarkdown,

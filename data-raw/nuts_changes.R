@@ -26,6 +26,4 @@ nuts_recoded <- nuts_changes  %>%
     iso2c == "UK" ~ "GB", 
     TRUE ~ iso2c)) 
 
-
-
 usethis::use_data ( nuts_recoded, overwrite = TRUE ) 

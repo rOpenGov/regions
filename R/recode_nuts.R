@@ -34,6 +34,8 @@ recode_nuts <- function( dat,
   
   . <- nuts <- nuts_changes <- target <- geo <- typology <- NULL
   years <- typology_change <- min_year <- max_year <- NULL
+  all_valid_nuts_codes <- NULL
+  
   
   target_code <- paste0("code_", target_nuts_year)
   source_code <- paste0("source_", target_nuts_year)
@@ -47,6 +49,10 @@ recode_nuts <- function( dat,
  
   utils::data (all_valid_nuts_codes, package ="regions", 
                envir = environment())
+  
+  utils::data (nuts_changes, package ="regions", 
+               envir = environment())
+  
   
   codes_in_target_year <- all_valid_nuts_codes %>% 
     dplyr::filter (nuts == paste0("code_", target_nuts_year)) %>%
@@ -93,11 +99,12 @@ recode_nuts <- function( dat,
     dplyr::filter ( geo %in% different_coding$geo ) %>%
     mutate ( years = as.numeric(gsub("code_", "" , nuts )) ) 
   
+  select_from_correspondence <- unique(c("typology", 
+                                         possible_codes$nuts, 
+                                         target_code))
+  
   recoding_changes <- nuts_changes  %>%
-    select ( one_of("typology", 
-                     possible_codes$nuts, 
-                     target_code)
-             ) %>%
+    select ( tidyselect::one_of(select_from_correspondence ) ) %>%
     mutate ( target = unlist(.[, target_code ]) ) %>%
     select ( -one_of(target_code)) %>%
     tidyr::pivot_longer (., cols =  starts_with('code'), 

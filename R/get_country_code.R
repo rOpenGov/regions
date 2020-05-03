@@ -13,6 +13,7 @@
 #' @examples{
 #' get_country_code (c("EL", "GR", "DED", "HU102"))
 #' }
+#' @export
 
 get_country_code <- function(geo, typology = "NUTS") {
   

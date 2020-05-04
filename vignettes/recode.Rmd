@@ -64,7 +64,7 @@ example_df <- data.frame (
   values = runif(6, 0, 100 ),
   stringsAsFactors = FALSE )
 
-recode_nuts(example_df, target_nuts_year = 2013) %>%
+recode_nuts(dat = example_df, nuts_year = 2013) %>%
   select ( geo, values, code_2013)
 ```
 
@@ -74,8 +74,8 @@ In this hypothetical example we are creating backward compatibility with the NUT
 - Typologies which changed their geo codes, but are not affected by boundary changes, i.e. the data is comparable, it is only found at a different geographical label
 - Typologies that are not comparable, and we cannot compare them meaningfully with a NUTS2013 dataset.
 
-```{r recode}
-recode_nuts(example_df, target_nuts_year = 2013) %>%
+```{r recode2013}
+recode_nuts(example_df, nuts_year = 2013) %>%
   select ( geo, values, typology_change, code_2013 ) %>%
   knitr::kable()
 ```
@@ -84,8 +84,8 @@ The first three observations are comparable with a NUTS2013 dataset.  The fourth
 
 The following data can be joined with a NUTS2013 dataset or map:
 
-```{r recode2013}
-recode_nuts(example_df, target_nuts_year = 2013) %>%
+```{r changes2013}
+recode_nuts(example_df, nuts_year = 2013) %>%
   select ( code_2013, values, typology_change ) %>%
   rename ( geo = code_2013 ) %>% 
   filter ( !is.na(geo)) %>%
@@ -95,7 +95,7 @@ recode_nuts(example_df, target_nuts_year = 2013) %>%
 And re-assuringly these data will be compatible with the next NUTS typology, too! 
 
 ```{r recode2021}
-recode_nuts(example_df, target_nuts_year = 2021) %>%
+recode_nuts(example_df, nuts_year = 2021) %>%
   select ( code_2021, values, typology_change ) %>%
   rename ( geo = code_2021 ) %>% 
   filter ( !is.na(geo)) %>%

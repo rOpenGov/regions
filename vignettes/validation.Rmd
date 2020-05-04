@@ -45,8 +45,8 @@ test <- daily_internet_users  %>%
                   country_code %in% c("FR", "HU", "LT")) %>%
   mutate ( time = paste0("Y", time )) %>%
   pivot_wider (., names_from ="time", values_from = "values") %>%
-  validate_nuts_region() %>%  # default year the current valid 2016
-  validate_nuts_region(.,  nuts_year = 2010 )
+  validate_nuts_regions() %>%  # default year the current valid 2016
+  validate_nuts_regions(.,  nuts_year = 2010 )
 ```
 
 The following NUTS regions codes are not valid in the 2010 definition. These sub-national divisions were defined in 2013 or 2016. Some of these regional boundaries did not change, but got new codes after altering the administrative divisions of France. Some of the seemingly missing 2012 data can be found under different codes.

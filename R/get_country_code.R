@@ -27,7 +27,7 @@ get_country_code <- function(geo, typology = "NUTS") {
     geo  = as.character(geo), 
     code = substr(geo, 1,2),
     stringsAsFactors = FALSE)  %>%
-    validate_nuts_country(., 
+    validate_nuts_countries(., 
                           geo_var = "code") %>%
     mutate ( code = case_when ( 
       code == 'EL' ~ "GR", 

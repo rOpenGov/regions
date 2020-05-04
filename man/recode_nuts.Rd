@@ -4,7 +4,7 @@
 \alias{recode_nuts}
 \title{Recode Region Codes From Source To Target NUTS Typology}
 \usage{
-recode_nuts(dat, geo_var = "geo", target_nuts_year = 2016)
+recode_nuts(dat, geo_var = "geo", nuts_year = 2016)
 }
 \arguments{
 \item{dat}{A data frame with a 3-5 character \code{geo_var} variable
@@ -13,8 +13,12 @@ to be validated.}
 \item{geo_var}{Defaults to \code{"geo"}. The variable that contains
 the 3-5 character geo codes to be validated.}
 
-\item{target_nuts_year}{Defaults to the current typology in force, which
-is \code{2016}.}
+\item{nuts_year}{The year of the NUTS typology to use.
+You can select any valid
+NUTS definition, i.e. \code{1999}, \code{2003}, \code{2006},
+\code{2010}, \code{2013}, the currently used \code{2016} and the
+already announced and defined \code{2021}. Defaults to the current
+typology in force, which is \code{2016}.}
 }
 \description{
 Recode Region Codes From Source To Target NUTS Typology
@@ -24,11 +28,11 @@ Recode Region Codes From Source To Target NUTS Typology
 foo <- data.frame ( 
   geo  =  c("FR", "DEE32", "UKI3" ,
             "HU12", "DED", 
-            "FRK", "FR7"), 
-  values = runif(7, 0, 100 ),
+            "FRK"), 
+  values = runif(6, 0, 100 ),
   stringsAsFactors = FALSE )
 
-recode_nuts(foo, target_nuts_year = 2013)
+recode_nuts(foo, nuts_year = 2013)
 }
 }
 \seealso{

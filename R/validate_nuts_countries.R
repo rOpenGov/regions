@@ -13,10 +13,9 @@
 #' @param geo_var Defaults to \code{"geo"}. The variable that contains the
 #' 2 character geo codes to be validated.
 #' @importFrom dplyr mutate rename select mutate_if case_when left_join
-#' @importFrom tidyselect one_of
+#' @importFrom tidyselect all_of
 #' @importFrom countrycode countrycode
 #' @importFrom purrr quietly
-#' @importFrom glue glue
 #' @importFrom magrittr %>%
 #' @return The original data frame.
 #' @family validate functions
@@ -27,14 +26,14 @@
 #'  )
 #'  
 #'  ## NLD is an ISO 3-character code and is not validated.
-#'  validate_nuts_country(my_dat)
+#'  validate_nuts_countries(my_dat)
 #' }
 #' @export
 
 
-validate_nuts_country <- function ( dat, geo_var = "geo" ) {
+validate_nuts_countries <- function ( dat, geo_var = "geo" ) {
   
-  geo <- geo_tmp <- iso2c <- use_geo_tmp <- NULL
+  . <- geo <- geo_tmp <- iso2c <- use_geo_tmp <- NULL
   
   validate_data_frame(dat)
 
@@ -43,42 +42,27 @@ validate_nuts_country <- function ( dat, geo_var = "geo" ) {
     dat$typology <- NA_character_
   }
   
-  ## Exception when 'geo' name conflict may occur ------------------
-  if ( geo_var != "geo" ) {
-    use_geo_tmp <- TRUE  ## 'geo' must not be present twice
-    names(dat)[which(names(dat)=="geo")] <- "geo_tmp"
-  } else {
-    use_geo_tmp <- FALSE
-  }
-  
   original_names <- names(dat)
   
   quiet_country_codes <- purrr::quietly(countrycode::countrycode)
-  
+
   validate_country_df <- dat %>%
-    dplyr::select ( one_of ( original_names )) %>%
-    #rename ( !! geo_var := geo ) %>%
-    dplyr::rename ( geo = glue::glue ( geo_var) ) %>%
-    dplyr::mutate ( iso2c = geo ) %>%
+    dplyr::select ( all_of ( original_names )) %>%
+    dplyr::mutate ( iso2c = unlist(.[,geo_var]) ) %>%
     dplyr::mutate ( iso2c = dplyr::case_when ( 
       iso2c == "UK" ~ "GB",
       iso2c == "EL" ~ "GR", 
       iso2c == "XK" ~ "GR", #only to avoid warning
       TRUE ~ iso2c)) %>%
-    dplyr::mutate ( iso3c = quiet_country_codes (iso2c, "iso2c", "iso3c")$result) %>%
+    dplyr::mutate ( iso3c = quiet_country_codes (iso2c, 
+                                                 "iso2c", "iso3c")$result) %>%
     dplyr::mutate ( typology = dplyr::case_when ( 
-      is.na(iso3c)  & nchar(geo) == 2 ~ "invalid_country_code" ,
-      !is.na(iso3c) & nchar(geo) == 2 ~ "country", 
-      is.na(iso3c)  & nchar(geo) != 2  ~ typology 
+      is.na (iso3c) & nchar(unlist(.[,geo_var])) == 2 ~ "invalid_iso-3166-alpha-2",
+      is.na (iso3c) & nchar(unlist(.[,geo_var])) == 3 ~ "iso-3166-alpha-3",
+      !is.na(iso3c) & nchar(unlist(.[,geo_var])) == 2 ~ "country", 
+      is.na (iso3c) & nchar(unlist(.[,geo_var])) != 2  ~ typology 
     ))
-  
-  if ( use_geo_tmp == TRUE ) {  ## 'geo' must not be present twice
-    validate_country_df <- validate_country_df %>%
-      purrr::set_names(c("geo", geo_var, "typology", "iso2c", "iso3c"))
-    
-    original_names <- original_names[which(original_names != "geo_tmp")]
-  }
-  
+
   validate_country_df %>%
-    dplyr::select ( one_of(original_names) )
+    dplyr::select ( all_of(original_names) )
 }

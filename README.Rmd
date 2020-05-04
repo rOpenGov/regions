@@ -24,16 +24,6 @@ knitr::opts_chunk$set(
 
 <!-- badges: end -->
 
-Working with sub-national statistics has many benefits.  In policymaking or in social sciences, it is a common practice to compare national statistics, which can be hugely misleading.  The United States of America, the Federal Republic of Germany, Slovakia and Luxembourg are all countries, but they differ vastly in size and social homogeneity.  Comparing Slovakia and Luxembourg to the federal states or even regions within Germany, or the states of Germany and the United States can provide more adequate insights.  Statistically, the similarity of the aggregation level and high number of observations can allow more precise control of model parameters and errors.
-The advantages of switching from a national level of the analysis to a sub-national level comes with a huge price in data processing, validation and imputation.  The package Regions aims to help this process.
-
-## Sub-national Statistics Have Many Challenges
-
-- __Frequent boundary changes__:  as opposed to national boundaries, the territorial units, typologies are often change, and this makes the validation and recoding of observation necessary across time.  For example, in the European Union, sub-national typologies change about every three years and you have to make sure that you compare the right French region in time, or, if you can make the time-wise comparison at all.
-
-- __Hierarchical aggregation and special imputation__: missingness is very frequent in sub-national statistics, because they are created with a serious time-lag compared to national ones, and because they are often not back-casted after boundary changes.  You cannot use standard imputation algorithms because the observations are not similarly aggregated or averaged.  Often, the information is seemingly missing, and it is present with an obsolete typology code.
-
-
 ## Installation
 
 You can install the development version from [GitHub](https://github.com/) with:
@@ -43,13 +33,18 @@ You can install the development version from [GitHub](https://github.com/) with:
 devtools::install_github("antaldaniel/regions")
 ```
 
-You can review the complete package documentation on  [regions.danielantal.eu](http://regions.danielantal.eu/).
+You can review the complete package documentation on  [regions.danielantal.eu](http://regions.danielantal.eu/). If you find any problems with the code, please raise an issue on [Github](https://github.com/antaldaniel/regions). Pull requests are welcome if you agree with the [Contributor Code of Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html)
 
-## Motivation
+## Motivation 
 
-Most economic, social and environmental situations and developments have a specific territorial dimension. Their statistical representations, which generalize many individual data points by aggregating, averaging or other means corresponds to a territory.
+Working with sub-national statistics has many benefits.  In policymaking or in social sciences, it is a common practice to compare national statistics, which can be hugely misleading.  The United States of America, the Federal Republic of Germany, Slovakia and Luxembourg are all countries, but they differ vastly in size and social homogeneity.  Comparing Slovakia and Luxembourg to the federal states or even regions within Germany, or the states of Germany and the United States can provide more adequate insights.  Statistically, the similarity of the aggregation level and high number of observations can allow more precise control of model parameters and errors.
+The advantages of switching from a national level of the analysis to a sub-national level comes with a huge price in data processing, validation and imputation.  The package Regions aims to help this process.
 
-We are used to relatively constant territories in the forms of national boundaries. While national boundaries do change almost every year somewhere on Earth, lower level territorial units, such as administrative divisions within a country, ranked below a province, region, or state, are changing very frequently. Such changes make the creation of time series, data panels, or data joins a very painful task in practice. For example, the regional boundaries within the European Union change on average every three years, so a panel or time series of data has to account for about three boundary changes that raise various comparability problems.
+## Sub-national Statistics Have Many Challenges
+
+- __Frequent boundary changes__:  as opposed to national boundaries, the territorial units, typologies are often change, and this makes the validation and recoding of observation necessary across time.  For example, in the European Union, sub-national typologies change about every three years and you have to make sure that you compare the right French region in time, or, if you can make the time-wise comparison at all.
+
+- __Hierarchical aggregation and special imputation__: missingness is very frequent in sub-national statistics, because they are created with a serious time-lag compared to national ones, and because they are often not back-casted after boundary changes.  You cannot use standard imputation algorithms because the observations are not similarly aggregated or averaged.  Often, the information is seemingly missing, and it is present with an obsolete typology code.
 
 ## Example
 
@@ -57,19 +52,22 @@ This is a basic example which shows you how to impute data from a larger territo
 
 ```{r example}
 library(regions)
-upstream <- data.frame ( country_code =  rep( "AU", 3),
-                         year = c(2018:2020),
-                         my_var  = c(10,12,11)
+
+upstream <- data.frame ( country_code =  rep( "AU", 2),
+                         year = c(2019:2020),
+                         my_var  = c(10,12)
                        )
 
 downstream <- australia_states
 
-impute_down ( upstream_data  = upstream,
+imputed <- impute_down ( upstream_data  = upstream,
               downstream_data = downstream,
               country_var = "country_code",
               regional_code = "geo_code",
               values_var = "my_var",
               time_var = "year" )
+
+knitr::kable(imputed)
 ```
 
 

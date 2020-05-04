@@ -12,3 +12,10 @@ nuts_year = 2016
 validate_nuts_countries(dat, geo_var = 'region_nuts_codes')
 validated <- validate_nuts_regions(dat, geo_var = 'region_nuts_codes')
 recoded <- recode_nuts(dat, geo_var = 'region_nuts_codes')
+
+eb15 %>%
+  recode_nuts(., geo_var = 'region_nuts_codes') %>%
+  mutate ( geo = code_2016 ) %>%
+  satellitereport::create_choropleth(., level = 2, type = 'numeric',
+                                     values_var = "government_targets_numeric",
+                                     geo_var = "geo")

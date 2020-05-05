@@ -12,9 +12,13 @@ normalize_text <- function(x) {
   x
 }
 
+### use your own path or save a copy of the Global Mobility Reports
+###  into 'data-raw'
+###  This file is not synchronized with the GitHub Repo because it
+### is large and will slow down gits.
+
 gmr_csv <- read_csv( file.path('data-raw', 
                                'Global_Mobility_Report.csv'))
-
 
 gmr <- gmr_csv %>%
   set_names ( c("country_code", "google_country_name", 

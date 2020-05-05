@@ -134,7 +134,9 @@ estonia_names <- regions_and_names_2016 %>%
   filter ( country_code  == "EE") %>%
   select ( google_name)  %>%
   unlist() %>% as.character() %>% sort()
+
 estonia_names 
+
 estonia <- google_region_names %>%
   select ( country_code, google_name ) %>%
   filter ( country_code == "EE") %>%

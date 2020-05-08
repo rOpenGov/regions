@@ -4,7 +4,7 @@ output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Validating Your Typology}
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+  r
 ---
 
 ```{r, include = FALSE}
@@ -53,13 +53,17 @@ The following NUTS regions codes are not valid in the 2010 definition. These sub
 
 ```{r new}
 # only first 10 regions are printed
-head(test [ ! test$valid_2010, ], 10)
+knitr::kable( 
+  head(test [ ! test$valid_2010, ], 10)
+)
 ```
 
 And there are two regions that are not valid in 2016, because these typologies were changed. Vilnius and Budapest, two big cities, were detached from their larger containing regional units. 
 
 ```{r old}
-test [ ! test$valid_2016, ]
+knitr::kable(
+  test [ ! test$valid_2016, ]
+)
 ```
 
-Especially in the case of Budapest and Central Hungary, the comparative data can be produced for different boundary definitions, because the boundary change was simple.  (Budapest was removed from Central Hungary.) In Lithuania, the change was not more complex, but unfortunately it cut through a far less rarely used typology level, NUTS3. While the change is simple, the replacement data is usually not published. 
+Especially in the case of Budapest and Central Hungary, the comparative data can be produced for different boundary definitions, because the boundary change was simple.  (Budapest was removed from Central Hungary.) In Lithuania, the change was not more complex, but unfortunately it cut through a far less rarely used typology level, `NUTS3`. While the change is simple, the replacement data is usually not published. 

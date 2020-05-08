@@ -12,9 +12,8 @@ coverage](https://codecov.io/gh/antaldaniel/regions/branch/master/graph/badge.sv
 has not yet been a stable, usable release suitable for the
 public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 “[![license](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)”
-
 [![Travis build
-status](https://travis-ci.com/antaldaniel/regions.svg?branch=master)](https://travis-ci.com/antaldaniel/regions)
+status](https://travis-ci.org/antaldaniel/regions.svg?branch=master)](https://travis-ci.org/antaldaniel/regions)
 <!-- badges: end -->
 
 ## Installation

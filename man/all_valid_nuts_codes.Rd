@@ -9,7 +9,7 @@ A data frame with 3 variables:
 \describe{
 \item{geo}{NUTS geo identifier}
 \item{typology}{country, NUTS1, NUTS2 or NUTS3}
-\item{nuts}{The NUTS definiton where the geo code can be found.}
+\item{nuts}{The NUTS definition where the geo code can be found.}
 }
 @source \url{https://ec.europa.eu/eurostat/web/nuts/history/}
 }

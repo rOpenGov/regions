@@ -43,7 +43,6 @@ r_check_args: "--as-cran --no-build-vignettes"
 
 before_install:
   - pip install --user codecov
-  - sudo apt-get -qq update
 
 r:
 - release

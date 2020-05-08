@@ -1,0 +1,55 @@
+# R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
+
+# Use R language
+language: r
+#Define multiple R-versions, one from bioconductor
+r:
+  - oldrel
+  - release
+  - devel
+# Set one of you dependencies from github
+r_packages:
+  - RTest
+  - testthat
+  - covr
+  - pkgdown
+  
+# Set one of your dependencies from CRAN
+r_packages: RTest
+# set a Linux system dependency
+apt_packages:
+  - libxml2-dev
+
+addons:
+  apt:
+    update: true
+    packages:
+      - libgs-dev
+      - qpdf
+      - ghostscript
+
+
+matrix:
+  include:
+  - r: release
+    script:
+      - R CMD build . --compact-vignettes=gs+qpdf
+      - R CMD check *tar.gz --as-cran 
+  - r: release
+    os: osx
+    osx_image: xcode7.3
+    before_install:
+      - sudo tlmgr install framed titling
+    script:
+      - R CMD build . --compact-vignettes=gs+qpdf
+      - R CMD check *tar.gz --as-cran
+
+cache: packages
+
+env:
+    - PKG_TARBALL=regions_0.1.0.tar.gz
+after_success:
+      - tar -C .. -xf $PKG_TARBALL
+      - xvfb-run Rscript -e 'covr::codecov(type=c("tests", "vignettes", "examples"))'
+      - rm -rf RTest.Rcheck
+      - Rscript -e 'pkgdown::build_site()'

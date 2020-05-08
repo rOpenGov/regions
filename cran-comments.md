@@ -7,3 +7,6 @@
 
 ## R CMD check results
 There were no ERRORs or WARNINGs. 
+
+Dependingn on the platform, I get various notes to use size reduction
+of PDF.

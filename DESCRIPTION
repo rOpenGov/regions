@@ -12,6 +12,9 @@ Description: Validating sub-national statistical typologies, imputations and
     data panels and time series. See regions.danielantal.eu for more information.
 License: GPL-3
 Encoding: UTF-8
+Language: en-GB
+URL: https://regions.danielantal.eu/
+BugReports: https://github.com/antaldaniel/regions
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.0

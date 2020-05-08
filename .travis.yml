@@ -32,10 +32,13 @@ r_github_packages:
   - jimhester/covr
 
 addons:
+  postgresql: "9.6"
   apt:
     sources:
       - sourceline: 'ppa:opencpu/jq'
       - sourceline: 'ppa:ubuntugis/ubuntugis-unstable'
+      - sourceline: 'deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main'
+        key_url: 'https://www.postgresql.org/media/keys/ACCC4CF8.asc'
     packages:
       - libprotobuf-dev
       - protobuf-compiler
@@ -47,6 +50,7 @@ addons:
       - libspatialite-dev
       - libgdal-dev
       - libjson-c-dev
+      - postgresql-server-dev-9.6
 
 env:
   global:
@@ -55,6 +59,25 @@ env:
 
 r_build_args: "--no-resave-data --no-build-vignettes"
 r_check_args: "--as-cran --no-build-vignettes"    
+
+apt_packages:
+  - libudunits2-dev
+  - udunits2
+  - libv8-dev
+  - libprotobuf-dev
+  - libprotoc-dev
+  - libcairo2-dev
+  - protobuf-compiler
+  - valgrind
+  - libgdal20
+  - libspatialite-dev 
+  - libproj-dev
+  - libgeos-dev
+  - libgdal1-dev
+  - libgdal-dev
+  - libgeos-c1v5
+  - libjq-dev
+  - netcdf-bin
 
 apt_packages:
   - libudunits2-dev
@@ -87,10 +110,26 @@ before_install:
   - sudo apt-get --yes --force-yes update -qq
   - sudo apt-get --yes install npm
   
+  # For RefManageR
+  - sudo apt-get install -qq qpdf ghostscript poppler-utils
+  - echo which pdfinfo
+
   # install postgis from source:
   - wget http://download.osgeo.org/postgis/source/postgis-2.3.2.tar.gz
   - (mv postgis* /tmp; cd /tmp; tar xzf postgis-2.3.2.tar.gz)
   - (cd /tmp/postgis-2.3.2 ; ./configure; make; sudo make install)
+
+  # activate liblwgeom by:
+  - sudo ldconfig
+  # create postgis databases:
+  - sudo service postgresql restart
+  - createdb postgis
+  - psql -d postgis -c "CREATE EXTENSION postgis;"
+  - psql -d postgis -c "GRANT CREATE ON DATABASE postgis TO travis"
+  - psql -d postgis -c "GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO travis"
+  - createdb empty
+  - psql -d empty -c "CREATE EXTENSION postgis;"
+  # - R -q -e 'install.packages("devtools"); devtools::install_github("ropenscilabs/tic"); tic::prepare_all_stages()'
 
   # activate liblwgeom by:
   - sudo ldconfig
@@ -122,4 +161,9 @@ r:
 - devel
 
 after_success:
+  #- Rscript -e 'covr::codecov()'
+  - dropdb postgis
+  - createdb postgis
+  - psql -d postgis -c "CREATE EXTENSION postgis;"
+  - psql -d postgis -c "GRANT CREATE ON DATABASE postgis TO travis"
   - R -q -e 'covr::codecov(quiet = FALSE)'

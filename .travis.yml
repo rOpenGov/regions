@@ -40,25 +40,6 @@ env:
 r_build_args: "--no-resave-data --no-build-vignettes"
 r_check_args: "--as-cran --no-build-vignettes"    
 
-apt_packages:
-  - libudunits2-dev
-  - udunits2
-  - libv8-dev
-  - libprotobuf-dev
-  - libprotoc-dev
-  - libcairo2-dev
-  - protobuf-compiler
-  - valgrind
-  - libgdal20
-  - libspatialite-dev 
-  - libproj-dev
-  - libgeos-dev
-  - libgdal1-dev
-  - libgdal-dev
-  - libgeos-c1v5
-  - libjq-dev
-  - netcdf-bin
-
 
 before_install:
   - pip install --user codecov

@@ -5,7 +5,7 @@
 
 <!-- badges: start -->
 
-“[![Last-changedate](https://img.shields.io/badge/last%20change-2020--05--08-yellowgreen.svg)](/commits/master)”
+“[![Last-changedate](https://img.shields.io/badge/last%20change-2020--05--10-yellowgreen.svg)](https://github.com/antaldaniel/regions/commits/master)”
 [![Codecov test
 coverage](https://codecov.io/gh/antaldaniel/regions/branch/master/graph/badge.svg)](https://codecov.io/gh/antaldaniel/regions?branch=master)
 [![Project Status: WIP – Initial development is in progress, but there
@@ -14,6 +14,10 @@ public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostat
 “[![license](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)”
 [![Travis build
 status](https://travis-ci.org/antaldaniel/regions.svg?branch=master)](https://travis-ci.org/antaldaniel/regions)
+“[![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/regions)](https://cran.r-project.org/package=regions)”
+“[![CRAN\_Status\_Badge\_version\_last\_release](https://www.r-pkg.org/badges/version-last-release/regions)](https://cran.r-project.org/package=regions)”
+“[![metacran
+downloads](https://cranlogs.r-pkg.org/badges/regions)](https://cran.r-project.org/package=regions)”
 <!-- badges: end -->
 
 ## Installation

@@ -5,7 +5,6 @@
 
 <!-- badges: start -->
 
-“[![Last-changedate](https://img.shields.io/badge/last%20change-2020--05--10-yellowgreen.svg)](https://github.com/antaldaniel/regions/commits/master)”
 [![Codecov test
 coverage](https://codecov.io/gh/antaldaniel/regions/branch/master/graph/badge.svg)](https://codecov.io/gh/antaldaniel/regions?branch=master)
 [![Project Status: WIP – Initial development is in progress, but there
@@ -26,8 +25,13 @@ You can install the development version from
 [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("antaldaniel/regions")
+devtools::install_github("rOpenGov/regions")
+```
+
+or the released version from CRAN:
+
+``` r
+install.packages("devtools")
 ```
 
 You can review the complete package documentation on
@@ -52,6 +56,13 @@ control of model parameters and errors. The advantages of switching from
 a national level of the analysis to a sub-national level comes with a
 huge price in data processing, validation and imputation. The package
 Regions aims to help this process.
+
+This package is an offspring of the
+[eurostat](http://ropengov.github.io/eurostat/) package on
+[rOpenGov](http://ropengov.github.io/). It started as a tool to validate
+and re-code regional Eurostat statistics, but it aims to be a general
+solution for all sub-national statistics. It will be developed parallel
+with other rOpenGov packages.
 
 ## Sub-national Statistics Have Many Challenges
 

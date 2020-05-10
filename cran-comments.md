@@ -15,8 +15,7 @@ of PDF.
 
 Thanks, please specify the above as a full URL in angle brackets, i.e.
 <httsp://........>. 
-This URL was moved to 
-URL: https://regions.danielantal.eu/
+This URL was removed, because it was superfluous.
 
 
 We also see:
@@ -24,4 +23,4 @@ Found the following (possibly) invalid file URI:
 URI: /commits/master
 From: README.md
 
-This URL was removed. 
+This URL was removed, because it was erroneous. 

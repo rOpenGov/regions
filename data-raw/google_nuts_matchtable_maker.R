@@ -75,7 +75,6 @@ regions_and_names_2016 <- all_valid_nuts_codes %>%
     TRUE ~ normalize_text(geo_name_2016)   )
   )
 
-
 ## Google region names before national corrections ------------
 google_region_names <- nuts_gmr %>%
   select ( country_code, google_region_level,
@@ -140,7 +139,6 @@ google_region_names <- google_region_names %>%
 
 
 ## Fixing Bulgaria
-
 # changing nuts codes
 google_region_names <- google_region_names %>%
   mutate ( code_2016 = case_when (

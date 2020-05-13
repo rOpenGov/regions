@@ -16,11 +16,13 @@ knitr::opts_chunk$set(
 # regions
 
 <!-- badges: start -->
-"[![Last-changedate](https://img.shields.io/badge/last%20change-`r gsub('-', '--', Sys.Date())`-yellowgreen.svg)](/commits/master)"
 [![Codecov test coverage](https://codecov.io/gh/antaldaniel/regions/branch/master/graph/badge.svg)](https://codecov.io/gh/antaldaniel/regions?branch=master)
 [![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 "[![license](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)"
 [![Travis build status](https://travis-ci.org/antaldaniel/regions.svg?branch=master)](https://travis-ci.org/antaldaniel/regions)
+"[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/regions)](https://cran.r-project.org/package=regions)"
+"[![CRAN_Status_Badge_version_last_release](https://www.r-pkg.org/badges/version-last-release/regions)](https://cran.r-project.org/package=regions)"
+"[![metacran downloads](https://cranlogs.r-pkg.org/badges/regions)](https://cran.r-project.org/package=regions)"
 <!-- badges: end -->
 
 ## Installation
@@ -28,8 +30,13 @@ knitr::opts_chunk$set(
 You can install the development version from [GitHub](https://github.com/) with:
 
 ```{r install, eval=FALSE}
-# install.packages("devtools")
-devtools::install_github("antaldaniel/regions")
+devtools::install_github("rOpenGov/regions")
+```
+
+or the released version from CRAN:
+
+```{r cran, eval=FALSE}
+install.packages("devtools")
 ```
 
 You can review the complete package documentation on  [regions.danielantal.eu](http://regions.danielantal.eu/). If you find any problems with the code, please raise an issue on [Github](https://github.com/antaldaniel/regions). Pull requests are welcome if you agree with the [Contributor Code of Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html)
@@ -38,6 +45,8 @@ You can review the complete package documentation on  [regions.danielantal.eu](h
 
 Working with sub-national statistics has many benefits.  In policymaking or in social sciences, it is a common practice to compare national statistics, which can be hugely misleading.  The United States of America, the Federal Republic of Germany, Slovakia and Luxembourg are all countries, but they differ vastly in size and social homogeneity.  Comparing Slovakia and Luxembourg to the federal states or even regions within Germany, or the states of Germany and the United States can provide more adequate insights.  Statistically, the similarity of the aggregation level and high number of observations can allow more precise control of model parameters and errors.
 The advantages of switching from a national level of the analysis to a sub-national level comes with a huge price in data processing, validation and imputation.  The package Regions aims to help this process.
+
+This package is an offspring of the [eurostat](http://ropengov.github.io/eurostat/) package on [rOpenGov](http://ropengov.github.io/). It started as a tool to validate and re-code regional Eurostat statistics, but it aims to be a general solution for all sub-national statistics. It will be developed parallel with other rOpenGov packages.
 
 ## Sub-national Statistics Have Many Challenges
 

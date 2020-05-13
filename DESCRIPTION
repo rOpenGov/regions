@@ -1,6 +1,6 @@
 Package: regions
 Title: Processing Regional Statistics
-Version: 0.1.0
+Version: 0.1.1.0001
 Authors@R: 
     person(given = "Daniel",
            family = "Antal",
@@ -11,13 +11,12 @@ Description: Validating sub-national statistical typologies, re-coding across
     standard typologies of sub-national statistics, and making valid aggregate
     level imputation, re-aggregation, re-weighting and projection down to 
     lower hierarchical levels to create meaningful meaningful
-    data panels and time series. 
-    See regions.danielantal.eu for more information.
+    data panels and time series.
 License: GPL-3
 Encoding: UTF-8
 Language: en-GB
 URL: https://regions.danielantal.eu/
-BugReports: https://github.com/antaldaniel/regions
+BugReports: https://github.com/rOpenGov/regions
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.0

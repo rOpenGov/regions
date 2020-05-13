@@ -10,3 +10,17 @@ There were no ERRORs or WARNINGs.
 
 Dependingn on the platform, I get various notes to use size reduction
 of PDF.
+
+## Resubmission
+
+Thanks, please specify the above as a full URL in angle brackets, i.e.
+<httsp://........>. 
+This URL was removed, because it was superfluous.
+
+
+We also see:
+Found the following (possibly) invalid file URI:
+URI: /commits/master
+From: README.md
+
+This URL was removed, because it was erroneous. 

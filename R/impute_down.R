@@ -23,6 +23,12 @@
 #' for other purposes.
 #' @importFrom dplyr left_join rename mutate_if mutate
 #' @family impute functions
+#' @return The upstream data frame (containing data of a larger unit) and
+#' the downstream data (containing data of smaller sub-divisional units) are
+#' joined; whenever data is missing in the downstream sub-divisional column,
+#' it is imputed with the corresponding values from the upstream data frame.
+#' The \code{'method'} metadata column explains if the actual downstream 
+#' data or the imputed data can be found in the downstream value column.
 #' @examples{
 #' upstream <- data.frame ( country_code =  rep( "AU", 3),
 #'                          year = c(2018:2020),

@@ -45,6 +45,14 @@ will be created.  If possible, avoid using \code{upstream_data} or
 \code{downstream_data} that contains a variable called \code{'method'}
 for other purposes.}
 }
+\value{
+The upstream data frame (containing data of a larger unit) and
+the downstream data (containing data of smaller sub-divisional units) are
+joined; whenever data is missing in the downstream sub-divisional column,
+it is imputed with the corresponding values from the upstream data frame.
+The \code{'method'} metadata column explains if the actual downstream
+data or the imputed data can be found in the downstream value column.
+}
 \description{
 Imputing Data From Larger To Smaller Units
 }

@@ -1,0 +1,243 @@
+---
+title: "Why Is It So Hard To Work With Regional Data"
+author: "Daniel Antal, CFA"
+date: "5/9/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(eurostat)
+library(regions)
+library(dplyr)
+library(tidyverse)
+```
+
+Working with regional data is very hard.  If you have already tried, you know it, and if you have not, probably you would underestimate the problem.  On average every 2-3 years there is change in national boundaries, such as the unification of Germany, or the separation of Ethiopia and Eritrea.  In EU, OECD or global datasets, these are rare events and do not cause a big problem.  Regional boundaries, on the other hand, change in a couple of dozen points just in the European Union every three years, and globally on countless ocassions every year. Comparing regions of Europe, Australia, United States, Canada, just to start with developed and data rich countries, is very difficult, and if you start adding other countries, it gets harder and harder.
+
+Yet it is a very rewarding task.  If you compare the 27 EU member states, the 35 OECD countries, or the 50 states of the USA, you usually do not have a large enough data panel for a detailed analysis on an aggregated level.  And on a micro-data level, such broad comparisons are almost always impossible. However, if you are able to organize EU or OECD or US sub-national aggregates into data panels, you can work with hundreds of observations with sufficient heterogenity to find far more interesting 
+
+
+## The Problem
+
+```{r eurostat, eval=FALSE, message=FALSE, warning=FALSE}
+regional_gdp <- eurostat::get_eurostat ("tgs00003",
+                                        time_format = "num" ) %>%
+  mutate ( country = regions::get_country_code(geo)) %>%
+  dplyr::filter ( country == "FR")
+
+population <- eurostat::get_eurostat ("tgs00096",
+                                      time_format = "num" ) %>%
+  mutate ( country = regions::get_country_code(geo)) %>%
+  dplyr::filter ( country == "FR", 
+                  sex == "T",     #TOTAL without division by sex
+                  age == "TOTAL") #TOTAL without division by age
+
+alt_regional_gdp <- eurostat::get_eurostat ( "nama_10r_2gdp",
+                                             time_format = "num" ) %>%
+  mutate ( country = regions::get_country_code(geo)) %>%
+  dplyr::filter ( unit == "MIO_EUR", 
+                  country == "FR" ) %>%
+  dplyr::select ( all_of(c("geo", "time", "values")))
+```
+
+One problem is that you will not find the French GDP data prior to 2015 in the Eurostat [Regional gross domestic product by NUTS 2 regions - million EUR]( https://ec.europa.eu/eurostat/web/products-datasets/-/tgs00003). 
+If this does not put you off, you will realize that some datasets are back-filled, others are not, and you find eventually the [Gross domestic product (GDP) at current market prices by NUTS 2 regions](https://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=nama_10r_2gdp&lang=en) data table. Even the famous wayback machine cannot help. PDF hardcopy?  Only a colorful map in the [Eurostat regional yearbook 2013](https://ec.europa.eu/eurostat/documents/3217494/5784301/KS-HA-13-001-EN.PDF/ec68c62e-0ca9-40af-83c2-949e152f9269).   The [wayback machine](https://web.archive.org/web/20131124175834/http://epp.eurostat.ec.europa.eu/portal/page/portal/region_cities/regional_statistics/data/database) did its best but did not crawl the whole database. I am not a fan of the undo button when it comes to official statistical releases, but I think that Eurostat history is gone.
+
+Let's go back to France!  Mind my French, you will not find anything like _Regional gross domestic product by NUTS 2 regions - million EUR_ on the website of [INSEE](https://www.insee.fr/),  because GDP is PIB in that part of the world.  So what you are looking for is actually _Produits intérieurs bruts régionaux de 1990 à 2015_.
+
+```{r pib, eval=FALSE}
+download.file('https://www.insee.fr/fr/statistiques/fichier/1893220/PIB_1990_2015_regions_diffusion.xls', 
+              destfile = file.path('data-raw', 
+                                   'regional_gdp_fr.xlx'), 
+              mode = 'wb')  #for Windows machines
+```
+
+## Joining Regional Data
+
+To keep the comparison easy to follow, let's set our sights to two particularly sunny overseas regions of France: _Réunion_ and _Guadeloupe_!
+
+```{r comparison, message=FALSE}
+load (file = file.path('..', 'data-raw' , 'regional_gdp_blogpost.rda'))
+
+regional_gdp_france <- readxl::read_excel(
+  path = file.path('..','data-raw', 'regional_gdp_fr.xlx'), 
+  sheet = 'PIB en valeur 1990-2015', 
+  skip = 4, 
+  na = "n.d") %>%
+  dplyr::filter ( !is.na("Région")) %>%
+  purrr::set_names ( c("region", paste0("Y", 1990:2015))) %>%
+  tidyr::pivot_longer( cols = starts_with("Y"), 
+                       names_to = 'time', 
+                       values_to = 'values') %>%
+  dplyr::mutate ( time  = as.numeric(gsub("Y", "", time)))
+
+pib <- regional_gdp_france %>%
+  dplyr::filter ( region %in% c("Réunion", "Guadeloupe", "Martinique"), 
+                  time %in% c(2008,2012)) %>%
+  dplyr::rename ( gdp = values, 
+                  geo = region )
+
+knitr::kable(pib)
+```
+
+OK, so which of `r paste(unique(alt_regional_gdp$geo), collapse =", ")` is actually _Guadeloupe_? Or _Réunion_? Or is it _La Réunion_? Let's have a look at the geographical name labels:
+
+```{r labelling, eval=FALSE}
+gdp_labelled <- eurostat::get_eurostat ( "nama_10r_2gdp",
+                                         time_format = "num" ) %>%
+  eurostat::label_eurostat( fix_duplicated = TRUE) %>%
+  dplyr::filter ( unit == "Million euro", 
+                  time == 2016) %>%
+  dplyr::select ( all_of(c("geo", "time", "values")) ) %>%
+  dplyr::filter ( geo %in% c("La Réunion", "Guadeloupe", "Martinique")) %>%
+  dplyr::rename ( gdp = values )
+
+
+population_labelled <- eurostat::get_eurostat ("tgs00096",
+                                      time_format = "num" ) %>%
+  eurostat::label_eurostat( fix_duplicated = TRUE) %>%
+  dplyr::filter ( grepl("Réunion|Guadeloupe|Martinique", geo), 
+                  sex == "Total",   
+                  age == "Total", 
+                  time %in% c(2008, 2012, 2016) ) %>%
+  dplyr::select(geo, time, values) %>%
+  dplyr::rename( population = values )
+```
+
+Let's try to join them: 
+
+```{r joining}
+gdp_labelled %>%
+  dplyr::full_join( population_labelled, by = c("geo", "time")) %>%
+  dplyr::full_join( pib, by = c("geo", "time", "gdp") ) %>%
+  knitr::kable()
+```
+
+Obviously something does not look very good here:
+
+```{r spread}
+gdp_labelled %>%
+  dplyr::full_join( pib, by = c("geo", "time", "gdp") ) %>%
+  tidyr::pivot_wider ( names_from = "geo", 
+                       values_from = "gdp")
+```
+
+## Validation
+
+The `regions` package contains a joined, tidy version of all Correspondence tables published by Eurostat.  As we can see, there were several changes in the metadata:
+
+```{r changes}
+data(nuts_changes, package ="regions")
+
+nuts_changes %>%
+  filter ( grepl ( "Réunion|Guadeloupe|Martinique", geo_name_2016) ) %>%
+  select ( contains(c("2010")) ) %>%
+  filter ( !is.na(code_2010)) %>%
+  knitr::kable()
+
+nuts_changes %>%
+  filter ( grepl ( "Réunion|Guadeloupe|Martinique", geo_name_2016) ) %>%
+  select ( contains(c("2013")) ) %>%
+  filter (!is.na(geo_name_2013)) %>%
+  knitr::kable()
+
+nuts_changes %>%
+  filter ( grepl ( "Réunion|Guadeloupe|Martinique", geo_name_2016) ) %>%
+  select ( contains(c("2016")) ) %>%
+  knitr::kable()
+```
+
+First of all,  _Réunion_ was relabelled to _La Réunion_, which is a grammatically better representation in the French language, and makes column names a bit more awkward.  Secondly, the boundaries of _Guadeloupe_ were changed, which means that you should better check if this may affect data comparability. And because the data is not fully compatible, the French statistical authority correctly recoded them.  The idea of using the alphanumeric geographical codes is that they are more computer friendly, so I will stick to them, but they cannot be uniquely matched with the PIB data, because both regions have two alphanumerical codes. How is this possible?
+
+If you look at the duplication, it ends with a 0, which means that it is a technical duplication.  Because both _Guadeloupe_, and _La Réunion_ are small regions, they are not further sub-divided to `NUTS3` levels.  For comparability with both `NUTS2` and `NUTS3` level data, they are included in both typologies with a different code, adding a 0 to the `NUTS3` level codes. (All `NUTS2` level codes are made of two characters for the country and 2 numbers, and `NUTS3` level codes are two characters for the country and three for the region.) This approach makes sense, because these regions are administratively behave like `NUTS2` regions, but their size resembles `NUTS3` regions.  If you compare more political, administrative data, maybe you should compare them to other `NUTS2` regions, and if your analysis is likely to be affected by homogenity of the population, then compare them to `NUTS3` level regions.
+
+Often Eurostat publishes datasets that contain mixed geo codes. The first step is to validate:
+ 
+```{r population_validate1}
+reunion_codes <- c("FRA4", "FRA40", "FR94", "FR940", "FRY4", "FRY40")
+
+population %>%
+  filter ( geo %in% c(reunion_codes), 
+           time %in% c(2008,2012,2016)) %>%
+  arrange(geo) %>%
+  regions::validate_nuts_regions(nuts_year = 2016)%>%
+  knitr::kable()
+```
+
+This dataset clearly breaches the definition of tidy data, but at least we have the data. Eurostat releases the data _in the same table_ with two different coding. 
+
+We have a different problem with Guadeloupe: we do not have historical data because of the boundary change.
+
+```{r population_validate2}
+guadeloupe_codes <- c("FRA1", "FRA10", "FRY1", "FRY10")
+
+population %>%
+  filter ( geo %in% c(guadeloupe_codes), 
+           time %in% c(2008,2012,2016)) %>%
+  arrange(geo) %>%
+  regions::validate_nuts_regions(nuts_year = 2016)%>%
+  knitr::kable()
+```
+
+And at last:
+
+```{r population_validate3}
+martinique_codes <- c("FR92", "FR920", "FRA2", "FRA20", "FRY2", "FRY20")
+
+population %>%
+  filter ( geo %in% c(martinique_codes), 
+           time %in% c(2008,2012,2016)) %>%
+  arrange(geo) %>%
+  regions::validate_nuts_regions(nuts_year = 2016)%>%
+  knitr::kable()
+```
+
+Since I wanted to show the use of `NUTS2` data, I'll use the  compatible alphanumerical codes from the `NUTS2016` typology in this case:
+
+```{r joiningall}
+
+regional_gdp  %>% 
+  select ( geo, time, values )  %>%
+  rename ( gdp = values )  %>%
+  filter ( geo %in% c("FRY1", "FRY2", "FRY4"), 
+           time %in% c(2008,2012,2016) ) %>%
+  bind_rows (pib %>%
+               mutate ( geo = case_when (
+                 geo == "Guadeloupe" ~ 'FRY1', 
+                 geo == "Martinique" ~ 'FRY2',
+                 TRUE ~ "FRY4"
+               )) ) %>%
+  left_join ( 
+    population %>%
+      select ( all_of(c("geo", "time", "values"))) %>%
+      filter ( geo %in% c(guadeloupe_codes, 
+                          reunion_codes, 
+                          martinique_codes), 
+               time %in% c(2008,2012,2016)) %>%
+      arrange(geo) %>%
+      regions::validate_nuts_regions(nuts_year = 2016) %>%
+      filter ( valid_2016 ) %>%
+      select ( all_of(c("geo", "time", "values"))) %>%
+      dplyr::rename( population = values ), 
+    by = c("geo", "time")
+    ) %>%
+  arrange ( time, geo ) %>%
+  mutate ( gdp_capita = gdp*1000000/population)
+
+```
+
+Sadly, Guadeloupe is missing from all Eurostat population datasets, including [demo_r_pjanaggr3](https://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=demo_r_pjanaggr3&lang=en) - which is a `NUTS3` dataset in name only, it contains `NUTS1`, `NUTS2` and `NUTS3` data and, and from [demo_r_pjangroup](http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=demo_r_pjangroup&lang=en), too, which is in name a `NUTS2` dataset, but it contains `NUTS1` and `NUTS2` data.
+
+## Next Steps
+
+The [regions](http://regions.danielantal.eu/) package in its current, fledling 0.1.0 version currently helps
+
+* [Validation](http://regions.danielantal.eu/articles/validation.html) of a dataset, to highlight observation you need to work with;
+
+* [Recoding and Relaelling](http://regions.danielantal.eu/articles/recode.html) across typologies, for example, to make old, NUTS2010 data from 2011 compatible with data published in 2020;
+
+* And some [basic imputations](http://regions.danielantal.eu/articles/Regional_stats.html) for missing data, because the imputation algorithms designed for individual are almost never suitable for territorially aggregated data. 
+
+
+

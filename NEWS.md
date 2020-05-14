@@ -8,3 +8,6 @@
 
 # regions 0.1.1.0001
 * Adding the `google_nuts_matchtable` by Istvan Zsoldos for joining data from the Google Mobility Reports with Eurostat datasets.
+
+# regions 0.1.1.0002
+* Adding further documentation items at request of CRAN reviewer.

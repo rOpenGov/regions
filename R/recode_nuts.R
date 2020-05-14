@@ -1,5 +1,11 @@
 #' Recode Region Codes From Source To Target NUTS Typology
 #' 
+#' Validate your geo codes, pair them with the appropriate standard
+#' typology, look up potential causes of invalidity in the EU correspondence
+#' tables, and look up the appropriate geographical codes in the other
+#' (target) typology.  For example, validate geo codes in the \code{'NUTS2016'}
+#' typology and translate them to the now obsolete the \code{'NUTS2010'} typology
+#' to join current data with historical data sets.
 #' @param dat A data frame with a 3-5 character \code{geo_var} variable
 #' to be validated.
 #' @param geo_var Defaults to \code{"geo"}. The variable that contains 
@@ -19,6 +25,12 @@
 #' @importFrom stats complete.cases
 #' @importFrom utils data 
 #' @family recode functions
+#' @return The original data frame with a \code{'geo_var'} column is extended
+#' with a \code{'typology'} column that states in which typology is the \code{'geo_var'}
+#' a valid code.  For invalid codes, looks up potential reasons of invalidity
+#' and adds them to the \code{'typology_change'} column, and at last it
+#' adds a column of character vector containing the desired codes in the 
+#' target typology, for example, in the NUTS2013 typology.
 #' @examples{
 #' foo <- data.frame ( 
 #'   geo  =  c("FR", "DEE32", "UKI3" ,

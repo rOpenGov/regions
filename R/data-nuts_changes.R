@@ -29,4 +29,5 @@
 #'   \item{change_2021}{Change described in the 2021 correspondence table}
 #' }
 #' @source \url{https://ec.europa.eu/eurostat/web/nuts/history/}
+#' @seealso data-nuts_recoded, data-all_valid_nuts_codes
 "nuts_changes"

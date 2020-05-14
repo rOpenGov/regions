@@ -5,7 +5,7 @@ Authors@R:
     person(given = "Daniel",
            family = "Antal",
            role = c("aut", "cre"),
-           email = "adaniel@freemail.hu",
+           email = "daniel.antal@ceemid.eu",
            comment = c(ORCID = "0000-0001-7513-6760"))
 Description: Validating sub-national statistical typologies, re-coding across 
     standard typologies of sub-national statistics, and making valid aggregate
@@ -37,5 +37,6 @@ Imports:
 Suggests: 
     knitr,
     rmarkdown,
-    covr
+    covr,
+    spelling
 VignetteBuilder: knitr

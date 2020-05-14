@@ -34,7 +34,7 @@ This de facto typology has three exception which are handled by the
 }
 \details{
 NUTS typologies have different versions, therefore the comformity is
-validated with one specific verions, which can be any of these:
+validated with one specific versions, which can be any of these:
 \code{1999}, \code{2003}, \code{2006}, \code{2010},
 \code{2013}, the currently used \code{2016} and the already
 announced and defined \code{2021}.

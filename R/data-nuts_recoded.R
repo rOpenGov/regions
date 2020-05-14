@@ -1,6 +1,7 @@
 #' European Union: Recoded NUTS units 1995-2021. 
 #'
-#' A dataset containing the states and territories of Australia.
+#' Containing all recoded NUTS units from the European Union. 
+#' This is re-arranged from \code{\link{nuts_changes}}.
 #'
 #' @format A data frame with 8 rows and 3 variables:
 #' \describe{
@@ -10,4 +11,6 @@
 #'   \item{change_year}{when the geo code changed}
 #'   \item{iso2c}{Two character ISO standard country codes.}
 #' }
+#' @seealso nuts_changes, all_valid_nuts_codes
+#' @source \url{https://ec.europa.eu/eurostat/web/nuts/history/}
 "nuts_recoded"

@@ -8,7 +8,8 @@
 #' the NUTS typologies. The technical typology \code{"NUTS0"} 
 #' can be used to translate Eurostat country codes to ISO 3166-1 alpha-2 
 #' country codes.
-#' @return The ISO 3166-1 alpha-2 codes of the countries.
+#' @return The ISO 3166-1 alpha-2 codes of the countries as a character
+#' vector.
 #' @family recode functions
 #' @examples{
 #' get_country_code (c("EL", "GR", "DED", "HU102"))

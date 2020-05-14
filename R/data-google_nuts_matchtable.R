@@ -8,7 +8,7 @@
 #' \describe{
 #'   \item{country_code}{ISO 3166-1 alpha2 code}
 #'   \item{google_region_level}{Hierarchical level in the Google Mobility Reports}
-#'   \item{code_1999}{The name used by Google.}
+#'   \item{google_region_name}{The name used by Google.}
 #'   \item{code_2016}{NUTS code in the 2016 definition}
 #'   \item{typology}{country, NUTS1, NUTS2 or NUTS3}
 #' }

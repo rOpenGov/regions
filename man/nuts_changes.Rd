@@ -42,6 +42,6 @@ A dataset containing the joined correspondence tables of the
 EU NUTS typologies.
 }
 \seealso{
-data-nuts_recoded, data-all_valid_nuts_codes
+nuts_recoded, all_valid_nuts_codes
 }
 \keyword{datasets}

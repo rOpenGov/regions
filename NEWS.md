@@ -11,3 +11,6 @@
 
 # regions 0.1.1
 * Adding further documentation items at request of CRAN reviewer (Thanks!).
+
+# regions 0.1.2 
+* New function `impute_down_nuts` for less general cases, i.e. EU NUTS imputations.

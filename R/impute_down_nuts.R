@@ -36,7 +36,7 @@
 #' imputed to all missing \code{NUTS3} units. 
 #' @family impute functions
 #' @importFrom dplyr mutate select distinct distinct_at filter bind_rows
-#' @importFrom dplyr rename arrange
+#' @importFrom dplyr rename arrange full_join
 #' @importFrom tidyselect all_of
 #' @importFrom tidyr pivot_wider
 #' @examples{

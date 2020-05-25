@@ -37,6 +37,8 @@ data("all_valid_nuts_codes", package = 'regions')
 
 all_valid_nuts_codes 
 
+
+
 nuts_gmr <- all_valid_nuts_codes %>%
   mutate ( country_code = get_country_code(geo)) %>%
   distinct ( country_code ) %>% 
@@ -938,17 +940,6 @@ google_region_names <- google_region_names %>%
     TRUE ~ match_name))
 
 
-# Fixing Macedonia
-
-# changing nuts codes
-google_region_names <- google_region_names %>%
-  mutate (code_2016 = ifelse(match_name == "north_macedonia", 	"MK", code_2016)) 
-
-# changing names
-google_region_names <- google_region_names %>%
-  mutate (match_name = ifelse(match_name == "north_macedonia", 	"macedonia", match_name)) 
-
-
 #View(google_region_names %>% filter (is.na(code_2016)))
 
 google_nuts_matchtable <- google_region_names %>%
@@ -960,11 +951,6 @@ google_nuts_matchtable <- google_region_names %>%
     TRUE ~  'invalid typology'
   )) %>%
   select ( -all_of(c("google_name", "match_name")))
-
-
-# Creating pseudo-region for South Tyrol in Italy (sum of ITH1 and ITH2)
-google_nuts_matchtable <- rbind(google_nuts_matchtable, c("IT", "google_region_name_1", "Trentino-South Tyrol", "ITH_1_2", "non_nuts_typology"))
-
 
 #create list of countries where available nuts codes do not cover full country
 countries_missing_full_nuts <- google_nuts_matchtable %>%
@@ -984,7 +970,6 @@ google_region_names <- google_region_names %>%
     nchar(code_2016) == 2 ~ 'country', 
     TRUE ~  'invalid typology'
   ))
-
 
 
 #saving results

@@ -36,7 +36,7 @@
 #' @importFrom purrr set_names
 #' @importFrom utils data 
 #' @family validate functions
-#' @return Returns the orginal \code{dat} data frame with a column that 
+#' @return Returns the original \code{dat} data frame with a column that 
 #' specifies the comformity with the NUTS definition of the year 
 #' \code{nuts_year}. 
 #' @examples{

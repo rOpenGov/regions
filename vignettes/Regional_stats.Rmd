@@ -45,7 +45,7 @@ The changes of national or provincial boundaries are rare – within a single po
 
 On sub-national levels, within Europe regional boundary changes are so frequent that they happen on average every three years. Of course, at one time, this procedure leaves most regional boundaries intact, and change only a relatively small number of boundaries. Whenever we work with European regional data, we still have to adjust panels of statistical aggregates every three years; similarly, we must validate any regional time series every three years.
 
-In either case, producers of statistical products do not necessarily re-cast historical statistical data for the new national or sub-national boundaries.  For example, when the regional boundary definition within Central Hungary (	HU1) changed in 2016, Eurostat did not require the Hungarian national statistical authorities to re-cast Hungary's NUTS2 level data according to the new boundary definition, i.e. creating separate observations for 	`HU10` (Budapest) and 	`HU12` (surrounding Pest county.) Earlier `HU101` (*Budapest*) on `NUTS3` level became a `NUTS2` region under the _same name_. Furthermore, the former `NUTS2` region _Közép-Magyarország_ or _Central Hungary_ still exists on `NUTS1` level under the code `HU1`. Although you will not find a history for the `HU10` code before 2017, in most cases, the very same data about Budapest can be found under the code `HU101` in NUTS3 datasets, or from national statistical sources that follow Hungary's `ISO-3166-2` borders. 
+In either case, producers of statistical products do not necessarily re-cast historical statistical data for the new national or sub-national boundaries.  For example, when the regional boundary definition within Central Hungary (`HU1`) changed in 2016, Eurostat did not require the Hungarian national statistical authorities to re-cast Hungary's `NUTS2` level data according to the new boundary definition, i.e. creating separate observations for	`HU10` (Budapest) and `HU12` (surrounding _Pest county_.) Earlier `HU101` (*Budapest*) on `NUTS3` level became a `NUTS2` region under the _same name_. Furthermore, the former `NUTS2` region _Közép-Magyarország_ or _Central Hungary_ still exists on `NUTS1` level under the code `HU1`. Although you will not find a history for the `HU10` code before 2017, in most cases, the very same data about Budapest can be found under the code `HU101` in `NUTS3` datasets, or from national statistical sources that follow Hungary's `ISO-3166-2` borders. 
 
 To put it another way, the HU-BP `ISO-3166-2` code, Budapest, did not change, it was just reassigned from the `NUTS3` typology to the `NUTS2` typology, which is reflecting the size of Budapest better.  Budapest can be better compared with `NUTS2` regions than `NUTS3` small regions.
 
@@ -63,9 +63,9 @@ The vignette [Validating Your Typology](http://regions.danielantal.eu/articles/v
 
 ### Recoding and re-labelling {#recoding}
 
-In the European Union, the most frequent regional statistical change is ‘recoding’ and ‘relabelling’.  Such changes do not affect the statistical data, only the statistical metadata.  
+In the European Union, the most frequent regional statistical change is ‘recoding’ and `relabelling`.  Such changes do not affect the statistical data, only the statistical metadata.  
 
-For example, the overseas department and region of France, _Réunion_, was officially renamed _La Réunion_ in 2010: this is ‘relabelling’. In earlier sources, you may find data about this region under the identifier _Réunion_, and later you may find it extended with the French article _La _Réunion_.  But the data from _Réunion_ in 2009 and _La Réunion_ in 2012 refers to the same territory.  Furthermore, when France changed its administrative boundaries, it changed their official code abbreviations.  Although the typology of _La Réunion_ did not change, to indicate that a dataset is comparable across French departments according to the new administrative borders (which did change in many other regions) the geolocational code of this region changed from `FR94` to `FRA4` in 2013 and to `FRY4` in 2016. If you want to work with French or international data that include any statistical information about the overseas departments, you must make sure that observations coded with `FR94`, `FRA4`, `FRY4` are treated as a time-series of the _La Réunion_ and not as different entities. 
+For example, the overseas department and region of France, _Réunion_, was officially renamed _La Réunion_ in 2010: this is `relabelling`. In earlier sources, you may find data about this region under the identifier _Réunion_, and later you may find it extended with the French article _La _Réunion_.  But the data from _Réunion_ in 2009 and _La Réunion_ in 2012 refers to the same territory.  Furthermore, when France changed its administrative boundaries, it changed their official code abbreviations.  Although the typology of _La Réunion_ did not change, to indicate that a dataset is comparable across French departments according to the new administrative borders (which did change in many other regions) the geolocational code of this region changed from `FR94` to `FRA4` in 2013 and to `FRY4` in 2016. If you want to work with French or international data that include any statistical information about the overseas departments, you must make sure that observations coded with `FR94`, `FRA4`, `FRY4` are treated as a time-series of the _La Réunion_ and not as different entities. 
 
 Many of Eurostat’s regional datasets contain recoded geographical IDs that violate the definition of tidy data, because under the same `geo` column they may contain observations for `FR94`, `FRA4`, `FRY4`. However, this is not a tidy description of the territory.  Like in our `nuts_changes` data, they should be reported in three different columns,  `code_2010`, `code_2013` and `code_2016`. The descriptive metadata code, i.e. row identifier `FR94` is compatible with `FR71` for example, but not with `FRY4`. 
 
@@ -98,9 +98,27 @@ A typical problem of missingness is that we are comparing `NUTS1` or `NUTS2` lev
 
 The function `impute_down` creates a generic solution to the problem when we want to project data from a larger territorial unit to a smaller one.  For example, some state level data is missing for certain Australian or German federal states, and we want to use the national (average) values for imputation.
 
+The function `impute_down_nuts` gives and EU-specific solution, with a single data frame as input. The `mixed_nuts_example` data table shows a mixture of potential problems in a small, fictional dataset with random numbers. For simplicity, we take the fictional, country-level data from Malta, and input it down to all potential sub-divisions.  
+
+Malta is a very transparent example, because the country has only 2 subdivisions on the lowest, `NUTS3` level, i.e. `MT001` and `MT002`. You can find Malta among countries (technical `NUTS0` level) as `MT`, among `NUTS1` regions as `MT0` (because there are no subdivisions on this level), and among `NUTS2` regions again as `MT00`. For any data that cannot be assigned for a geographical location or area, the technical codes ending with `Z` are used.
+
+Malta offers two technical imputation slots on `NUTS1` level, `MT0` for territorially attributed data, and `MTZ` for non-territorial exceptions.  On NUTS2 level, `MT00` and `MTZZ`.  And at last, what is a real imputation, you can impute the `MT` = `MT0` = `MT00` values to `MT001`, should you have only data for `MT002`, etc.  (In this simple example, we impute the `MT` values to both subdivisions, `MT001` and `MT002`.)
+
+```{r}
+data("mixed_nuts_example")
+mixed_nuts_example %>%
+  filter ( substr(geo,1,2) == "MT") %>%
+  knitr::kable ()
+
+impute_down_nuts (mixed_nuts_example) %>%
+  filter ( substr(geo,1,2) == "MT") %>%
+  knitr::kable ()
+```
+
+
 ### Aggregation And Re-Aggregation {#aggregation}
 
-The European Union sometimes publishes data on `NUTS2` level regions, but not on the larger NUTS1 level macroregions or provinces.  In many cases, this information is fully present in the `NUTS2` datasets, and a simple aggregation can produce a NUTS1 level dataset, because each `NUTS2` region is strictly assigned to one broader NUTS1 marcoregion.  For count-type data, we can simply aggregate the constituent `NUTS2` level data to NUTS1 level.
+The European Union sometimes publishes data on `NUTS2` level regions, but not on the larger NUTS1 level macroregions or provinces.  In many cases, this information is fully present in the `NUTS2` datasets, and a simple aggregation can produce a NUTS1 level dataset, because each `NUTS2` region is strictly assigned to one broader NUTS1 macroregion.  For count-type data, we can simply aggregate the constituent `NUTS2` level data to NUTS1 level.
 
 A frequent problem is the re-assignment of a smaller territorial units, such as lower level administrative unit or a lower NUTS unit to another larger unit, or a pre-existing larger unit.  
 

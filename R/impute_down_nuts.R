@@ -52,13 +52,14 @@ impute_down_nuts <- function (dat,
                               nuts_year = 2016 ) {
  
   ## non-standard evaluation initialization
-   . <- geo <- country_code <- typology <- valid <- NULL
-   nuts <- values <- method <- NULL
-   nuts_level_1 <- nuts_level_2 <- nuts_level_3 <- NULL
+   . <- geo <- country_code <- typology <- valid    <- NULL
+   nuts <- values <- method <- all_valid_nuts_codes <- NULL
+   nuts_level_1 <- nuts_level_2 <- nuts_level_3     <- NULL
    
    get_valid_nuts_codes <- function( this_env ) {
      data("all_valid_nuts_codes", 
-          package = "regions", envir = this_env )
+          package = "regions",
+          envir = this_env )
      all_valid_nuts_codes
    }
   

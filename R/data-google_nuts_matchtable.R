@@ -13,5 +13,5 @@
 #'   \item{typology}{country, NUTS1, NUTS2 or NUTS3}
 #' }
 #' @source \url{https://ec.europa.eu/eurostat/web/nuts/history/}
-#' @author István Zsoldos
+#' @author Istvan Zsoldos
 "google_nuts_matchtable"

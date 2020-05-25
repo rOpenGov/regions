@@ -14,3 +14,4 @@
 
 # regions 0.1.2 
 * New function `impute_down_nuts` for less general cases, i.e. EU NUTS imputations.
+* Contributor attribution consistent in DESCRIPTION and source file. 

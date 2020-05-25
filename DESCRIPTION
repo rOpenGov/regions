@@ -2,11 +2,16 @@ Package: regions
 Title: Processing Regional Statistics
 Version: 0.1.2
 Authors@R: 
-    person(given = "Daniel",
-           family = "Antal",
-           role = c("aut", "cre"),
-           email = "daniel.antal@ceemid.eu",
-           comment = c(ORCID = "0000-0001-7513-6760"))
+    c(
+  person(given = "Daniel",
+         family = "Antal",
+         role = c("aut", "cre"),
+         email = "daniel.antal@ceemid.eu",
+         comment = c(ORCID = "0000-0001-7513-6760")),
+  person(given = "Istvan",
+         family = "Zsoldos",
+         role = c("ctb"))
+    )
 Description: Validating sub-national statistical typologies, re-coding across 
     standard typologies of sub-national statistics, and making valid aggregate
     level imputation, re-aggregation, re-weighting and projection down to 

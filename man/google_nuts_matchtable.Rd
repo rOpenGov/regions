@@ -26,6 +26,6 @@ NUTS 2016 typology and the typology used by Google in the
 Google Mobility Reports.
 }
 \author{
-István Zsoldos
+Istvan Zsoldos
 }
 \keyword{datasets}

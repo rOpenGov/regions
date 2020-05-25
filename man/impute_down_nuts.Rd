@@ -42,7 +42,9 @@ imputed to all missing \code{NUTS2} units, \code{NUTS2} values
 imputed to all missing \code{NUTS3} units.
 }
 \description{
-
+This is a special case of \code{\link{impute_down}} for the EU NUTS
+hierarchical typologies. All valid actual rows will be projected down
+to all smaller constituent typologies where data is missing.
 }
 \details{
 The more general function requires typology information from the higher

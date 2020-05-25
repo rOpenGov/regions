@@ -1,6 +1,6 @@
 #' Imputing Data From Larger To Smaller Units in the EU NUTS
 #' 
-#' This is a special case of \code\link{impute_down}} for the EU NUTS
+#' This is a special case of \code{\link{impute_down}} for the EU NUTS
 #' hierarchical typologies. All valid actual rows will be projected down 
 #' to all smaller constituent typologies where data is missing. 
 #' 

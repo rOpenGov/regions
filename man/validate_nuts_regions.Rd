@@ -20,7 +20,7 @@ NUTS definition, i.e. \code{1999}, \code{2003}, \code{2006},
 already announced and defined \code{2021}.}
 }
 \value{
-Returns the orginal \code{dat} data frame with a column that
+Returns the original \code{dat} data frame with a column that
 specifies the comformity with the NUTS definition of the year
 \code{nuts_year}.
 }

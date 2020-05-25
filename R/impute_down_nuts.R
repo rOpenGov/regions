@@ -83,10 +83,12 @@ impute_down_nuts <- function (dat,
   
   names(validated)[ which(names(validated)==paste0("valid_", nuts_year))] <- "valid"
   
+  ## subset for selecting only valid NUTS1 geo codes for imputing down
   validated_nuts_1 <- validated %>%
     filter ( typology == "nuts_level_1", 
              valid    == TRUE )
   
+  ## subset for selecting only valid NUTS2 geo codes for imputing down
   validated_nuts_2 <- validated %>%
     filter ( typology == "nuts_level_2", 
              valid    == TRUE )

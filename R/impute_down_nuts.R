@@ -51,7 +51,12 @@ impute_down_nuts <- function (dat,
                               method_var = NULL, 
                               nuts_year = 2016 ) {
  
-   . <- geo <- country_code <- NULL
+  ## non-standard evaluation initialization
+   . <- geo <- country_code < typology <- valid <- NULL
+   nuts <- values <- method <- NULL
+   nuts_level_1 <- nuts_level_2 <- nuts_level_3 <- NULL
+   
+   data("all_valid_nuts_codes", package = "regions", envir = environment())
   
   if (! geo_var %in% names(dat) ) {
     stop(geo_var, " is not among the columns of the data frame.")
@@ -174,8 +179,8 @@ impute_down_nuts <- function (dat,
   
   ## Now add the original data and the the NUTS2 >> NUTS3 imputations
   actual_to_imputed <- validated %>%
-    full_join ( imputed_from_nuts_2,
-                by = c("geo", "values", "method") ) 
+    dplyr::full_join ( imputed_from_nuts_2,
+                       by = c("geo", "values", "method") ) 
   
   ## Now add whatever can be added from NUTS0 or NUTS1
   imputed_df <- imputed_from_nuts_1 %>%

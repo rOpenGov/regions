@@ -1,7 +1,12 @@
-
+library(testthat)
+library(regions)
 data(mixed_nuts_example)
 
-tested_imputation1 <- impute_down_nuts(mixed_nuts_example)
+tested_imputation1 <- impute_down_nuts( dat = mixed_nuts_example, 
+                                        geo_var = "geo", 
+                                        values_var = "values",
+                                        method_var = "method",
+                                        nuts_year = 2016)
 
 luxembourg <- tested_imputation1[ substr (tested_imputation1$geo,1,2)=="LU",]
 
@@ -29,3 +34,4 @@ test_that("method var is correctly filled", {
   expect_equal(tested_imputation_mt$method, 
                c("", rep("imputed from country MT", 7)))
 })
+

@@ -13,9 +13,9 @@
 #' 
 #' The imputed dataset \code{dat} must refer to a single time unit, i.e. 
 #' panel data is not supported.
-#' @param dat A data frame with exactly two or three columns: \code{geo} for
-#' the geo codes of the units, \code{values} for the values, and optionally 
-#' \code{method} for describing the data source.
+#' @param dat A data frame with exactly two or three columns: \code{geo} 
+#' for the geo codes of the units, \code{values} for the values, and 
+#' optionally \code{method} for describing the data source.
 #' @param values_var The variable that contains the upstream data to be
 #' imputed to the downstream data, defaults to \code{"values"}.
 #' @param geo_var The variable that contains the geographical codes in the
@@ -191,18 +191,3 @@ impute_down_nuts <- function (dat,
   ## Now only valids are returned.  Maybe all should be.
   imputed_dfv
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -13,9 +13,9 @@ impute_down_nuts(
 )
 }
 \arguments{
-\item{dat}{A data frame with exactly two or three columns: \code{geo} for
-the geo codes of the units, \code{values} for the values, and optionally
-\code{method} for describing the data source.}
+\item{dat}{A data frame with exactly two or three columns: \code{geo}
+for the geo codes of the units, \code{values} for the values, and
+optionally \code{method} for describing the data source.}
 
 \item{geo_var}{The variable that contains the geographical codes in the
 NUTS typologies, defaults to code{"geo_var".}}

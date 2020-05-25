@@ -68,12 +68,11 @@ only_2021_nuts <- all_valid_nuts_codes %>%
   filter( nuts %in% c("code_2016", "code_2021") & typology == "country") %>% 
   select ( -all_of ("typology")) %>%
   unique () %>% 
-  mutate( count = 1) %>%
+  mutate( count = 1 ) %>%
   pivot_wider( names_from = "nuts",
                values_from = "count") %>%
-  filter( is.na(code_2016)) %>%
+  filter( is.na(code_2016) ) %>%
   select (country_code) %>% unlist() %>% unname()
-  
 
 regions_and_names_2016 <- all_valid_nuts_codes %>%
   mutate ( country_code = get_country_code(geo)) %>%
@@ -976,5 +975,6 @@ google_region_names <- google_region_names %>%
 #save(google_nuts_matchtable, file = "google_nuts_matchtable.RData")
 #load("google_nuts_matchtable.RData")
 
-usethis::use_data(google_nuts_matchtable, internal=FALSE, overwrite = TRUE)
+usethis::use_data(google_nuts_matchtable, 
+                  internal=FALSE, overwrite = TRUE)
 data ( google_nuts_matchtable )

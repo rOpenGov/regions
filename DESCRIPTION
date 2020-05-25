@@ -10,7 +10,9 @@ Authors@R:
          comment = c(ORCID = "0000-0001-7513-6760")),
   person(given = "Istvan",
          family = "Zsoldos",
-         role = c("ctb"))
+         role = c("ctb"), 
+         email = "istvan.zsoldos@gmail.com",
+         comment = c(ORCID = "0000-0001-5712-2103"))
     )
 Description: Validating sub-national statistical typologies, re-coding across 
     standard typologies of sub-national statistics, and making valid aggregate

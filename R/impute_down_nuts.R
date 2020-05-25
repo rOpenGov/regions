@@ -1,15 +1,15 @@
 #' Imputing Data From Larger To Smaller Units in the EU NUTS
 #' 
-#' This is a special case of \code\link{impute_down} for the EU NUTS
-#' hierarchical typologies. All valid actual rows will be projected down to 
-#' all smaller constituent typologies where data is missing. 
+#' This is a special case of \code\link{impute_down}} for the EU NUTS
+#' hierarchical typologies. All valid actual rows will be projected down 
+#' to all smaller constituent typologies where data is missing. 
 #' 
 #' The more general function requires typology information from the higher
 #' and lower level typologies.  This is not needed when the EU vocabulary
 #' is used, and the hierarchy can be established from the EU vocabularies.
 #' 
-#' Be mindful that while all possible imputations are made, imputations beyond
-#' one hiearchical level are very crude estimates.  
+#' Be mindful that while all possible imputations are made, imputations 
+#' beyond one hiearchical level are very crude estimates.  
 #' 
 #' The imputed dataset \code{dat} must refer to a single time unit, i.e. 
 #' panel data is not supported.

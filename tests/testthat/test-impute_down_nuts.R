@@ -2,6 +2,12 @@ library(testthat)
 library(regions)
 data(mixed_nuts_example)
 
+dat = mixed_nuts_example
+geo_var = "geo"
+values_var = "values"
+method_var = "method"
+nuts_year = 2016
+
 tested_imputation1 <- impute_down_nuts( dat = mixed_nuts_example, 
                                         geo_var = "geo", 
                                         values_var = "values",

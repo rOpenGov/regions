@@ -81,6 +81,16 @@ impute_down_nuts <- function (dat,
              values = values_var ) %>%
     validate_nuts_regions( nuts_year = nuts_year ) 
   
+  names(validated)[ which(names(validated)==paste0("valid_", nuts_year))] <- "valid"
+  
+  validated_nuts_1 <- validated %>%
+    filter ( typology == "nuts_level_1", 
+             valid    == TRUE )
+  
+  validated_nuts_2 <- validated %>%
+    filter ( typology == "nuts_level_2", 
+             valid    == TRUE )
+  
   countries_present <- validated %>%
     mutate ( country_code = regions::get_country_code(geo)) %>%
     select ( country_code ) %>%

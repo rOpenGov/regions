@@ -52,11 +52,15 @@ impute_down_nuts <- function (dat,
                               nuts_year = 2016 ) {
  
   ## non-standard evaluation initialization
-   . <- geo <- country_code < typology <- valid <- NULL
+   . <- geo <- country_code <- typology <- valid <- NULL
    nuts <- values <- method <- NULL
    nuts_level_1 <- nuts_level_2 <- nuts_level_3 <- NULL
    
-   data("all_valid_nuts_codes", package = "regions", envir = environment())
+   get_valid_nuts_codes <- function( this_env ) {
+     data("all_valid_nuts_codes", 
+          package = "regions", envir = this_env )
+     all_valid_nuts_codes
+   }
   
   if (! geo_var %in% names(dat) ) {
     stop(geo_var, " is not among the columns of the data frame.")
@@ -104,8 +108,13 @@ impute_down_nuts <- function (dat,
     distinct ( country_code ) %>%
     unlist() %>% as.character() %>% sort()
   
-  all_valid_nuts_codes_year <- all_valid_nuts_codes %>%
-    filter ( nuts     ==  paste0("code_", nuts_year) , 
+  nuts_filter <- paste0("code_", nuts_year) 
+
+  all_valid_nuts_codes_year <-  get_valid_nuts_codes( 
+                                     this_env = environment() ) 
+  
+  all_valid_nuts_codes_year <- all_valid_nuts_codes_year %>%
+    filter ( nuts     == nuts_filter, 
              typology == "nuts_level_3") %>%
     mutate ( 
       ## start with smallest hierarchival unit, which is NUTS3

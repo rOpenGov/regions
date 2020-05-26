@@ -68,7 +68,7 @@ recode_nuts <- function( dat,
   codes_in_target_year <- all_valid_nuts_codes %>% 
     dplyr::filter (nuts == paste0("code_", nuts_year)) %>%
     dplyr::filter (!is.na(geo)) %>%
-    select ( -nuts ) %>%
+    select ( -tidyselect::all_of("nuts") ) %>%
     distinct ( typology, geo ) %>%
     mutate ( geo2 = geo ) %>%
     purrr::set_names ( c("typology", target_code,

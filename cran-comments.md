@@ -1,7 +1,17 @@
 ## Test environments
 * local win install, R 4.0.0
+0 errors v | 0 warnings v | 0 notes 
+
+### Travis-CI
 * ubuntu 14.04 (on travis-ci), R 4.0.0
 * ubuntu 14.04 (on travis-ci), R 3.6.3 
+0 errors v | 0 warnings v | 0 notes 
+
+### win-builder.r-project.org
+
+
+### rhub
+
 * Fedora Linux, R-devel, on r_hub
 * Windows Server 2008 R2 SP1, R-devel, 32/64 bit
 

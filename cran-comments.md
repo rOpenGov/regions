@@ -7,13 +7,8 @@
 * ubuntu 14.04 (on travis-ci), R 3.6.3 
 0 errors v | 0 warnings v | 0 notes 
 
-### win-builder.r-project.org
-
-
 ### rhub
-
 * Fedora Linux, R-devel, on r_hub
-* Windows Server 2008 R2 SP1, R-devel, 32/64 bit
 
 ## R CMD check results
 There were no ERRORs or WARNINGs. 
@@ -39,4 +34,4 @@ Both versions of the function are extensively tested in the testthat
 infrastructure and pass all tests. An example with this function was added to the `Working With Regional, Sub-National Statistical Products` vignette.
 
 Previous reviewer for 0.1.0. asked for more detailed documentation of 
-returned objects which was added in 0.1.1. 
+returned objects which was added in 0.1.1.

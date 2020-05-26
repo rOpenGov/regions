@@ -42,3 +42,5 @@ data-raw/covr.R
 inst/doc
 data-raw/Global_Mobility_Report.csv
 _travis
+doc
+Meta

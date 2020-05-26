@@ -12,6 +12,10 @@ A data frame with 8 rows and 3 variables:
 \item{geo_name}{subdivision names within Australia (states and territories)}
 }
 }
+\source{
+The Online Browsing Platform of the International Organization for
+Standardization \url{https://www.iso.org/obp/ui/#iso:code:3166:AU}
+}
 \usage{
 australia_states
 }

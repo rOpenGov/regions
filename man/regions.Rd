@@ -5,7 +5,7 @@
 \alias{regions}
 \title{regions: A package for working with regional statistics.}
 \description{
-The foo package provides four categories of important functions:
+The regions package provides four categories of functions:
 validate, recode, impute and aggregate.
 }
 \section{validate functions}{

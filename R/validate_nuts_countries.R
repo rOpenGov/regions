@@ -17,7 +17,9 @@
 #' @importFrom countrycode countrycode
 #' @importFrom purrr quietly
 #' @importFrom magrittr %>%
-#' @return The original data frame.
+#' @return The original data frame extended with the column \code{'typology'}. 
+#' This column states \code{'country'} for valid country typology coding, or
+#' appropriate label for invalid ISO-3166-alpha-2 and ISO-3166-alpha-3 codes.
 #' @family validate functions
 #' @examples{
 #' my_dat <- data.frame ( 

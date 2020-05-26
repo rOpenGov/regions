@@ -1,3 +1,13 @@
+library(regions)
+foo <- data.frame ( 
+  geo  =  c("FR", "DEE32", "UKI3" ,
+            "HU12", "DED", 
+            "FRK"), 
+  values = runif(6, 0, 100 ),
+  stringsAsFactors = FALSE )
+
+recode_nuts(dat = foo, nuts_year = 2013)
+
 test <- data.frame ( 
   geo  =  c("FR", "DEE32", "UKI3" ,
             "HU12", "DED", 

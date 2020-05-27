@@ -27,7 +27,16 @@ gmr <- gmr_csv %>%
                 "google_region_name_1", 
                 "google_region_name_2", 
                 "date", "retail", "grocery", 
-                "parks", "transit", "workplaces", "residential") ) 
+                "parks", "transit", "workplaces", "residential") ) %>%
+  mutate ( google_region_name_1 = ifelse ( country_code == "RE", 
+                                           "La Réunion", 
+                                           google_region_name_1), 
+           google_country_name = ifelse ( country_code == "RE", 
+                                          "France", 
+                                          google_country_name ), 
+           country_code = ifelse ( country_code == "RE", 
+                                   "FR", 
+                                   country_code ))
 
 ## First joining with valid NUTS codes ------------
 ## When there is no region name, use the country name
@@ -138,6 +147,39 @@ google_region_names <- google_region_names %>%
   left_join ( regions_and_names_2016 %>% 
                 select (c(country_code, code_2016, match_name)) , 
               by = c("country_code", "match_name"))
+
+
+# Fixing Italy
+# See The Typology Of The Google Mobility Reports (COVID-19) vignette
+# for Trentino-South Tyrol
+
+# changing nuts codes
+google_region_names_it <- google_region_names %>%
+  mutate ( code_2016 = case_when (
+    country_code == "IT" & match_name == "aosta" ~ "ITCX",
+    country_code == "IT" & match_name == "aosta" ~ "ITC2",
+    country_code == "IT" & match_name == "apulia" ~ "ITF4",
+    country_code == "IT" & match_name == "lombardy" ~ "ITC4",
+    country_code == "IT" & match_name == "piedmont" ~ "ITC1",
+    country_code == "IT" & match_name == "sardinia" ~ "ITG2",
+    country_code == "IT" & match_name == "sicily" ~ "ITG1",
+    country_code == "IT" & match_name == "tuscany" ~ "ITI1",
+    country_code == "IT" & match_name == "trentino-south_tyrol" ~ "ITDX" #this is a pseudo-code, because these are two regions
+    TRUE ~ code_2016)) %>%
+  arrange ( code_2016 )
+
+# changing names
+google_region_names <- google_region_names %>%
+  mutate ( match_name = case_when (
+    country_code == "IT" & match_name == "aosta" ~ "valle_d’aosta/vallée_d’aoste",
+    country_code == "IT" & match_name == "apulia" ~ "puglia",
+    country_code == "IT" & match_name == "lombardy" ~ "lombardia",
+    country_code == "IT" & match_name == "piedmont" ~ "piemonte",
+    country_code == "IT" & match_name == "sardinia" ~ "sardegna",
+    country_code == "IT" & match_name == "sicily" ~ "sicilia",
+    country_code == "IT" & match_name == "tuscany" ~ "toscana",
+    TRUE ~ match_name))
+
 
 ## Fixing Belgium
 
@@ -388,7 +430,8 @@ google_region_names <- google_region_names %>%
 
 #Fixing France
 # changing nuts codes
-
+google_region_names <- google_region_names %>%
+  filter ( country_code == "FR")
 google_region_names <- google_region_names %>%
   mutate ( code_2016 = case_when (
     country_code == "FR" & match_name == "brittany" ~ "FRH",
@@ -479,35 +522,6 @@ google_region_names <- google_region_names %>%
   mutate( code_2016 = ifelse( country_code == "HR" & grepl( "imurje_county", match_name), "HR046", code_2016))
 google_region_names <- google_region_names %>%
   mutate( match_name = ifelse( country_code == "HR" & grepl( "imurje_county", match_name), "međimurska_županija", match_name))
-
-
-# Fixing Italy. The "trentino-south_tyrol" region is made up of two nuts regions:
-# the "provincia_autonoma_di_bolzano/bozen" and the "provincia_autonoma_di_trento" regions (ITH1 and 	ITH2 respectively)
-# "trentino-south_tyrol" was left unchanged for the moment
-
-# changing nuts codes
-google_region_names <- google_region_names %>%
-  mutate ( code_2016 = case_when (
-    country_code == "IT" & match_name == "aosta" ~ "ITC2",
-    country_code == "IT" & match_name == "apulia" ~ "ITF4",
-    country_code == "IT" & match_name == "lombardy" ~ "ITC4",
-    country_code == "IT" & match_name == "piedmont" ~ "ITC1",
-    country_code == "IT" & match_name == "sardinia" ~ "ITG2",
-    country_code == "IT" & match_name == "sicily" ~ "ITG1",
-    country_code == "IT" & match_name == "tuscany" ~ "ITI1",
-    TRUE ~ code_2016))
-
-# changing names
-google_region_names <- google_region_names %>%
-  mutate ( match_name = case_when (
-    country_code == "IT" & match_name == "aosta" ~ "valle_d’aosta/vallée_d’aoste",
-    country_code == "IT" & match_name == "apulia" ~ "puglia",
-    country_code == "IT" & match_name == "lombardy" ~ "lombardia",
-    country_code == "IT" & match_name == "piedmont" ~ "piemonte",
-    country_code == "IT" & match_name == "sardinia" ~ "sardegna",
-    country_code == "IT" & match_name == "sicily" ~ "sicilia",
-    country_code == "IT" & match_name == "tuscany" ~ "toscana",
-    TRUE ~ match_name))
 
 
 # Fixing Latvia (Municipal data only partially finished)
@@ -1038,6 +1052,8 @@ google_region_names <- google_region_names %>%
 # filter out lincolnshire nuts2 (exist in nuts3 too)
 google_region_names <- google_region_names %>% filter (code_2016 != "UKF3")
 
+google_region_names_it <- google_region_names %>% 
+  filter (country_code == "IT")
 
 # changing names
 google_region_names <- google_region_names %>%

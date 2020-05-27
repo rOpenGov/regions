@@ -18,4 +18,4 @@
 * Release candidate on CRAN.
 
 # regions 0.1.3 
-* Further improvements in the Google typology: adding the United Kingdom, Portugal, Greece, Malta, parts of Lativa.
+* Further improvements in the Google typology: adding the United Kingdom, Portugal, Greece, Malta, parts of Lativa, Italy and Réunion.

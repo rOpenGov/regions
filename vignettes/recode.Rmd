@@ -114,7 +114,7 @@ nuts_changes %>%
 ```
 
 
-The description in the correspondence tables clarifies that in fact historical data may be assembled for HU12 (Pest County.) 
+The description in the correspondence tables clarifies that in fact historical data may be assembled for `HU12` (*Pest county*.) 
 
 - It can be accessed from national LAU sources (as `HU-PE`) or for `NUTS3` data (as `HU102`)
 - It can be calculated by deducting the Budapest data from the former Central Hungary `NUTS1` region data.

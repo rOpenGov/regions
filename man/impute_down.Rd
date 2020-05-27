@@ -75,4 +75,8 @@ impute_down ( upstream_data  = upstream,
               time_var = "year" )
 }
 }
+\seealso{
+Other impute functions: 
+\code{\link{impute_down_nuts}()}
+}
 \concept{impute functions}

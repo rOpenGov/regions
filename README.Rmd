@@ -62,6 +62,7 @@ This package is an offspring of the [eurostat](http://ropengov.github.io/eurosta
 ## Package functionality 
 
 * Generic vocabulary translation and joining functions for geographically coded data
+* Keeping track of the boundary changes within the European Union between 1999-2021
 * Vocabulary translation and joining functions for standardized European Union statistics
 * Vocabulary translation for the `ISO-3166-2` based Google data and the European Union
 * Imputation functions from higher aggregation hierarchy levels to lower ones, for example from `NUTS1` to `NUTS2` or from `ISO-3166-1` to `ISO-3166-2` (impute down)

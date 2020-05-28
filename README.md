@@ -17,6 +17,11 @@ status](https://travis-ci.org/antaldaniel/regions.svg?branch=master)](https://tr
 “[![CRAN\_Status\_Badge\_version\_last\_release](https://www.r-pkg.org/badges/version-last-release/regions)](https://cran.r-project.org/package=regions)”
 “[![metacran
 downloads](https://cranlogs.r-pkg.org/badges/regions)](https://cran.r-project.org/package=regions)”
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3825696.svg)](https://doi.org/10.5281/zenodo.3825696)
+[![Follow
+rOpenGov](https://img.shields.io/twitter/follow/ropengov.svg?style=social)](https://twitter.com/intent/follow?screen_name=ropengov)
+[![Follow
+author](https://img.shields.io/twitter/follow/antaldaniel.svg?style=social)](https://twitter.com/intent/follow?screen_name=antaldaniel)
 <!-- badges: end -->
 
 ## Installation
@@ -40,6 +45,9 @@ any problems with the code, please raise an issue on
 [Github](https://github.com/antaldaniel/regions). Pull requests are
 welcome if you agree with the [Contributor Code of
 Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html)
+
+If you use `regions` in your work, please [cite the
+package](https://doi.org/10.5281/zenodo.3825696).
 
 ## Motivation
 
@@ -81,6 +89,28 @@ with other rOpenGov packages.
     standard imputation algorithms because the observations are not
     similarly aggregated or averaged. Often, the information is
     seemingly missing, and it is present with an obsolete typology code.
+
+## Package functionality
+
+  - Generic vocabulary translation and joining functions for
+    geographically coded data
+  - Keeping track of the boundary changes within the European Union
+    between 1999-2021
+  - Vocabulary translation and joining functions for standardized
+    European Union statistics
+  - Vocabulary translation for the `ISO-3166-2` based Google data and
+    the European Union
+  - Imputation functions from higher aggregation hierarchy levels to
+    lower ones, for example from `NUTS1` to `NUTS2` or from `ISO-3166-1`
+    to `ISO-3166-2` (impute down)
+  - Imputation functions from lower hierarchy levels to higher ones
+    (impute up)
+  - Aggregation function from lower hierarchy levels to higher ones, for
+    example from NUTS3 to `NUTS1` or from `ISO-3166-2` to `ISO-3166-1`
+    (aggregate; under development)
+  - Disaggregation functions from higher hierarchy levels to lower ones,
+    again, for example from `NUTS1` to `NUTS2` or from `ISO-3166-1` to
+    `ISO-3166-2` (disaggregate; under development)
 
 ## Example
 

@@ -154,7 +154,7 @@ google_region_names <- google_region_names %>%
 # for Trentino-South Tyrol
 
 # changing nuts codes
-google_region_names_it <- google_region_names %>%
+google_region_names <- google_region_names %>%
   mutate ( code_2016 = case_when (
     country_code == "IT" & match_name == "aosta" ~ "ITCX",
     country_code == "IT" & match_name == "aosta" ~ "ITC2",
@@ -164,7 +164,7 @@ google_region_names_it <- google_region_names %>%
     country_code == "IT" & match_name == "sardinia" ~ "ITG2",
     country_code == "IT" & match_name == "sicily" ~ "ITG1",
     country_code == "IT" & match_name == "tuscany" ~ "ITI1",
-    country_code == "IT" & match_name == "trentino-south_tyrol" ~ "ITDX" #this is a pseudo-code, because these are two regions
+    country_code == "IT" & match_name == "trentino-south_tyrol" ~ "ITDX", #this is a pseudo-code, because these are two regions
     TRUE ~ code_2016)) %>%
   arrange ( code_2016 )
 
@@ -430,8 +430,8 @@ google_region_names <- google_region_names %>%
 
 #Fixing France
 # changing nuts codes
-google_region_names <- google_region_names %>%
-  filter ( country_code == "FR")
+#google_region_names <- google_region_names %>%
+#  filter ( country_code == "FR")
 google_region_names <- google_region_names %>%
   mutate ( code_2016 = case_when (
     country_code == "FR" & match_name == "brittany" ~ "FRH",
@@ -914,36 +914,7 @@ google_region_names <- google_region_names %>%
     TRUE ~ match_name))
 
 
-#View(google_region_names %>% filter (is.na(code_2016)))
-
-google_nuts_matchtable <- google_region_names %>%
-  mutate ( typology = case_when (
-    nchar(code_2016) == 5 ~ 'nuts_level_3', 
-    nchar(code_2016) == 4 ~ 'nuts_level_2', 
-    nchar(code_2016) == 3 ~ 'nuts_level_1', 
-    nchar(code_2016) == 2 ~ 'country', 
-    TRUE ~  'invalid typology'
-  )) %>%
-  select ( -all_of(c("google_name", "match_name")))
-
-#create list of countries where available nuts codes do not cover full country
-countries_missing_full_nuts <- google_nuts_matchtable %>%
-  filter ( typology == 'invalid typology') %>% select(country_code) %>% unique() %>% unlist() %>% unname()
-
-countries_missing_full_nuts
-
-# Adding code_2016 values again, checking for discrepancies
-google_region_names <- google_region_names %>%
-  left_join ( regions_and_names_2016 %>%
-                select (c(country_code, code_2016, match_name)) , 
-              by = c("country_code", "match_name")) %>%
-  mutate ( typology = case_when (
-    nchar(code_2016) == 5 ~ 'nuts_level_3', 
-    nchar(code_2016) == 4 ~ 'nuts_level_2', 
-    nchar(code_2016) == 3 ~ 'nuts_level_1', 
-    nchar(code_2016) == 2 ~ 'country', 
-    TRUE ~  'invalid typology'
-  ))
+# Fixing UK
 
 # changing nuts codes
 google_region_names <- google_region_names %>%
@@ -1050,7 +1021,7 @@ google_region_names <- google_region_names %>%
     TRUE ~ code_2016))
 
 # filter out lincolnshire nuts2 (exist in nuts3 too)
-google_region_names <- google_region_names %>% filter (code_2016 != "UKF3")
+google_region_names <- google_region_names %>% filter (code_2016 != "UKF3" | is.na(code_2016))
 
 google_region_names_it <- google_region_names %>% 
   filter (country_code == "IT")
@@ -1095,6 +1066,39 @@ google_region_names <- google_region_names %>%
     country_code == "GR" & match_name == "decentralized_administration_of_thessaly_and_central_greece" ~ "EL6",
     TRUE ~ code_2016)
   )
+
+
+#creating matchtable
+
+google_nuts_matchtable <- google_region_names %>%
+  mutate ( typology = case_when (
+    nchar(code_2016) == 5 ~ 'nuts_level_3', 
+    nchar(code_2016) == 4 ~ 'nuts_level_2', 
+    nchar(code_2016) == 3 ~ 'nuts_level_1', 
+    nchar(code_2016) == 2 ~ 'country', 
+    TRUE ~  'invalid typology'
+  )) %>%
+  select ( -all_of(c("google_name", "match_name")))
+
+#create list of countries where available nuts codes do not cover full country
+countries_missing_full_nuts <- google_nuts_matchtable %>%
+  filter ( typology == 'invalid typology') %>% select(country_code) %>% unique() %>% unlist() %>% unname()
+
+countries_missing_full_nuts
+
+# Adding code_2016 values again, checking for discrepancies
+google_region_names <- google_region_names %>%
+  left_join ( regions_and_names_2016 %>%
+                select (c(country_code, code_2016, match_name)) , 
+              by = c("country_code", "match_name")) %>%
+  mutate ( typology = case_when (
+    nchar(code_2016) == 5 ~ 'nuts_level_3', 
+    nchar(code_2016) == 4 ~ 'nuts_level_2', 
+    nchar(code_2016) == 3 ~ 'nuts_level_1', 
+    nchar(code_2016) == 2 ~ 'country', 
+    TRUE ~  'invalid typology'
+  ))
+
 
 #saving results
 #save(google_nuts_matchtable, file = "google_nuts_matchtable.RData")

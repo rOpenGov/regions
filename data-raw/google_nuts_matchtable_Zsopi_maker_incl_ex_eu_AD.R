@@ -918,36 +918,7 @@ google_region_names <- google_region_names %>%
     TRUE ~ match_name))
 
 
-#View(google_region_names %>% filter (is.na(code_2016)))
-
-google_nuts_matchtable <- google_region_names %>%
-  mutate ( typology = case_when (
-    nchar(code_2016) == 5 ~ 'nuts_level_3', 
-    nchar(code_2016) == 4 ~ 'nuts_level_2', 
-    nchar(code_2016) == 3 ~ 'nuts_level_1', 
-    nchar(code_2016) == 2 ~ 'country', 
-    TRUE ~  'invalid typology'
-  )) %>%
-  select ( -all_of(c("google_name", "match_name")))
-
-#create list of countries where available nuts codes do not cover full country
-countries_missing_full_nuts <- google_nuts_matchtable %>%
-  filter ( typology == 'invalid typology') %>% select(country_code) %>% unique() %>% unlist() %>% unname()
-
-countries_missing_full_nuts
-
-# Adding code_2016 values again, checking for discrepancies
-google_region_names <- google_region_names %>%
-  left_join ( regions_and_names_2016 %>%
-                select (c(country_code, code_2016, match_name)) , 
-              by = c("country_code", "match_name")) %>%
-  mutate ( typology = case_when (
-    nchar(code_2016) == 5 ~ 'nuts_level_3', 
-    nchar(code_2016) == 4 ~ 'nuts_level_2', 
-    nchar(code_2016) == 3 ~ 'nuts_level_1', 
-    nchar(code_2016) == 2 ~ 'country', 
-    TRUE ~  'invalid typology'
-  ))
+# Fixing UK
 
 # changing nuts codes
 google_region_names <- google_region_names %>%

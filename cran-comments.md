@@ -17,10 +17,9 @@ Depending on the platform, I get various notes to use size reduction
 of PDF. This should not throw a NOTE on CRAN.
 
 ## Resubmission With Reviewer Suggestions and Solutions Implemented
-The reviewer saw 0.1.1, and this is versioned as 0.1.2. (see 
-very minor changes in NEWS.md)
+The reviewer saw 0.1.1, and all documentation suggestions were implemented. Than in 0.1.2. further documentation issues were corrected. (see very minor changes in NEWS.md)
 
-This is a re-submission because the reviewer had only one suggestion with 0.1.2, that the DESCRIPTION had a word duplicaton. (Sorry!)
+This is a re-submission 0.1.2, because the reviewer had only one suggestion with 0.1.2, that the DESCRIPTION had a word duplicaton. (Sorry!)
 
 meaningful meaningful data
 -->

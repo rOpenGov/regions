@@ -430,8 +430,7 @@ google_region_names <- google_region_names %>%
 
 #Fixing France
 # changing nuts codes
-google_region_names <- google_region_names %>%
-  filter ( country_code == "FR")
+
 google_region_names <- google_region_names %>%
   mutate ( code_2016 = case_when (
     country_code == "FR" & match_name == "brittany" ~ "FRH",

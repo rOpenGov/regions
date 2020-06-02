@@ -20,18 +20,10 @@ of PDF. This should not throw a NOTE on CRAN.
 The reviewer saw 0.1.1, and this is versioned as 0.1.2. (see 
 very minor changes in NEWS.md)
 
-Reviewer had one suggestion: the author of the data table 
-Google Mobility Report European Correspondence Table (in data)
-should be added to the DESCRIPTION as contributor. (Istvan Zsoldos is
-added.)
+This is a re-submission because the reviewer had only one suggestion with 0.1.2, that the DESCRIPTION had a word duplicaton. (Sorry!)
 
-One extra functionality was added since. 
+meaningful meaningful data
+-->
+meaningful data
 
-New function `impute_down_nuts` is handling EU typologies with only one
-input (earlier `impute_down` is a more general case where the typology
-has to be imputed, in this case it is read from internal data file.) 
-Both versions of the function are extensively tested in the testthat 
-infrastructure and pass all tests. An example with this function was added to the `Working With Regional, Sub-National Statistical Products` vignette.
-
-Previous reviewer for 0.1.0. asked for more detailed documentation of 
-returned objects which was added in 0.1.1.
+Please fix and resubmit.

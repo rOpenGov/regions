@@ -11,6 +11,7 @@ notifications:
 
 r_packages:
   - backports
+  - vctrs
   - devtools
   - dplyr
   - ggplot2

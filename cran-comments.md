@@ -9,6 +9,9 @@
 
 ### rhub
 * Fedora Linux, R-devel, on r_hub
+* The Windows server on rhub does not have the vctrs >= 0.3.0, 
+and is not able to handle (yet) the new dplyr 1.0.0; this is unrelated
+to the 'regions' package.
 
 ## R CMD check results
 There were no ERRORs or WARNINGs. 

@@ -47,6 +47,14 @@ recode_nuts <- function( dat,
                          geo_var = "geo",
                          nuts_year = 2016 ) {
   
+  if ( ! "data.frame" %in% class(dat)) {
+    stop ( "The input variable 'dat' must be a data.frame (like) object.")
+  }
+  
+  if ( nrow(dat)<1) {
+    stop ( "The input variable 'dat' must have at least one row (observation)")
+  }
+  
   . <- nuts <- nuts_changes <- target <- geo <- typology <- NULL
   years <- typology_change <- min_year <- max_year <- NULL
 
@@ -160,42 +168,41 @@ recode_nuts <- function( dat,
     recoded_geo_codes <- as.character(unlist(recoded_values[, geo_var]))
    
     return_values <- return_values %>% 
-      dplyr::bind_rows ( recoded_values ) 
+      dplyr::bind_rows ( recoded_values )
+    
+    ## Add those that are valid but cannot be recoded ---------
+    valid_but_not_recoded <- valid_different_codes  %>%
+      mutate ( years  = as.numeric(gsub("code_", "", nuts))) %>%
+      filter_at( vars(all_of(geo_var)), 
+                 all_vars(! . %in% c(recoded_geo_codes,
+                                     correct_geo_codes))
+      ) 
+    
+    if ( nrow(valid_but_not_recoded)>0 ) {
+      valid_but_not_recoded <- valid_but_not_recoded  %>%
+        group_by_at ( vars(-all_of(c("years", "nuts")))) %>%
+        summarize ( ## find earliest and latest mention of the code 
+          min_year = min(years, na.rm=TRUE), 
+          max_year = max(years, na.rm=TRUE)
+        ) %>%
+        tidyr::unite ( typology_change, min_year, max_year, sep =   '-') %>%
+        mutate ( typology_change = paste0("Used in NUTS ", typology_change))  %>%
+        ungroup()
+      
+      differently_coded <- valid_but_not_recoded %>%
+        left_join ( dat, by = geo_var ) %>%
+        mutate ( target = NA_character_ ) 
+      
+      names(differently_coded)[
+        which(names(differently_coded)=="target")] <- target_code
+      
+      not_recoded_geo_codes <- as.character(unlist(differently_coded[, geo_var]))
+      
+      return_values <- dplyr::bind_rows ( return_values, 
+                                          differently_coded ) 
+    }
   }
   
-  
-  ## Add those that are valid but cannot be recoded ---------
-  valid_but_not_recoded <- valid_different_codes  %>%
-    mutate ( years  = as.numeric(gsub("code_", "", nuts))) %>%
-    filter_at( vars(all_of(geo_var)), 
-                    all_vars(! . %in% c(recoded_geo_codes,
-                                        correct_geo_codes))
-                    ) 
-  
-  if ( nrow(valid_but_not_recoded)>0 ) {
-    valid_but_not_recoded <- valid_but_not_recoded  %>%
-      group_by_at ( vars(-all_of(c("years", "nuts")))) %>%
-      summarize ( ## find earliest and latest mention of the code 
-                  min_year = min(years, na.rm=TRUE), 
-                  max_year = max(years, na.rm=TRUE)
-                  ) %>%
-      tidyr::unite ( typology_change, min_year, max_year, sep =   '-') %>%
-      mutate ( typology_change = paste0("Used in NUTS ", typology_change))  %>%
-      ungroup()
-    
-    differently_coded <- valid_but_not_recoded %>%
-      left_join ( dat, by = geo_var ) %>%
-      mutate ( target = NA_character_ ) 
-    
-    names(differently_coded)[
-      which(names(differently_coded)=="target")] <- target_code
-    
-    not_recoded_geo_codes <- as.character(unlist(differently_coded[, geo_var]))
-    
-    return_values <- dplyr::bind_rows ( return_values, 
-                                        differently_coded ) 
-  }
-
   returned_geo_codes <- as.character(unlist(return_values[, geo_var]))
   
   invalid_and_not_recoded <- original_geo_codes[! original_geo_codes %in% returned_geo_codes ] 

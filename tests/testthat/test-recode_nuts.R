@@ -1,12 +1,19 @@
 library(regions)
 library(testthat)
 
+
+
 foo <- data.frame ( 
   geo  =  c("FR", "DEE32", "UKI3" ,
             "HU12", "DED", 
             "FRK"), 
   values = runif(6, 0, 100 ),
   stringsAsFactors = FALSE )
+
+test_that("types are checked", {
+  expect_error(recode_nuts ( dat = 1))
+  expect_error(recode_nuts ( dat = foo[-c(1:6),]))
+})
 
 recode_nuts(dat = foo, 
             nuts_year = 2013)
@@ -56,3 +63,15 @@ test_that("incorrect codes are identified", {
                NA_character_)
 })
 
+example_df <- data.frame ( 
+  geo  =  c("FR", "DEE32", "UKI3" ,
+            "HU12", "DED", 
+            "FRK"), 
+  values = runif(6, 0, 100 ),
+  stringsAsFactors = FALSE )
+
+recode_nuts(dat = example_df, 
+            nuts_year = 2021) %>%
+  select ( code_2021, values, typology_change ) %>%
+  rename ( geo = code_2021 ) %>% 
+  filter ( !is.na(geo)) 

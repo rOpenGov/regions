@@ -9,7 +9,7 @@
 #' is used, and the hierarchy can be established from the EU vocabularies.
 #' 
 #' Be mindful that while all possible imputations are made, imputations 
-#' beyond one hiearchical level are very crude estimates.  
+#' beyond one hierarchical level will result in very crude estimates.  
 #' 
 #' The imputed dataset \code{dat} must refer to a single time unit, i.e. 
 #' panel data is not supported.

@@ -143,10 +143,7 @@ recode_nuts <- function( dat,
     
     names(recoding_changes)[which(names(recoding_changes)=="target")] <- target_code
     names(recoding_changes)[which(names(recoding_changes)=="geo")] <- geo_var
-    
-    
-    return_values <- return_values %>% 
-      dplyr::bind_rows ( recoded_values ) 
+
     
     original_names_in_recoding_changes <- names(recoding_changes)[names (recoding_changes) %in% names(dat)] 
     
@@ -161,7 +158,9 @@ recode_nuts <- function( dat,
       which(names(recoded_values)=="target")] <- target_code
     
     recoded_geo_codes <- as.character(unlist(recoded_values[, geo_var]))
-    
+   
+    return_values <- return_values %>% 
+      dplyr::bind_rows ( recoded_values ) 
   }
   
   

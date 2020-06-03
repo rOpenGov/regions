@@ -125,15 +125,30 @@ recode_nuts <- function( dat,
   select_from_correspondence <- unique(c("typology", 
                                          valid_different_codes$nuts, 
                                          target_code))
+  
+  recoding_changes <- nuts_changes  
 
-  recoding_changes <- nuts_changes  %>%
-    select ( tidyselect::all_of( select_from_correspondence ) ) %>%
-    rename ( target = !! target_code )   %>%
-    tidyr::pivot_longer (., cols =  c('target', 
-                                      starts_with('code')), 
-                  names_to  = 'nuts', 
-                  values_to = 'geo')  %>%
-    dplyr::filter ( geo %in% different_codes ) %>%
+  if ( length(valid_different_codes$nuts)>0) {
+    recoding_changes <- recoding_changes   %>%
+      select ( tidyselect::all_of( select_from_correspondence ) ) %>%
+      rename ( target = !! target_code )   
+  }
+
+  anything_to_fold <- any(
+     grepl( "code_",
+            substr(names(recoding_changes), 1,5))
+     )
+  
+  if ( anything_to_fold ) {
+    recoding_changes <- tidyr::pivot_longer (
+      recoding_changes,
+      cols =  c(starts_with('code')), 
+      names_to  = 'nuts', 
+      values_to = 'geo') 
+    }  
+  
+  recoding_changes <- recoding_changes %>%
+    dplyr::filter ( geo %in% different_codes )  %>%
     dplyr::filter ( !is.na(target)) %>%
     mutate ( years = as.numeric(gsub("code_", "", nuts))) 
   

@@ -129,7 +129,8 @@ recode_nuts <- function( dat,
   recoding_changes <- nuts_changes  %>%
     select ( tidyselect::all_of( select_from_correspondence ) ) %>%
     rename ( target = !! target_code )   %>%
-    tidyr::pivot_longer (., cols =  starts_with('code'), 
+    tidyr::pivot_longer (., cols =  c('target', 
+                                      starts_with('code')), 
                   names_to  = 'nuts', 
                   values_to = 'geo')  %>%
     dplyr::filter ( geo %in% different_codes ) %>%

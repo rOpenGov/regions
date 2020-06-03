@@ -1,8 +1,6 @@
 library(regions)
 library(testthat)
 
-
-
 foo <- data.frame ( 
   geo  =  c("FR", "DEE32", "UKI3" ,
             "HU12", "DED", 
@@ -47,7 +45,7 @@ test_that("correct values are returned", {
 
 
 test2 <- data.frame ( 
-  geo  =  c("FR", "DEE32", "UKI3" ,
+  geo  =  c("FR", "DX32", "UKI3" ,
             "HU12", "DED", 
             "FRK", "ZZZ"), 
   values = runif(7, 0, 100 ),
@@ -57,10 +55,11 @@ tested2 <- recode_nuts(dat = test2,
                        nuts_year = 2016)
 
 test_that("incorrect codes are identified", {
-  expect_equal(tested2[ grepl("Not found", tested2$typology_change), "geo" ], 
-               c("ZZZ"))
-  expect_equal(tested2[ grepl("Used", tested2$typology_change), "code_2016" ], 
-               NA_character_)
+  expect_equal(tested2[ grepl("Not found", tested2$typology_change),
+                        "geo" ], 
+               c("DX32", "ZZZ"))
+  expect_equal(nrow(tested2[ grepl("Used", tested2$typology_change), "code_2016" ]), 
+               NULL)
 })
 
 example_df <- data.frame ( 
@@ -75,3 +74,4 @@ recode_nuts(dat = example_df,
   select ( code_2021, values, typology_change ) %>%
   rename ( geo = code_2021 ) %>% 
   filter ( !is.na(geo)) 
+

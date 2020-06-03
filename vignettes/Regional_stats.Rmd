@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+```{r setup, message=FALSE}
 library(regions)
 library(dplyr)
 ```
@@ -26,7 +26,6 @@ We are generally used to working with relatively constant territories defined by
 The `ISO-3166-2` standard defines sub-national territories for almost all countries on Earth. The use of this standard is not practical for our purposes, because each countries sub-divisions may be subject to change in any given year. 
 
 There are two main international efforts are taking place to standardize sub-national statistics: on the level of the European Union and on the level of the OECD.  Our programmatic solution aims to work with both international data sources, and as much as possible, with any country's data that uses the `ISO-3166-2` standard. However, at this stage we have only included the typology used by the European Union in helper functions and metadata (typological vocabulary) files.  
-
 ## Using a Consistent Typology
 
 The European Union harmonises the national statistical systems of 27 members states, 4 EEA countries and several other potential member states.  Its regional typology, the hierarchical NUTS system is the most complex international system, and the regions package is mainly developed to help working with European regional data.  However, the tasks related to such regional typologies are not unique the European Union.  They are present in almost any national statistical system, and they can be similarly complex in federal states like the United States or Australia.
@@ -45,7 +44,7 @@ The changes of national or provincial boundaries are rare – within a single po
 
 On sub-national levels, within Europe regional boundary changes are so frequent that they happen on average every three years. Of course, at one time, this procedure leaves most regional boundaries intact, and change only a relatively small number of boundaries. Whenever we work with European regional data, we still have to adjust panels of statistical aggregates every three years; similarly, we must validate any regional time series every three years.
 
-In either case, producers of statistical products do not necessarily re-cast historical statistical data for the new national or sub-national boundaries.  For example, when the regional boundary definition within Central Hungary (	HU1) changed in 2016, Eurostat did not require the Hungarian national statistical authorities to re-cast Hungary's NUTS2 level data according to the new boundary definition, i.e. creating separate observations for 	`HU10` (Budapest) and 	`HU12` (surrounding Pest county.) Earlier `HU101` (*Budapest*) on `NUTS3` level became a `NUTS2` region under the _same name_. Furthermore, the former `NUTS2` region _Közép-Magyarország_ or _Central Hungary_ still exists on `NUTS1` level under the code `HU1`. Although you will not find a history for the `HU10` code before 2017, in most cases, the very same data about Budapest can be found under the code `HU101` in NUTS3 datasets, or from national statistical sources that follow Hungary's `ISO-3166-2` borders. 
+In either case, producers of statistical products do not necessarily re-cast historical statistical data for the new national or sub-national boundaries.  For example, when the regional boundary definition within Central Hungary (`HU1`) changed in 2016, Eurostat did not require the Hungarian national statistical authorities to re-cast Hungary's `NUTS2` level data according to the new boundary definition, i.e. creating separate observations for	`HU10` (Budapest) and `HU12` (surrounding _Pest county_.) Earlier `HU101` (*Budapest*) on `NUTS3` level became a `NUTS2` region under the _same name_. Furthermore, the former `NUTS2` region _Közép-Magyarország_ or _Central Hungary_ still exists on `NUTS1` level under the code `HU1`. Although you will not find a history for the `HU10` code before 2017, in most cases, the very same data about Budapest can be found under the code `HU101` in `NUTS3` datasets, or from national statistical sources that follow Hungary's `ISO-3166-2` borders. 
 
 To put it another way, the HU-BP `ISO-3166-2` code, Budapest, did not change, it was just reassigned from the `NUTS3` typology to the `NUTS2` typology, which is reflecting the size of Budapest better.  Budapest can be better compared with `NUTS2` regions than `NUTS3` small regions.
 
@@ -63,22 +62,31 @@ The vignette [Validating Your Typology](http://regions.danielantal.eu/articles/v
 
 ### Recoding and re-labelling {#recoding}
 
-In the European Union, the most frequent regional statistical change is ‘recoding’ and ‘relabelling’.  Such changes do not affect the statistical data, only the statistical metadata.  
+In the European Union, the most frequent regional statistical change is `recoding` and `relabelling`.  Such changes do not affect the statistical data, only the statistical metadata.
 
-For example, the overseas department and region of France, _Réunion_, was officially renamed _La Réunion_ in 2010: this is ‘relabelling’. In earlier sources, you may find data about this region under the identifier _Réunion_, and later you may find it extended with the French article _La _Réunion_.  But the data from _Réunion_ in 2009 and _La Réunion_ in 2012 refers to the same territory.  Furthermore, when France changed its administrative boundaries, it changed their official code abbreviations.  Although the typology of _La Réunion_ did not change, to indicate that a dataset is comparable across French departments according to the new administrative borders (which did change in many other regions) the geolocational code of this region changed from `FR94` to `FRA4` in 2013 and to `FRY4` in 2016. If you want to work with French or international data that include any statistical information about the overseas departments, you must make sure that observations coded with `FR94`, `FRA4`, `FRY4` are treated as a time-series of the _La Réunion_ and not as different entities. 
+For example, the overseas department and region of France, _Réunion_, was officially renamed _La Réunion_ in 2010: this is `relabelling`. In earlier sources, you may find data about this region under the identifier _Réunion_, and later you may find it extended with the French article *La* *Réunion*.  But the data from _Réunion_ in 2009 and *La* *Réunion* in 2012 refers to the same territory.  Furthermore, when France changed its administrative boundaries, it changed their official code abbreviations.  Although the typology of _La Réunion_ did not change, to indicate that a dataset is comparable across French departments according to the new administrative borders (which did change in many other regions) the geolocational code of this region changed from `FR94` to `FRA4` in 2013 and to `FRY4` in 2016. This is `recoding`.
+
+The geocodes of Eurostat are elements of a `controlled metadata vocabulary`. To avoid confusion, when a part of the vocabulary changes, for example, when France is changing some elements in its NUTS regions and their coding, it often changes the complete vocabulary, including for unchanged elements, for clarity. This is why `FR94` becomes `FRA4` even though it is describing the same overseas _department_ and _region_, _La Réunion_.
+
+If you want to work with French or international data that include any statistical information about the overseas departments, you must make sure that observations coded with `FR94`, `FRA4`, `FRY4` are treated as a time-series of the _La Réunion_ and not as different entities.
+
+Names are often dubious identifiers. _La Réunion_ remains in the `ISO-3166-1` and `ISO-3166-2` libraries _Réunion_, which is no longer used as name in `NUTS`. What makes working with `ISO` and `NUTS` vocabularies is that while NUTS is "versioned", ISO is not, so a correspondence for a given year, for example, for the year 2013 is almost impossible to create. This is why the use of Eurostats NUTS geo codes, which are usually unique in a given year, should be preferred over ISO.
 
 Many of Eurostat’s regional datasets contain recoded geographical IDs that violate the definition of tidy data, because under the same `geo` column they may contain observations for `FR94`, `FRA4`, `FRY4`. However, this is not a tidy description of the territory.  Like in our `nuts_changes` data, they should be reported in three different columns,  `code_2010`, `code_2013` and `code_2016`. The descriptive metadata code, i.e. row identifier `FR94` is compatible with `FR71` for example, but not with `FRY4`. 
 
-If you are joining data from different tables, you must not join by their `geo` code, but by the explicit `code_2013` geo codes for the observation described or aggregated according to the `NUTS2013` regional boundaries and `code_2016` for the `NUTS2016`. 
+If you are joining data from different tables, you must not join by their `geo` code, but by the explicit `code_2013` geo codes for the observation described or aggregated according to the `NUTS2013` regional boundaries and `code_2016` for the `NUTS2016`. In other words, you must make sure that you join by valid elements in a given version of NUTS. 
 
 Another important note: if you join with the raw `geo` data, you will often have **seemingly missing data**.  You may have data available for `FR93`, `FR94`, `FRY3`, `FRY4`, with missingness for the first two in 2016 and missingness for the latter two in 2010, but in fact, these observations or related to two, unchanged territorial units (*Guyane* and _La Réunion_.) You must choose one consistent coding, either using only `FRY4` for _La Réunion_ or `FR93` for _La Réunion_.  You can also identify `FR93`, `FRY3` explicitly with the name *Guyane*. However, you must choose between the use of _La Réunion_ or _Réunion_.
 
 ```{r fr}
 data(nuts_changes)
 overseas <- nuts_changes[ 
-  which(nuts_changes$geo_name_2016 %in% c("La Réunion", "Guyane")), ]
+  which(nuts_changes$geo_name_2016 %in% c("La Réunion", "Guyane")),
+  ]
+
 knitr::kable(
-  overseas[, c("code_2010", "code_2013", "code_2016", "geo_name_2010", "geo_name_2013", "geo_name_2016")]
+  overseas[, c("code_2010", "code_2013", "code_2016",
+               "geo_name_2010", "geo_name_2013", "geo_name_2016")]
   )
 ```
 
@@ -98,9 +106,31 @@ A typical problem of missingness is that we are comparing `NUTS1` or `NUTS2` lev
 
 The function `impute_down` creates a generic solution to the problem when we want to project data from a larger territorial unit to a smaller one.  For example, some state level data is missing for certain Australian or German federal states, and we want to use the national (average) values for imputation.
 
+The function `impute_down_nuts` gives and EU-specific solution, with a single data frame as input. The `mixed_nuts_example` data table shows a mixture of potential problems in a small, fictional dataset with random numbers. For simplicity, we take the fictional, country-level data from Malta, and input it down to all potential sub-divisions.  
+
+Malta is a very transparent example, because the country has only 2 subdivisions on the lowest, `NUTS3` level, i.e. `MT001` and `MT002`. You can find Malta among countries (technical `NUTS0` level) as `MT`, among `NUTS1` regions as `MT0` (because there are no subdivisions on this level), and among `NUTS2` regions again as `MT00`. For any data that cannot be assigned for a geographical location or area, the technical codes ending with `Z` are used.
+
+So, what are our possibilities if we have only country-level `MT`data, but we would like to use it in a `NUTS3` database and impute this variable to both `MT001` and `MT002`. (You can safely do this with average values taken from a survey, but you should not do this with additive values such as the population.)
+
+```{r}
+data("mixed_nuts_example")
+mixed_nuts_example %>%
+  filter ( substr(geo,1,2) == "MT") %>%
+  knitr::kable ()
+```
+
+Malta offers two technical imputation slots on `NUTS1` level, `MT0` for territorially attributed data, and `MTZ` for non-territorial exceptions.  On NUTS2 level, `MT00` and `MTZZ`.  And at last, what is a real imputation, you can impute the `MT` = `MT0` = `MT00` values to `MT001`, should you have only data for `MT002`, etc.  (In this simple example, we impute the `MT` values to both subdivisions, `MT001` and `MT002`.)
+
+```{r}
+impute_down_nuts (mixed_nuts_example) %>%
+  filter ( substr(geo,1,2) == "MT") %>%
+  knitr::kable ()
+```
+
+
 ### Aggregation And Re-Aggregation {#aggregation}
 
-The European Union sometimes publishes data on `NUTS2` level regions, but not on the larger NUTS1 level macroregions or provinces.  In many cases, this information is fully present in the `NUTS2` datasets, and a simple aggregation can produce a NUTS1 level dataset, because each `NUTS2` region is strictly assigned to one broader NUTS1 marcoregion.  For count-type data, we can simply aggregate the constituent `NUTS2` level data to NUTS1 level.
+The European Union sometimes publishes data on `NUTS2` level regions, but not on the larger NUTS1 level macroregions or provinces.  In many cases, this information is fully present in the `NUTS2` datasets, and a simple aggregation can produce a NUTS1 level dataset, because each `NUTS2` region is strictly assigned to one broader NUTS1 macroregion.  For count-type data, we can simply aggregate the constituent `NUTS2` level data to `NUTS1` level.
 
 A frequent problem is the re-assignment of a smaller territorial units, such as lower level administrative unit or a lower NUTS unit to another larger unit, or a pre-existing larger unit.  
 
@@ -135,5 +165,5 @@ Our package uses a number of boundary definitions that are easily expanded.  Our
 
 The Online Browsing Platform (OBP) of the International Organization for Standardization contains all coding information, and metadata about recent changes for each country. (See, for example: [ISO 3166 — Codes for the representation of names of countries and their subdivisions: NL - Netherlands (the)](https://www.iso.org/obp/ui/#iso:code:3166:NL))
 
-It would be tempting to use `ISO-3166-2` definitions for sub-national boundaries, however, the `ISO-3166-2` itself is changing relatively often, and in time series or panel data we can only refer to  a certain version of the ISO-3166-2. All the boundary definitions are valid for a certain time period and certain boundaries. We currently incorporated only European metadata for the last 20 years, and we are planning to continue with OECD metadata in the forthcoming releases.  However, we are welcoming any pull requests for other countries or country-groups.  
+It would be tempting to use `ISO-3166-2` definitions for sub-national boundaries, however, the `ISO-3166-2` itself is changing relatively often, and in time series or panel data we can only refer to  a certain version of the `ISO-3166-2`. All the boundary definitions are valid for a certain time period and certain boundaries. We currently incorporated only European metadata for the last 20 years, and we are planning to continue with OECD metadata in the forthcoming releases.  However, we are welcoming any pull requests for other countries or country-groups.  
 

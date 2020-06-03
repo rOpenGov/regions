@@ -13,7 +13,9 @@ validate_nuts_countries(dat, geo_var = "geo")
 2 character geo codes to be validated.}
 }
 \value{
-The original data frame.
+The original data frame extended with the column \code{'typology'}.
+This column states \code{'country'} for valid country typology coding, or
+appropriate label for invalid ISO-3166-alpha-2 and ISO-3166-alpha-3 codes.
 }
 \description{
 This function is mainly a wrapper around the well-known

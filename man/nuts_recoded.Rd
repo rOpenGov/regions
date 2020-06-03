@@ -14,10 +14,17 @@ A data frame with 8 rows and 3 variables:
 \item{iso2c}{Two character ISO standard country codes.}
 }
 }
+\source{
+\url{https://ec.europa.eu/eurostat/web/nuts/history/}
+}
 \usage{
 nuts_recoded
 }
 \description{
-A dataset containing the states and territories of Australia.
+Containing all recoded NUTS units from the European Union.
+This is re-arranged from \code{\link{nuts_changes}}.
+}
+\seealso{
+nuts_changes, all_valid_nuts_codes
 }
 \keyword{datasets}

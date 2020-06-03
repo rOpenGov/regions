@@ -55,7 +55,7 @@ Because `FRB` contains only one `FRB0`, the earlier `FR24`, it is technically id
 
 Let's see a hypothetical data frame with random variables. (Usually a data frame has no so many issues, so a more detailed example can be constructed this way.)
 
-```{r recode}
+```{r recode, results='asis'}
 example_df <- data.frame ( 
   geo  =  c("FR", "DEE32", "UKI3" ,
             "HU12", "DED", 
@@ -74,7 +74,7 @@ In this hypothetical example we are creating backward compatibility with the `NU
 - Typologies which changed their geo codes, but are not affected by boundary changes, i.e. the data is comparable, it is only found at a different geographical label
 - Typologies that are not comparable, and we cannot compare them meaningfully with a `NUTS2013` dataset.
 
-```{r recode2013}
+```{r recode2013, results='asis'}
 recode_nuts(example_df, nuts_year = 2013) %>%
   select ( geo, values, typology_change, code_2013 ) %>%
   knitr::kable()
@@ -84,7 +84,7 @@ The first three observations are comparable with a `NUTS2013` dataset.  The four
 
 The following data can be joined with a `NUTS2013` dataset or map:
 
-```{r changes2013}
+```{r changes2013, results='asis'}
 recode_nuts(example_df, nuts_year = 2013) %>%
   select ( code_2013, values, typology_change ) %>%
   rename ( geo = code_2013 ) %>% 
@@ -94,7 +94,7 @@ recode_nuts(example_df, nuts_year = 2013) %>%
 
 And re-assuringly these data will be compatible with the next NUTS typology, too! 
 
-```{r recode2021}
+```{r recode2021, results='asis'}
 recode_nuts(example_df, nuts_year = 2021) %>%
   select ( code_2021, values, typology_change ) %>%
   rename ( geo = code_2021 ) %>% 
@@ -104,7 +104,7 @@ recode_nuts(example_df, nuts_year = 2021) %>%
 
 What about `HU12`?
 
-```{r recodeHU12}
+```{r recodeHU12, results='asis'}
 data(nuts_changes) 
 nuts_changes %>% 
   select ( code_2016, geo_name_2016, change_2016) %>%
@@ -114,7 +114,7 @@ nuts_changes %>%
 ```
 
 
-The description in the correspondence tables clarifies that in fact historical data may be assembled for HU12 (Pest County.) 
+The description in the correspondence tables clarifies that in fact historical data may be assembled for `HU12` (*Pest county*.) 
 
 - It can be accessed from national LAU sources (as `HU-PE`) or for `NUTS3` data (as `HU102`)
 - It can be calculated by deducting the Budapest data from the former Central Hungary `NUTS1` region data.

@@ -16,7 +16,8 @@ can be used to translate Eurostat country codes to ISO 3166-1 alpha-2
 country codes.}
 }
 \value{
-The ISO 3166-1 alpha-2 codes of the countries.
+The ISO 3166-1 alpha-2 codes of the countries as a character
+vector.
 }
 \description{
 The function identifies the sub-national geographical identifiers from

@@ -1,6 +1,6 @@
 #' regions: A package for working with regional statistics.
 #'
-#' The foo package provides four categories of important functions:
+#' The regions package provides four categories of functions:
 #' validate, recode, impute and aggregate.
 #'
 #' @section validate functions:
@@ -16,6 +16,21 @@
 #' The impute functions impute data from one regional unit to a different
 #' level of regional unit, such as a country level data to a province / state
 #' level data.
+#' \code{\link{impute_down}} and provides 
+#' imputation functions from higher aggregation hierarchy levels to 
+#' lower ones, for example from \code{ISO-3166-1} to \code{ISO-3166-2}.
+#' \code{\link{impute_down_nuts}} provides the same functionality with the
+#' EU typologies, but with far less work, because they rely on the internal
+#' hierarchical structure of these metadata, for example, from \code{NUTS1} 
+#' to \code{NUTS2}.
+#' 
+#' @section aggregate functions:
+#' Aggregation function from lower hierarchy levels to higher ones, 
+#' for example from NUTS3 to \code{NUTS1} or from \code{ISO-3166-2} to 
+#' \code{ISO-3166-1}.
+#' Disaggregation functions from higher hierarchy levels to lower ones, 
+#' for example from \code{NUTS1} to \code{NUTS2} or from 
+#' \code{ISO-3166-1} to \code{ISO-3166-2}.
 #'
 #' @docType package
 #' @name regions

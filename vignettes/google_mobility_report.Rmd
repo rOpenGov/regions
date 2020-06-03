@@ -1,0 +1,62 @@
+---
+title: "The Typology Of The Google Mobility Reports (COVID-19)"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{The Typology Of The Google Mobility Reports     (COVID-19)}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(regions)
+```
+
+Google is not using those sub-national divisions (region), that the EU or OECD is using for statistical purposes.  This means that any comparison of Google’s Mobility Reports with population, transport, public health, or economic variable requires a sub-national division vocabulary for translation, or in the EU parlance a _correspondence table_.
+
+Google appears to be using, at least in most of the cases, the `ISO-3166-2` sub-national divisions from the *ISO 3166 Codes for the representation of names of countries and their subdivisions* with non-standard naming (labels).  When we want to analyze the Google Mobility Report together with national statistics, this causes several problems:
+
+* `ISO-3166-2` is not a hierarchical typology, while Europe's statistical typologies, the `NUTS1`-`NUTS2`-`NUTS3` are hierarchical, so we had to create many hundred lines of `R` code to create the necessary descriptive metadata for joining the `ISO`-like Google and the `NUTS` typologies of Europe.
+
+*  The `ISO-3166-2` is changing very fast, within Europe there are many changes every year; however, these changes are not so easy to trace as the changes within the European statistical nomenclature (NUTS). We are unsure how Google handles changes in `ISO-3166-2` over the coverage of the Mobility Reports.
+
+* Google is not using either the machine-readable, alphanumeric `ISO-3166-2` codes or the official (Latin) labels, instead it uses a quasi-English unofficial labelling, which requires manual identification of Google's typology items.
+
+A bit exotic example, Réunion, or, as France calls it, _La Réunion_, shows some of the statistical impracticalities of the non-hierarchical `ISO-3166` codes. Google used the [RE](https://www.iso.org/obp/ui/#iso:code:3166:RE) `ISO-3166-1` country code and the corresponding label Réunion to identify the small island in the Indian ocean. However, as a part of France (and the European Union), it is also described in France's `ISO-3166-2` as `FR-LRE`, labelled _La Réunion_ as an overseas region, and as `FR-RE`, as an overseas department. The distinction mirrors France's administrative laws, and matches the rows in Google's reports with three potential `ISO-3166` codes.  If we want to join Google's data with regional statistical data from French or EU official tables, we have to use code `FRY4` from the Frech `NUTS3` typology. 
+
+## Creating The Adequate Typology
+
+There are some very small sovereign states that do not have any `NUTS` divisions. Luxembourg is not divided (`LU` = `LU0` = `LU00` = `LU000`). Our package can project the national data given by Google to any `NUTS` level, so that these part of Europe fall into the right place on country, `NUTS1`, `NUTS2` and `NUTS3` level data tables, too.
+
+However, in most cases, the `NUTS` typology is hierarchical. If we take the example of Malta, which is the smallest member state with the least number of possible divisions (exactly two: `MT001` refers to the main island of Malta and `MT002` refers to the smaller islands of *Gozo* and *Comino*.) We know that in the hierarchy `MT002` belongs to `MT00`, which belongs to `MT0`, which belongs to the country Malta (`MT`).  Therefore, if we have a bit of ambiguity with a territory, we can still roughly place it, if we at least know at what level would it fit to Europe’s map.  In Malta’s case, Google did not divide the country, so we know that Google’s data refers to `MT` = `MT0` = `MT00`, which makes matching with any national (`NUTS0`), `NUTS1` or `NUTS2` level data table possible, although we cannot directly match with `NUTS3` tables which separate `MT001` and `MT002`. In this case, we have to use `impute_down_nuts()` to impute (project) the `MT` = `MT0` = `MT00` data to `MT001` and `MT002`.
+ 
+Google provided extremely detailed data for some small countries like Estonia and Latvia, because the `ISO-3166-2` subdivisons of these relatively small countries are very small, i.e. usually smaller than the `NUTS3` statistical regions.  These countries, due to their size, are not divided in `NUTS1` and `NUTS2` levels (`EE` = `EE0` = `EE00`), but they have statistical subdivisions on `NUTS3` level.  The `ISO-3166-2` used by Google tend to be on a lower level (`quasi-NUTS4`). The `NUTS` earlier contained a `NUTS4` typology, but it was very impractical to use, because divisions at this level tend to change very quickly, and the creation of statistical aggregates is not always possible. For example, it would clearly not be possible disaggregating the GDP in a meaningful to such small territorial units. 
+
+Because most Eurostat data is available only on `NUTS2` level, we can simply use the `EE` and `LV` data from Google and project it to the technical `NUT2` regions `EE00` and `LV00` (both identical to the country itself.) If we would want to match Estonia's and Latvias data with `NUTS3` levels statistical tables, we would have to created weighted averages from Googles sub-NUTS3 regions for these countries.
+
+## Countries That Are Not Members of the European Union
+
+In the case of small non-EU member states we applied the same logic, although these countries are at the moment not part of the official NUTS nomenclature. For example, we made Andorra `AD` = `AD0` = `AD00` = `AD00`.  Eurostat's regional data products usually do not contain data from Andorra, but the national data tables sometimes do, and this data can be safely projected down to the identical technical `NUTS1` "region" of `AD0` or the technical `NUTS2` region of `AD00`.
+
+Some non-EU member states, such as Liechtenstein, Norway, Iceland (the European Economic Area), or (potential) EU member canidates on the Balkans, i.e. Albania, Montengro, North Macedonia, Serbia are becoming part of the EU `NUTS2021`, which is already defined but not yet used, and currently they have `NUTS` equivalent codes.  
+
+Cyprus is unfortunately not present in the Google Mobility Reports.
+
+## Imputation And Correlation
+
+In many cases the `ISO-3166-2` subdivisions used by Google correspond to some `NUTS` typology elements.  After figuring out the correct `NUTS` typology for the Google rows, we can aggregate up `NUTS3` level data or project down `NUTS1` data to the `NUTS2` level, which is the most likely level for practical statistical analysis. In some cases, the `ISO-3166-2` correspond to *earlier* definitions of `NUTS`. We could have chosen to try to match currently non-matched `ISO-3166-2` with `NUTS2010` or `NUTS2003` definitions, and then try to use a time-wise correspondence among `NUTS` definitions.  If we did not find an equivalence with any elements of the `NUTS2016` definitions, we probably could have found it in the historical `NUTS2003`, `NUTS2010` or other typologies, and could have tried to use our timewise-correspondence to find an equivalent.  Even if there is a formula that connectes a `NUTS2016` typological element to various `NUTS2003` elements, and thus via `ISO-3166-2`, it would require an almost case-by-case programming to exploit this connection, given that there are many possibilities in time-wise correspondents (see vignette: [Working With Regional, Sub-National Statistical Products](http://regions.danielantal.eu/articles/Regional_stats.html)). Instead we used some simplifications when the `ISO-3166-2` and the currently used `NUTS1016` typology do not match. 
+
+In some cases, Google merged certain statistical regions of Europe.  For example, following the [ISO-3166-2- subdivisions of Italy](https://www.iso.org/obp/ui/#iso:code:3166:IT) 
+the culturally autonomous, partly German speaking part of Italy was merged into a single unit (`ISO-3166-2`: `IT-32`, with Italian labelling _Trentino-Alto Adige_ and with German labelling _Trentino-Südtirol_, but Google used an unofficial English labelling), even though these are two undivided `NUTS2` regions, i.e. Trentino `ITD2`=`ITD20` and _Alto Adige_ / _Südtirol_ (*South Tyrol* for Google) `ITD1` = `ITD10`.  In this case, comparison is possible, but requires addition or weighting between EU statistical units for joining with Google data. We gave the `pseudo-NUTS` code `ITDX` to *Trentino-South Tyrol*, which clearly identifies the region as part of `ITD` for _Northeastern Italy_, and of course as part of `IT` or _Italy_.
+
+For simplicity, we treated some of these historical regions identical to a current one, if the difference was very small. For example, _Bragança_ district in Portugal (in `ISO-3166-2`: `PT-04`) was coded as `PT11E`, because it is almost identical to the `NUTS3` region _Terras de Trás-os-Montes_. 
+
+In other cases, when Google’s typology cuts accross current European statistical region lines, we again chose the creation of `pseudo-NUTS` codes. For example, we created the irregular `pseudo-NUTS` code `PT11X` for the _Braga district_ of Portugal (in `ISO-3166-2`: `PT-03`), because it is certainly part of  `PT11` _Continente_, `PT11` _Norte_, and the technical `NUTS0` `PT` for Portugal, but it does not correspond to any `NUTS3` units of Portugal in the `NUTS2016` definition. This coding will not pass the `validate_nuts_code()` function, but it certainly gives a strong starting point for data imputation. 
+
+We faced many such problems with Portugal and Wales within Great Britain in the United Kingdom.

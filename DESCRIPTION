@@ -1,6 +1,6 @@
 Package: regions
 Title: Processing Regional Statistics
-Version: 0.1.2
+Version: 0.1.3
 Authors@R: 
     c(
   person(given = "Daniel",
@@ -17,8 +17,7 @@ Authors@R:
 Description: Validating sub-national statistical typologies, re-coding across 
     standard typologies of sub-national statistics, and making valid aggregate
     level imputation, re-aggregation, re-weighting and projection down to 
-    lower hierarchical levels to create meaningful meaningful
-    data panels and time series.
+    lower hierarchical levels to create meaningful data panels and time series.
 License: GPL-3
 Encoding: UTF-8
 Language: en-GB

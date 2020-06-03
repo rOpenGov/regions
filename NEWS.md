@@ -15,3 +15,8 @@
 # regions 0.1.2 
 * New function `impute_down_nuts` for less general cases, i.e. EU NUTS imputations.
 * Contributor attribution consistent in DESCRIPTION and source file. 
+* Release candidate on CRAN.
+
+# regions 0.1.3 
+* Further improvements in the Google typology: adding the United Kingdom, Portugal, Greece, Malta, parts of Lativa, Italy and Réunion.
+* `recode_nuts` slightly alterred to follow changes in dependency `dplyr`. 

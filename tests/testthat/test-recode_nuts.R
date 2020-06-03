@@ -1,4 +1,6 @@
 library(regions)
+library(testthat)
+
 foo <- data.frame ( 
   geo  =  c("FR", "DEE32", "UKI3" ,
             "HU12", "DED", 
@@ -6,7 +8,13 @@ foo <- data.frame (
   values = runif(6, 0, 100 ),
   stringsAsFactors = FALSE )
 
-recode_nuts(dat = foo, nuts_year = 2013)
+test_that("types are checked", {
+  expect_error(recode_nuts ( dat = 1))
+  expect_error(recode_nuts ( dat = foo[-c(1:6),]))
+})
+
+recode_nuts(dat = foo, 
+            nuts_year = 2013)
 
 test <- data.frame ( 
   geo  =  c("FR", "DEE32", "UKI3" ,
@@ -19,6 +27,8 @@ tested1 <- recode_nuts(dat = test,
                        geo_var = "geo", 
                        nuts_year = 2013)
 sort(unique(tested1$geo))
+
+tested1$code_2013
 
 test_that("all geo codes are returned", {
   expect_equal(sort(unique(tested1$geo)), sort(unique(test$geo)))
@@ -35,17 +45,33 @@ test_that("correct values are returned", {
 
 
 test2 <- data.frame ( 
-  geo  =  c("FR", "DEE32", "UKI3" ,
+  geo  =  c("FR", "DX32", "UKI3" ,
             "HU12", "DED", 
             "FRK", "ZZZ"), 
   values = runif(7, 0, 100 ),
   stringsAsFactors = FALSE )
 
-tested2 <- recode_nuts(test2, nuts_year = 2016)
+tested2 <- recode_nuts(dat = test2, 
+                       nuts_year = 2016)
 
 test_that("incorrect codes are identified", {
-  expect_equal(tested2[ grepl("Not found", tested2$typology_change), "geo" ], 
-               c("ZZZ"))
-  expect_equal(tested2[ grepl("Used", tested2$typology_change), "code_2016" ], 
-               NA_character_)
+  expect_equal(tested2[ grepl("Not found", tested2$typology_change),
+                        "geo" ], 
+               c("DX32", "ZZZ"))
+  expect_equal(nrow(tested2[ grepl("Used", tested2$typology_change), "code_2016" ]), 
+               NULL)
 })
+
+example_df <- data.frame ( 
+  geo  =  c("FR", "DEE32", "UKI3" ,
+            "HU12", "DED", 
+            "FRK"), 
+  values = runif(6, 0, 100 ),
+  stringsAsFactors = FALSE )
+
+recode_nuts(dat = example_df, 
+            nuts_year = 2021) %>%
+  select ( code_2021, values, typology_change ) %>%
+  rename ( geo = code_2021 ) %>% 
+  filter ( !is.na(geo)) 
+

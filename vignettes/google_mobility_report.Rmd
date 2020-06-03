@@ -2,7 +2,7 @@
 title: "The Typology Of The Google Mobility Reports (COVID-19)"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Google}
+  %\VignetteIndexEntry{The Typology Of The Google Mobility Reports     (COVID-19)}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

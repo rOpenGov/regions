@@ -105,8 +105,16 @@ found_in_nuts_distinct <- google_region_names %>%
               by = c("country_code", "match_name"))
 
 ## Making google_region_names$match_name equal to regions_and_names_2016$match_name when there is a 1-to-1 correspondence
+
+### Most of the country fixes are in a separate file now, 
+### for easier readability.  Only BG and RO stayed here because of
+### character coding issues.
+
 source(file.path('data-raw', 'google_matchtable_by_country.R'))
 
+### The following codes, due to character coding problems on Windows
+### do not read well if you use source.  They have to run from 
+### the code with "Run"
 
 ## Fixing Bulgaria -----------------------------------------------
 # changing nuts codes

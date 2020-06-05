@@ -1,103 +1,3 @@
-library(regions)
-library(tidyverse)
-#' @author István Zsoldos
-#' Not included in package, only as helper function to create the data file.
-
-normalize_text <- function(x) {
-  
-  x <- as.character(x)
-  x <- tolower(x)
-  x <- str_trim(x, side = "both")
-  x <- gsub("\\s", "_", x)
-  x <- gsub(":|!|,|;|%","", x)
-  x <- gsub("____|___|__", "_", x)
-  x
-}
-
-### use your own path or save a copy of the Global Mobility Reports
-###  into 'data-raw'
-###  This file is not synchronized with the GitHub Repo because it
-### is large and will slow down gits.
-
-gmr_csv <- read_csv( file.path('data-raw', 
-                               'Global_Mobility_Report.csv'))
-
-gmr <- gmr_csv %>%
-  set_names ( c("country_code", "google_country_name", 
-                "google_region_name_1", 
-                "google_region_name_2", 
-                "date", "retail", "grocery", 
-                "parks", "transit", "workplaces", "residential") ) %>%
-  mutate ( google_region_name_1 = ifelse ( country_code == "RE", 
-                                           "La Réunion", 
-                                           google_region_name_1), 
-           google_country_name = ifelse ( country_code == "RE", 
-                                          "France", 
-                                          google_country_name ), 
-           country_code = ifelse ( country_code == "RE", 
-                                   "FR", 
-                                   country_code ))
-
-## First joining with valid NUTS codes ------------
-## When there is no region name, use the country name
-## And preferably the English country name, not the national language one
-
-data("all_valid_nuts_codes", package = 'regions')
-all_valid_nuts_codes 
-
-nuts_gmr <- all_valid_nuts_codes %>%
-  mutate ( country_code = get_country_code(geo)) %>%
-  distinct ( country_code ) %>% 
-  left_join ( gmr, 
-              by = 'country_code' ) %>%
-  mutate ( google_region_name_1 = case_when (
-    is.na(google_region_name_1) & is.na(google_region_name_2) ~ google_country_name, 
-    TRUE ~ google_region_name_1
-  )) %>%
-  pivot_longer ( cols = c("google_region_name_1", 
-                          "google_region_name_2"), 
-                 names_to = "google_region_level", 
-                 values_to = "google_region_name") %>%
-  mutate ( google_name = normalize_text (google_region_name )) %>%
-  filter ( !is.na(google_name))
-
-## Help table ------------------------------------------------
-## Current regions and their official names in NUTS2016, 
-## recent changes, name variants in NUTS2013 and NUTS2010 
-## for countries where only nuts 2021 is available, ituses that
-
-data("nuts_changes", package = 'regions')
-
-only_2021_nuts <- all_valid_nuts_codes %>%
-  mutate ( country_code = get_country_code(geo)) %>%
-  select (country_code, nuts, typology) %>%
-  filter( nuts %in% c("code_2016", "code_2021") & typology == "country") %>% 
-  select ( -all_of ("typology")) %>%
-  unique () %>% 
-  mutate( count = 1 ) %>%
-  pivot_wider( names_from = "nuts",
-               values_from = "count") %>%
-  filter( is.na(code_2016) ) %>%
-  select (country_code) %>% unlist() %>% unname()
-
-regions_and_names_2016 <- all_valid_nuts_codes %>%
-  mutate ( country_code = get_country_code(geo)) %>%
-  filter ( nuts == "code_2016" | country_code %in% only_2021_nuts) %>%
-  rename ( code_2016 = geo ) %>% 
-  left_join ( nuts_changes %>%
-                select ( typology, code_2016, 
-                         geo_name_2021, geo_name_2016, geo_name_2013, 
-                         geo_name_2010, change_2016), 
-              by = c('typology', 'code_2016')) %>%
-  mutate ( country_name = countrycode::countrycode(country_code, 
-                                                   "iso2c", 'country.name')
-  ) %>%
-  mutate ( match_name  = case_when(
-    typology == "country" ~ normalize_text(country_name) ,
-    nuts == "code_2021" ~ normalize_text(geo_name_2021),
-    TRUE ~ normalize_text(geo_name_2016)   )
-  )
-
 ## Google region names before national corrections ------------
 google_region_names <- nuts_gmr %>%
   select ( country_code, google_region_level,
@@ -106,41 +6,20 @@ google_region_names <- nuts_gmr %>%
   distinct_all() %>% 
   mutate ( match_name = google_name )
 
-##  What was found at first try  ---------------------------------
-
-found_in_nuts_distinct <- google_region_names %>%
-  left_join ( regions_and_names_2016 , 
-              by = c("country_code", "match_name"))
-
-## Making google_region_names$match_name equal to regions_and_names_2016$match_name when there is a 1-to-1 correspondence
-
 #some general changes for better fit
 #switching for local county name in SE
 google_region_names <- google_region_names %>%
   mutate ( match_name = ifelse(
     (country_code == "SE" & grepl( "_county", match_name)),
     gsub("_county", "s_län", match_name), match_name)
-    ) 
+  ) 
 
 #getting rid of "_county" from names in RO
 google_region_names <- google_region_names %>%
   mutate ( match_name = ifelse(
     (country_code == "RO" & 
        grepl( "_county", match_name)), 
-       gsub("_county", "", match_name), match_name)) 
-
-# changing some names in HU
-hungary_names <- regions_and_names_2016 %>%
-  filter ( country_code  == "HU") %>%
-  select ( match_name )  %>%
-  unlist() %>% as.character() %>% sort()
-
-google_region_names <- google_region_names %>%
-  mutate ( match_name = case_when (
-    country_code == "HU" & grepl("moson-sopron", match_name) ~  hungary_names[grepl("moson-sopron", hungary_names)],
-    country_code == "HU" & grepl( "hungary|budapest", match_name) ~ match_name,
-    country_code == "HU" & grepl( "_county", match_name) ~ gsub("_county", "", match_name), 
-    TRUE ~ match_name))
+    gsub("_county", "", match_name), match_name)) 
 
 # Adding code_2016 values where match is possible
 google_region_names <- google_region_names %>%
@@ -148,8 +27,15 @@ google_region_names <- google_region_names %>%
                 select (c(country_code, code_2016, match_name)) , 
               by = c("country_code", "match_name"))
 
+## Fixing Hungary ------------------------------------------------
+google_region_names <- google_region_names %>%
+  mutate ( match_name = case_when (
+    country_code == "HU" & grepl("moson-sopron", match_name) ~  hungary_names[grepl("moson-sopron", hungary_names)],
+    country_code == "HU" & grepl( "hungary|budapest", match_name) ~ match_name,
+    country_code == "HU" & grepl( "_county", match_name) ~ gsub("_county", "", match_name), 
+    TRUE ~ match_name))
 
-# Fixing Italy
+# Fixing Italy ------------------------------------------------------
 # See The Typology Of The Google Mobility Reports (COVID-19) vignette
 # for Trentino-South Tyrol
 
@@ -165,8 +51,7 @@ google_region_names <- google_region_names %>%
     country_code == "IT" & match_name == "sicily" ~ "ITG1",
     country_code == "IT" & match_name == "tuscany" ~ "ITI1",
     country_code == "IT" & match_name == "trentino-south_tyrol" ~ "ITDX", #this is a pseudo-code, because these are two regions
-    TRUE ~ code_2016)) %>%
-  arrange ( code_2016 )
+    TRUE ~ code_2016)) 
 
 # changing names
 google_region_names <- google_region_names %>%
@@ -180,9 +65,7 @@ google_region_names <- google_region_names %>%
     country_code == "IT" & match_name == "tuscany" ~ "toscana",
     TRUE ~ match_name))
 
-
-## Fixing Belgium
-
+## Fixing Belgium -----------------------------------------------
 # changing nuts codes
 google_region_names <- google_region_names %>%
   mutate ( code_2016 = case_when (
@@ -199,76 +82,8 @@ google_region_names <- google_region_names %>%
     country_code == "BE" & match_name == "wallonia" ~ "région_wallonne",
     TRUE ~ match_name))
 
-## Fixing Bulgaria
-# changing nuts codes
-google_region_names <- google_region_names %>%
-  mutate ( code_2016 = case_when (
-    country_code == "BG" & match_name == "blagoevgrad_province" ~ "BG413",
-    country_code == "BG" & match_name == "burgas" ~ "BG341",
-    country_code == "BG" & match_name == "dobrich_province" ~ "BG332",
-    country_code == "BG" & match_name == "gabrovo" ~ "BG322",
-    country_code == "BG" & match_name == "haskovo_province" ~ "BG422",
-    country_code == "BG" & match_name == "jambol" ~ "BG343",
-    country_code == "BG" & match_name == "kardzhali_province" ~ "BG425",
-    country_code == "BG" & match_name == "kyustendil_province" ~ "BG415",
-    country_code == "BG" & match_name == "lovec" ~ "BG315",
-    country_code == "BG" & match_name == "montana_province" ~ "BG312",
-    country_code == "BG" & match_name == "pazardzhik" ~ "BG423",
-    country_code == "BG" & match_name == "pernik" ~ "BG414",
-    country_code == "BG" & match_name == "pleven_province" ~ "BG314",
-    country_code == "BG" & match_name == "plovdiv_province" ~ "BG421",
-    country_code == "BG" & match_name == "razgrad" ~ "BG324",
-    country_code == "BG" & match_name == "ruse" ~ "BG323",
-    country_code == "BG" & match_name == "shumen_province" ~ "BG333",
-    country_code == "BG" & match_name == "silistra" ~ "BG325",
-    country_code == "BG" & match_name == "sliven_province" ~ "BG342",
-    country_code == "BG" & match_name == "smoljan" ~ "BG424",
-    country_code == "BG" & match_name == "sofia_city_province" ~ "BG411",
-    country_code == "BG" & match_name == "sofia_province" ~ "BG412",
-    country_code == "BG" & match_name == "stara_zagora" ~ "BG344",
-    country_code == "BG" & match_name == "targovishte_province" ~ "BG334",
-    country_code == "BG" & match_name == "varna" ~ "BG331",
-    country_code == "BG" & match_name == "veliko_tarnovo_province" ~ "BG321",
-    country_code == "BG" & match_name == "vidin" ~ "BG311",
-    country_code == "BG" & match_name == "vraca" ~ "BG313",
-    TRUE ~ code_2016))
 
-# changing names
-google_region_names <- google_region_names %>%
-  mutate ( match_name = case_when (
-    country_code == "BG" & match_name == "blagoevgrad_province" ~ "благоевград",
-    country_code == "BG" & match_name == "burgas" ~ "бургас",
-    country_code == "BG" & match_name == "dobrich_province" ~ "добрич",
-    country_code == "BG" & match_name == "gabrovo" ~ "габрово",
-    country_code == "BG" & match_name == "haskovo_province" ~ "хасково",
-    country_code == "BG" & match_name == "jambol" ~ "ямбол",
-    country_code == "BG" & match_name == "kardzhali_province" ~ "кърджали",
-    country_code == "BG" & match_name == "kyustendil_province" ~ "кюстендил",
-    country_code == "BG" & match_name == "lovec" ~ "ловеч",
-    country_code == "BG" & match_name == "montana_province" ~ "монтана",
-    country_code == "BG" & match_name == "pazardzhik" ~ "пазарджик",
-    country_code == "BG" & match_name == "pernik" ~ "перник",
-    country_code == "BG" & match_name == "pleven_province" ~ "плевен",
-    country_code == "BG" & match_name == "plovdiv_province" ~ "пловдив",
-    country_code == "BG" & match_name == "razgrad" ~ "разград",
-    country_code == "BG" & match_name == "ruse" ~ "русе",
-    country_code == "BG" & match_name == "shumen_province" ~ "шумен",
-    country_code == "BG" & match_name == "silistra" ~ "силистра",
-    country_code == "BG" & match_name == "sliven_province" ~ "сливен",
-    country_code == "BG" & match_name == "smoljan" ~ "смолян",
-    country_code == "BG" & match_name == "sofia_city_province" ~ "софия_(столица)",
-    country_code == "BG" & match_name == "sofia_province" ~ "софия",
-    country_code == "BG" & match_name == "stara_zagora" ~ "стара_загора",
-    country_code == "BG" & match_name == "targovishte_province" ~ "търговище",
-    country_code == "BG" & match_name == "varna" ~ "варна",
-    country_code == "BG" & match_name == "veliko_tarnovo_province" ~ "велико_търново",
-    country_code == "BG" & match_name == "vidin" ~ "видин",
-    country_code == "BG" & match_name == "vraca" ~ "враца",
-    TRUE ~ match_name))
-
-
-## Fixing Czechia
-
+## Fixing Czechia --------------------------------------
 # changing nuts codes
 google_region_names <- google_region_names %>%
   mutate ( code_2016 = case_when (
@@ -315,7 +130,7 @@ google_region_names <- google_region_names %>%
   mutate( match_name = ifelse( country_code == "CZ" & grepl( "plze", match_name), 
                                "plzeňský_kraj", match_name))
 
-# Fixing Denmark
+# Fixing Denmark -----------------------------------------------------
 # changing nuts codes
 google_region_names <- google_region_names %>%
   mutate ( code_2016 = case_when (
@@ -336,7 +151,7 @@ google_region_names <- google_region_names %>%
     country_code == "DK" & match_name == "region_zealand" ~ "sjælland",
     TRUE ~ match_name))
 
-# Fixing Germany
+# Fixing Germany ----------------------------------------------
 # changing nuts codes
 
 google_region_names <- google_region_names %>%
@@ -364,14 +179,50 @@ google_region_names <- google_region_names %>%
     country_code == "DE" & match_name == "thuringia" ~ "thüringen",
     TRUE ~ match_name))
 
-# Fixing Estonia (Local government level data only, skipping for the moment, only deleting "_county")
+# Fixing Estonia ------------------------------------------
+# 
 google_region_names <- google_region_names %>%
   mutate ( match_name = ifelse(
     ( test = country_code == "EE" &  grepl( "_county", match_name)), 
-      yes  = gsub("_county", "", match_name), 
-      no   =  match_name)) 
+    yes  = gsub("_county", "", match_name), 
+    no   =  match_name)) %>%
+  mutate ( code_2016 = case_when (
+    country_code == "EE" & match_name == "harju" ~ "EE001",
+    country_code == "EE" & match_name == "ida-viru" ~ "EE007",
+    country_code == "EE" & match_name == "hiiu" ~ "EE004H",
+    country_code == "EE" & match_name == "saare" ~ "EE004S",
+    country_code == "EE" & match_name == "pärnu" ~ "EE004P",
+    country_code == "EE" & match_name == "lääne" ~ "EE004L",
+    country_code == "EE" & match_name == "järva" ~ "EE006J",
+    country_code == "EE" & match_name == "lääne-viru" ~ "EE006L",
+    country_code == "EE" & match_name == "rapla" ~ "EE006R",
+    country_code == "EE" & match_name == "jõgeva" ~ "EE008J",
+    country_code == "EE" & match_name == "põlva" ~ "EE008P",
+    country_code == "EE" & match_name == "tartu" ~ "EE008T",
+    country_code == "EE" & match_name == "valga" ~ "EE008V",
+    country_code == "EE" & match_name == "viljandi" ~ "EE008I",
+    country_code == "EE" & match_name == "võru" ~ "EE008U", 
+    TRUE ~ code_2016)) %>%
+  mutate ( match_name = case_when (
+    country_code == "EE" & match_name == "harju" ~ paste0("northern estonia ", match_name),
+    country_code == "EE" & match_name == "ida-viru" ~ paste0("northeastern estonia ", match_name), 
+    country_code == "EE" & match_name %in% c("hiiu","saare" ,"pärnu", "lääne") ~ paste0("western estonia ", match_name),
+    country_code == "EE" & match_name %in% c("järva","lääne-viru" ,"rapla") ~ paste0("central estonia", match_name),
+    country_code == "EE" & match_name %in% c("jõgeva", "põlva", "tartu", "valga", 
+                                             "viljandi","võru" ) ~ paste0("southern estonia ", match_name),
+    TRUE ~ match_name))
 
-# Fixing Ireland (Local government level data only, only Dublin County corresponds to NUTS3, skipping the rest for the moment)
+#EE004 Western Estonia (Hiiu, Lääne, Pärnu and Saare county)
+#EE006 Central Estonia (Järve, Lääne-Viru and Rapla county)
+#EE007 Northeastern Estonia (Ida-Viru county)
+#EE008 Southern Estonia (Jõgeva, Põlva, Tartu, Valga, Viljandi and Võru county)
+# https://www.stat.ee/296050#:~:text=EE004%20Western%20Estonia%20(Hiiu%2C%20L%C3%A4%C3%A4ne,Valga%2C%20Viljandi%20and%20V%C3%B5ru%20county)
+
+google_region_names_ee <- google_region_names  %>%
+  filter ( country_code == "EE")
+
+# Fixing Ireland ------------------------------------
+# (Local government level data only, only Dublin County corresponds to NUTS3, skipping the rest for the moment)
 # changing nuts code
 google_region_names <- google_region_names %>%
   mutate ( code_2016 = ifelse(
@@ -384,10 +235,7 @@ google_region_names <- google_region_names %>%
     country_code == "IE" & match_name == "county_dublin",
     "dublin", match_name)) 
 
-# Fixing Greece ("Decentralized Administration", regions are made up of one or more NUTS2 regions, no change for the moment)
-
-
-# Fixing Spain
+# Fixing Spain -----------------------------------------
 # changing nuts codes
 
 google_region_names <- google_region_names %>%
@@ -428,14 +276,8 @@ google_region_names <- google_region_names %>%
     TRUE ~ match_name))
 
 
-#Fixing France
+#Fixing France --------------------------------------------
 # changing nuts codes
-<<<<<<< HEAD:data-raw/google_nuts_matchtable_maker_incl_ex_eu_AD1.R
-
-=======
-#google_region_names <- google_region_names %>%
-#  filter ( country_code == "FR")
->>>>>>> bbcfe8b5f911327d5c182256f799ba2db0711a66:data-raw/google_nuts_matchtable_Zsopi_maker_incl_ex_eu_AD.R
 google_region_names <- google_region_names %>%
   mutate ( code_2016 = case_when (
     country_code == "FR" & match_name == "brittany" ~ "FRH",
@@ -466,7 +308,7 @@ google_region_names <- google_region_names %>%
     TRUE ~ match_name))
 
 
-# Fixing Croatia
+# Fixing Croatia ------------------------------------------
 # changing nuts codes
 
 google_region_names <- google_region_names %>%
@@ -528,18 +370,43 @@ google_region_names <- google_region_names %>%
   mutate( match_name = ifelse( country_code == "HR" & grepl( "imurje_county", match_name), "međimurska_županija", match_name))
 
 
-# Fixing Latvia (Municipal data only partially finished)
+# Fixing Latvia (Municipal data only partially finished) ----------
 # PARTIAL
 
 google_region_names <- google_region_names %>%
   mutate ( code_2016 = case_when (
     country_code == "LV" & match_name == "riga" ~ "LV006",
-    country_code == "LV" & match_name == "city_of_liepāja|ventspils|saldus_municipality|talsi_municipality|dobele_municipality" ~ "LV003",
-    country_code == "LV" ~ "LV00",
+    country_code == "LV" & match_name == "city_of_liepāja" ~ "LV003L",
+    country_code == "LV" & match_name == "ventspils" ~ "LV003V",
+    country_code == "LV" & match_name == "saldus_municipality" ~ "LV003S",
+    country_code == "LV" & match_name == "talsi_municipality" ~ "LV003T",
+    country_code == "LV" & match_name == "dobele_municipality" ~ "LV003D",
+    country_code == "LV" & match_name == "ādaži_municipality" ~ "LV007A",
+    country_code == "LV" & match_name == "aizkraukle_municipality" ~ "LV009A",
+    country_code == "LV" & match_name == "aloja_municipality" ~ "LV007L",
+    country_code == "LV" & match_name == "alūksne_municipality" ~ "LV008A",
+    country_code == "LV" & match_name == "babīte_municipality" ~ "LV007B",
+    country_code == "LV" & match_name == "baldone_municipality" ~ "LV007X",
+    country_code == "LV" & match_name == "balvi_municipality" ~ "LV005B",
+    country_code == "LV" & match_name == "bauska_municipality" ~ "LV009B",
+    country_code == "LV" & match_name == "burtnieki_municipality" ~ "LV008B",
+    country_code == "LV" & match_name == "carnikava_municipality" ~ "LV007C",
+    country_code == "LV" & match_name == "cēsis_municipality" ~ "LV008C",
+    country_code == "LV" & match_name == "daugavpils" ~ "LV005D",
+    country_code == "LV" & match_name == "daugavpils_municipality" ~ "LV005M",
+    country_code == "LV" & match_name == "engure_municipality" ~ "LV007E",
+    country_code == "LV" & match_name == "iecava_municipality" ~ "LV009I",
+    country_code == "LV" & match_name == "jaunjelgava_municipality" ~ "LV009J",
+    country_code == "LV" & match_name == "latvia" ~ "LV00",
+    country_code == "LV"                 ~ "LV00X",
     TRUE ~ code_2016)
-    )
-  
-# Fixing Lithuania (chaning "_county" to "_apskritis" in name, this should match nuts3 regions)
+  )
+
+google_lv <- google_region_names %>%
+  filter ( country_code == "LV")
+
+# Fixing Lithuania ---------------------------
+# (chaning "_county" to "_apskritis" in name, this should match nuts3 regions)
 
 # changing nuts codes
 google_region_names <- google_region_names %>%
@@ -572,19 +439,19 @@ google_region_names <- google_region_names %>%
     TRUE ~ match_name))
 
 
-# Fixing 	Luxembourg 
+# Fixing 	Luxembourg ------------------------------------------
 # bringig to lowest identifiable level, which is LU000
 # Country has no NUTS subdivisions
 google_region_names <- google_region_names %>%
   mutate ( code_2016 = case_when (
     country_code == "LU"  ~ "LU000",
     TRUE ~ code_2016)
-    )
+  )
 
 # Fixing Hungary (names were changed at the beginning)
 
 
-# Fixing 	Malta
+# Fixing 	Malta ------------------------
 # Country has two NUTS3 subdivisions, but Google do not make
 # subdivisions. Each brought to MT00 = MT0 = MT
 
@@ -594,8 +461,7 @@ google_region_names <- google_region_names %>%
     TRUE ~ code_2016)
   )
 
-# Fixing the Netherlands
-
+# Fixing the Netherlands ----------------------------------------
 # changing nuts codes
 google_region_names <- google_region_names %>%
   mutate ( code_2016 = case_when (
@@ -617,8 +483,7 @@ google_region_names <- google_region_names %>%
     TRUE ~ match_name))
 
 
-# Fixing Austria
-
+# Fixing Austria ---------------------------------------
 # changing nuts codes
 google_region_names <- google_region_names %>%
   mutate ( code_2016 = case_when (
@@ -688,12 +553,15 @@ google_region_names <- google_region_names %>%
     TRUE ~ match_name))
 
 #additional fixing for lodz_county
-google_region_names <- google_region_names %>% mutate( code_2016 = ifelse( country_code == "PL" & grepl( "ód", match_name) & google_name != "masovian_voivodeship", "PL71", code_2016))
-google_region_names <- google_region_names %>% mutate( match_name = ifelse( country_code == "PL" & grepl( "ód", match_name) & google_name != "masovian_voivodeship", "łódzkie", match_name))
+google_region_names <- google_region_names %>%
+  mutate( code_2016 = ifelse( country_code == "PL" & grepl( "ód", match_name) & google_name != "masovian_voivodeship", "PL71", code_2016))
+google_region_names <- google_region_names %>%
+  mutate( match_name = ifelse( country_code == "PL" & grepl( "ód", match_name) & google_name != "masovian_voivodeship", "łódzkie", match_name))
 
 
-# Fixing Portugal (no easy correspondence to nuts regions, no change for the moment)
-# Aveiro and Faro are the same districts!
+# Fixing Portugal -------------------------------------------------
+# Only approximate solution, Google uses ISO-3166-2 which is not 
+# compatible with NUTS
 google_region_names <- google_region_names %>%
   mutate ( code_2016 = case_when (
     country_code == "PT" & match_name == "lisbon"   ~ "PT17",
@@ -721,69 +589,59 @@ google_region_names <- google_region_names %>%
   arrange ( code_2016 )
 
 
-# Fixing Romania
 
-# changing nuts codes
+
+# Fixing Slovenia ---------------------------------------------
+#(seems like local municipal data, no change for now)
+
+slovenia_municipalities <- readr::read_csv(
+  file.path('data-raw', 'slovenia_municipalities_nuts.csv'),
+                           trim_ws = TRUE) 
+
+slovenia_help_table <- google_region_names %>%
+  filter ( country_code == "SI") %>%
+  left_join ( 
+    slovenia_municipalities %>%
+      rename ( google_region_name = municipality ), 
+    by = "google_region_name"
+    ) %>%
+  mutate ( code_2016_3 = case_when (
+    country_code == "SI" & match_name == "administrative_unit_maribor"   ~ "SI032",
+    country_code == "SI" & match_name == "municipality_of_hrastnik" ~ "SI035",
+    country_code == "SI" & match_name == "slovenia"   ~ "SI",
+    TRUE ~ code_2016_3
+  )) %>%
+  mutate ( code_2016 = ifelse (!is.na(code_2016_3), 
+                               code_2016_3, 
+                               code_2016)) %>%
+  select ( all_of(c("match_name", "code_2016"))) %>%
+  mutate ( code_2016_4 = paste0(code_2016,
+                              toupper(substr(match_name,1,1)))) %>%
+  mutate ( code_2016_4 = case_when ( 
+    match_name == "logatec" ~ paste0(code_2016, "X"), 
+    match_name == "ptuj" ~ paste0(code_2016, "J"),
+    match_name == "šmarje_pri_jelšah" ~ paste0(code_2016, "J"),
+    match_name == "ravne_na_koroškem" ~ paste0(code_2016, "K"),
+    match_name == "lenart" ~ paste0(code_2016, "X"),
+    match_name == "ljutomer" ~ paste0(code_2016, "Y"),
+    match_name == "slovenia" ~ "SI", 
+    TRUE ~ code_2016_4)) %>%
+  add_count ( code_2016, code_2016_4 ) %>%
+  ungroup() %>%
+  select ( all_of(c("match_name", "code_2016_4")) )
+
 google_region_names <- google_region_names %>%
-  mutate ( code_2016 = case_when (
-    country_code == "RO" & match_name == "argeș" ~ "RO311",
-    country_code == "RO" & match_name == "bistrița-năsăud" ~ "RO112",
-    country_code == "RO" & match_name == "botoșani" ~ "RO212",
-    country_code == "RO" & match_name == "brașov" ~ "RO122",
-    country_code == "RO" & match_name == "bucharest" ~ "RO321",
-    country_code == "RO" & match_name == "călărași" ~ "RO312",
-    country_code == "RO" & match_name == "caraș-severin" ~ "RO422",
-    country_code == "RO" & match_name == "constanța" ~ "RO223",
-    country_code == "RO" & match_name == "dâmbovița" ~ "RO313",
-    country_code == "RO" & match_name == "galați" ~ "RO224",
-    country_code == "RO" & match_name == "ialomița" ~ "RO315",
-    country_code == "RO" & match_name == "iași" ~ "RO213",
-    country_code == "RO" & match_name == "maramureș" ~ "RO114",
-    country_code == "RO" & match_name == "mehedinți" ~ "RO413",
-    country_code == "RO" & match_name == "mureș" ~ "RO125",
-    country_code == "RO" & match_name == "neamț" ~ "RO214",
-    country_code == "RO" & match_name == "timiș" ~ "RO424",
-    TRUE ~ code_2016))
+  left_join (slovenia_help_table, by = "match_name" ) %>%
+  mutate ( code_2016 = ifelse (test = is.na(code_2016), 
+                               yes  = code_2016_4, 
+                               no   = code_2016)) %>%
+  select ( -code_2016_4 )
+  
+  #mutate ( code_2016 = case_when (
+  #   country_code == "SK" & match_name == "žilina_region" ~ "SK031",
+  #  TRUE ~ code_2016))
 
-# changing names
-google_region_names <- google_region_names %>%
-  mutate ( match_name = case_when (
-    country_code == "RO" & match_name == "argeș" ~ "argeş",
-    country_code == "RO" & match_name == "bistrița-năsăud" ~ "bistrița-năsăud",
-    country_code == "RO" & match_name == "botoșani" ~ "botoşani",
-    country_code == "RO" & match_name == "brașov" ~ "braşov",
-    country_code == "RO" & match_name == "bucharest" ~ "bucureşti",
-    country_code == "RO" & match_name == "călărași" ~ "călăraşi",
-    country_code == "RO" & match_name == "caraș-severin" ~ "caraş-severin",
-    country_code == "RO" & match_name == "constanța" ~ "constanţa",
-    country_code == "RO" & match_name == "dâmbovița" ~ "dâmboviţa",
-    country_code == "RO" & match_name == "galați" ~ "galaţi",
-    country_code == "RO" & match_name == "ialomița" ~ "ialomiţa",
-    country_code == "RO" & match_name == "iași" ~ "iaşi",
-    country_code == "RO" & match_name == "maramureș" ~ "maramureş",
-    country_code == "RO" & match_name == "mehedinți" ~ "mehedinţi",
-    country_code == "RO" & match_name == "mureș" ~ "mureş",
-    country_code == "RO" & match_name == "neamț" ~ "neamţ",
-    country_code == "RO" & match_name == "timiș" ~ "timiş",
-    TRUE ~ match_name))
-
-
-#additional fixing for three counties where strange characters may go missing
-google_region_names <- google_region_names %>% mutate( code_2016 = ifelse( country_code == "RO" & grepl( "bistr", match_name), "RO112", code_2016))
-google_region_names <- google_region_names %>% mutate( match_name = ifelse( country_code == "RO" & grepl( "bistr", match_name), "bistriţa-năsăud", match_name))
-
-google_region_names <- google_region_names %>% mutate( code_2016 = ifelse( country_code == "RO" & grepl( "cara", match_name), "RO422", code_2016))
-google_region_names <- google_region_names %>% mutate( match_name = ifelse( country_code == "RO" & grepl( "cara", match_name), "caraş-severin", match_name))
-
-google_region_names <- google_region_names %>% mutate( code_2016 = ifelse( country_code == "RO" & substr(match_name,5,6) == "ra", "RO312", code_2016))
-google_region_names <- google_region_names %>% mutate( match_name = ifelse( country_code == "RO" & substr(match_name,5,6) == "ra", "călăraşi", match_name))
-
-
-# Fixing Slovenia (seems like local municipal data, no change for now)
-
-
-#Fixing Slovakia
-
+# Fixing Slovakia-------------------------------------------------
 # changing nuts codes
 google_region_names <- google_region_names %>%
   mutate ( code_2016 = case_when (
@@ -814,9 +672,7 @@ google_region_names <- google_region_names %>%
 google_region_names <- google_region_names %>% mutate( code_2016 = ifelse( country_code == "SK" & grepl( "tren", match_name), "SK022", code_2016))
 google_region_names <- google_region_names %>% mutate( match_name = ifelse( country_code == "SK" & grepl( "tren", match_name), "trenčiansky_kraj", match_name))
 
-
-
-# Fixing Finland
+# Fixing Finland -------------------------------------------------
 
 # changing nuts codes
 google_region_names <- google_region_names %>%
@@ -857,8 +713,7 @@ google_region_names <- google_region_names %>%
     TRUE ~ match_name))
 
 
-# Fixing Sweden
-
+# Fixing Sweden ---------------------------------------------
 # changing nuts codes
 google_region_names <- google_region_names %>%
   mutate ( code_2016 = case_when (
@@ -887,7 +742,7 @@ google_region_names <- google_region_names %>%
     country_code == "SE" & match_name == "varmlands_län" ~ "värmlands_län",
     TRUE ~ match_name))
 
-# Fixing Switzerland
+# Fixing Switzerland ------------------------------------------
 
 # changing nuts codes
 google_region_names <- google_region_names %>%
@@ -918,7 +773,7 @@ google_region_names <- google_region_names %>%
     TRUE ~ match_name))
 
 
-# Fixing UK
+# Fixing UK ------------------------------------------------------
 
 # changing nuts codes
 google_region_names <- google_region_names %>%
@@ -1056,8 +911,7 @@ google_region_names <- google_region_names %>%
     TRUE ~ match_name))
 
 
-## Fixing Greece
-
+## Fixing Greece --------------------------------------------
 # changing nuts codes
 google_region_names <- google_region_names %>%
   mutate ( code_2016 = case_when (
@@ -1071,44 +925,3 @@ google_region_names <- google_region_names %>%
     TRUE ~ code_2016)
   )
 
-
-#creating matchtable
-
-google_nuts_matchtable <- google_region_names %>%
-  mutate ( typology = case_when (
-    nchar(code_2016) == 5 ~ 'nuts_level_3', 
-    nchar(code_2016) == 4 ~ 'nuts_level_2', 
-    nchar(code_2016) == 3 ~ 'nuts_level_1', 
-    nchar(code_2016) == 2 ~ 'country', 
-    TRUE ~  'invalid typology'
-  )) %>%
-  select ( -all_of(c("google_name", "match_name")))
-
-#create list of countries where available nuts codes do not cover full country
-countries_missing_full_nuts <- google_nuts_matchtable %>%
-  filter ( typology == 'invalid typology') %>%
-  select(country_code) %>% unique() %>% unlist() %>% unname()
-
-countries_missing_full_nuts
-
-# Adding code_2016 values again, checking for discrepancies
-google_region_names <- google_region_names %>%
-  left_join ( regions_and_names_2016 %>%
-                select (c(country_code, code_2016, match_name)), 
-              by = c("country_code", "match_name", "code_2016")) %>%
-  mutate ( typology = case_when (
-    nchar(code_2016) == 5 ~ 'nuts_level_3', 
-    nchar(code_2016) == 4 ~ 'nuts_level_2', 
-    nchar(code_2016) == 3 ~ 'nuts_level_1', 
-    nchar(code_2016) == 2 ~ 'country', 
-    TRUE ~  'invalid typology'
-  ))
-
-
-#saving results
-#save(google_nuts_matchtable, file = "google_nuts_matchtable.RData")
-#load("google_nuts_matchtable.RData")
-
-usethis::use_data(google_nuts_matchtable, 
-                  internal=FALSE, overwrite = TRUE)
-data ( google_nuts_matchtable )

@@ -8,7 +8,8 @@
 #'   \item{UK}{Treated valid, because NUTS uses UK instead of GB for the United Kingdom.}
 #'   \item{XK}{XK is used for Kosovo, because Eurostat uses this code, too.}
 #' }
-#' All ISO-3166 country codes are validated, and also the three exceptions.
+#' All ISO-3166-1 country codes are validated, and also the 
+#' three exceptions.
 #' @param dat A data frame with a 2-character geo variable to be validated
 #' @param geo_var Defaults to \code{"geo"}. The variable that contains the
 #' 2 character geo codes to be validated.
@@ -45,25 +46,31 @@ validate_nuts_countries <- function ( dat, geo_var = "geo" ) {
   
   original_names <- names(dat)
   
-  quiet_country_codes <- purrr::quietly(countrycode::countrycode)
+  quiet_country_codes <- function(x) {
+    res <- purrr::quietly(countrycode::countrycode)(x,"iso2c", "iso3c" )
+    res$result
+    }
+  
+  iso_2c <- dat[, geo_var ]
 
   validate_country_df <- dat %>%
     dplyr::select ( all_of ( original_names )) %>%
-    dplyr::mutate ( iso2c = {{geo_var}} ) %>%
+    dplyr::mutate ( iso2c =  as.character(iso_2c)) %>%
     dplyr::mutate ( iso2c = dplyr::case_when ( 
       iso2c == "UK" ~ "GB",
       iso2c == "EL" ~ "GR", 
       iso2c == "XK" ~ "GR", #only to avoid warning
       TRUE ~ iso2c)) %>%
     dplyr::mutate ( 
-      iso3c = quiet_country_codes (iso2c,"iso2c", "iso3c")$result
+      iso3c = quiet_country_codes (iso2c )
       ) %>%
+    dplyr::mutate ( validation_n_char = nchar(iso2c)) %>%
     dplyr::mutate ( 
       typology = dplyr::case_when ( 
-       is.na (iso3c) & nchar({{geo_var}}) == 2 ~ "invalid_iso-3166-alpha-2",
-       is.na (iso3c) & nchar({{geo_var}}) == 3 ~ "iso-3166-alpha-3",
-       !is.na(iso3c) & nchar({{geo_var}}) == 2 ~ "country", 
-       is.na (iso3c) & nchar({{geo_var}}) != 2  ~ typology 
+       is.na (iso3c) & validation_n_char == 2 ~ "invalid_iso-3166-alpha-2",
+       is.na (iso3c) & validation_n_char == 3 ~ "iso-3166-alpha-3",
+       !is.na(iso3c) & validation_n_char == 2 ~ "country", 
+       is.na (iso3c) & validation_n_char != 2  ~ typology 
     ))
 
   validate_country_df %>%

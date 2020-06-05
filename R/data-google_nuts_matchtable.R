@@ -3,7 +3,12 @@
 #' A dataset containing the correspondence table between the EU 
 #' NUTS 2016 typology and the typology used by Google in the
 #' Google Mobility Reports.
-#'
+#' 
+#' In some cases only a full correspondence is not possible. In these
+#' cases we created pseudo-NUTS codes, which have a \code{FALSE}
+#' \code{valid_2016} value. These pseudo-NUTS codes can help 
+#' approximation for the underlying regions.
+#' 
 #' @format A data frame with 729 rows and 5 variables:
 #' \describe{
 #'   \item{country_code}{ISO 3166-1 alpha2 code}
@@ -11,6 +16,7 @@
 #'   \item{google_region_name}{The name used by Google.}
 #'   \item{code_2016}{NUTS code in the 2016 definition}
 #'   \item{typology}{country, NUTS1, NUTS2 or NUTS3}
+#'   \item{valid_2016}{Logical variable, if the coding is valid in NUTS2016}
 #' }
 #' @source \url{https://ec.europa.eu/eurostat/web/nuts/history/}
 #' @author Istvan Zsoldos

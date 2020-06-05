@@ -26,7 +26,8 @@ particular to the European Union statistical nomenclature.
 \item{UK}{Treated valid, because NUTS uses UK instead of GB for the United Kingdom.}
 \item{XK}{XK is used for Kosovo, because Eurostat uses this code, too.}
 }
-All ISO-3166 country codes are validated, and also the three exceptions.
+All ISO-3166-1 country codes are validated, and also the
+three exceptions.
 }
 \examples{
 {

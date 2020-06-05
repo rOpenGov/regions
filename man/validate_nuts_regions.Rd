@@ -7,8 +7,8 @@
 validate_nuts_regions(dat, geo_var = "geo", nuts_year = 2016)
 }
 \arguments{
-\item{dat}{A data frame with a 3-5 character \code{geo_var} variable
-to be validated.}
+\item{dat}{A data frame with a 3-5 character \code{geo_var}
+variable to be validated.}
 
 \item{geo_var}{Defaults to \code{"geo"}. The variable that contains
 the 3-5 character geo codes to be validated.}
@@ -20,8 +20,8 @@ NUTS definition, i.e. \code{1999}, \code{2003}, \code{2006},
 already announced and defined \code{2021}.}
 }
 \value{
-Returns the original \code{dat} data frame with a column that
-specifies the comformity with the NUTS definition of the year
+Returns the original \code{dat} data frame with a column
+that specifies the comformity with the NUTS definition of the year
 \code{nuts_year}.
 }
 \description{
@@ -44,8 +44,8 @@ pre-1999 NUTS typologies may confuse programmatic data processing,
 given that some  NUTS1 regions were identified with country codes
 in smaller countries that had no \code{NUTS1} divisions.
 
-Currently the \code{2016} is used by Eurostat, but many datasets still
-contain  \code{2013} and sometimes earlier metadata.
+Currently the \code{2016} is used by Eurostat, but many datasets
+still contain \code{2013} and sometimes earlier metadata.
 }
 \examples{
 {

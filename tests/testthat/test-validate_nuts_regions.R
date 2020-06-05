@@ -1,4 +1,4 @@
-
+library(testthat)
 
 my_reg_data <- data.frame ( 
   geo = c("BE1", "HU102", "FR1", "FRB",
@@ -7,7 +7,6 @@ my_reg_data <- data.frame (
   values = runif(11) )
 
 validate_nuts_regions ( dat = my_reg_data )
-
 
 result1 <- validate_nuts_regions ( 
   dat = data.frame ( 
@@ -31,3 +30,4 @@ test_that("invalid dates give error message", {
     values = c(1,2)
   ), geo_var = "country"))
 })
+

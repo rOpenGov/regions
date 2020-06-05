@@ -18,11 +18,11 @@
 #' given that some  NUTS1 regions were identified with country codes
 #' in smaller countries that had no \code{NUTS1} divisions.
 #' 
-#' Currently the \code{2016} is used by Eurostat, but many datasets still 
-#' contain  \code{2013} and sometimes earlier metadata.
+#' Currently the \code{2016} is used by Eurostat, but many datasets 
+#' still contain \code{2013} and sometimes earlier metadata.
 #' 
-#' @param dat A data frame with a 3-5 character \code{geo_var} variable
-#' to be validated.
+#' @param dat A data frame with a 3-5 character \code{geo_var} 
+#' variable to be validated.
 #' @param geo_var Defaults to \code{"geo"}. The variable that contains 
 #' the 3-5 character geo codes to be validated.
 #' @param nuts_year The year of the NUTS typology to use. 
@@ -36,8 +36,8 @@
 #' @importFrom purrr set_names
 #' @importFrom utils data 
 #' @family validate functions
-#' @return Returns the original \code{dat} data frame with a column that 
-#' specifies the comformity with the NUTS definition of the year 
+#' @return Returns the original \code{dat} data frame with a column 
+#' that specifies the comformity with the NUTS definition of the year 
 #' \code{nuts_year}. 
 #' @examples{
 #' my_reg_data <- data.frame ( 
@@ -115,8 +115,8 @@ validate_nuts_regions <- function ( dat,
                                 typology)
              ) %>%
     mutate ( 
-      #make exceptionf for country codes, which are anyway not part of NUTS
-      #and may be valid codes
+      #make exceptionf for country codes, which are anyway not 
+      #part of NUTS and may be valid codes
       nuts = ifelse(
          test = is.na(nuts)& typology == "country",
          yes  = unique(nuts[which(!is.na(unique(nuts)))]),
@@ -127,11 +127,12 @@ validate_nuts_regions <- function ( dat,
       exceptions, by = geo_var
       ) %>%
     mutate ( nuts = ifelse(is.na(nuts), exception, nuts)) %>%
-    select ( -all_of(c("typology2", "exception")) ) %>%
-    mutate ( valid =  !is.na(nuts))  
+    mutate ( typology = ifelse(is.na(typology), exception, typology)) %>%
+    mutate ( valid =  !is.na(nuts))  %>%
+    select ( -all_of(c("typology2", "exception", "nuts")) ) 
   
-  names(return_df)[which(names(return_df) =='valid')] <- paste0("valid_", nuts_year)
+  names(return_df)[
+    which(names(return_df) =='valid')] <- paste0("valid_", nuts_year)
   
  return_df
-  
 }

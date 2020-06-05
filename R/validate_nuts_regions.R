@@ -75,6 +75,19 @@ validate_nuts_regions <- function ( dat,
   utils::data (all_valid_nuts_codes, package ="regions", 
                envir = environment())
   
+  exceptions <- all_valid_nuts_codes %>%
+    mutate ( country_code = get_country_code( 
+          geo = geo, typology = "NUTS" )
+          ) %>%
+    filter ( country_code %in% c("IS", "LI", "NO", "AL",
+                                 "CH", "MK", "RS", "TR", 
+                                 "ME"))  %>%
+    distinct ( geo, typology ) %>%
+    mutate ( exception = paste0('non_eu_', typology) ) %>%
+    select ( all_of(c("geo", "exception")))
+  
+  names(exceptions)[1] <- geo_var
+
   filtering <- grepl( as.character(nuts_year), 
                       all_valid_nuts_codes$nuts )
   
@@ -96,22 +109,29 @@ validate_nuts_regions <- function ( dat,
     dplyr::mutate_if(is.factor, as.character) %>% 
     left_join ( filtered_nuts_data_frame,
                 by = geo_var ) %>%
-    mutate ( typology = ifelse (is.na(typology), 
+    mutate ( 
+      typology = ifelse (is.na(typology), 
                                 typology2, 
-                                typology)) %>%
-    mutate ( nuts = ifelse(is.na(nuts)& typology == "country",
-                           yes  = unique(nuts[which(!is.na(unique(nuts)))]),
-                           no = nuts)) %>%  ## countries may not be EU countries
-    select ( -all_of("typology2")) %>%
+                                typology)
+             ) %>%
+    mutate ( 
+      #make exceptionf for country codes, which are anyway not part of NUTS
+      #and may be valid codes
+      nuts = ifelse(
+         test = is.na(nuts)& typology == "country",
+         yes  = unique(nuts[which(!is.na(unique(nuts)))]),
+         no = nuts)
+      ) %>%  ## countries may not be EU countries
+    left_join (
+      # join non-EU valid codes
+      exceptions, by = geo_var
+      ) %>%
+    mutate ( nuts = ifelse(is.na(nuts), exception, nuts)) %>%
+    select ( -all_of(c("typology2", "exception")) ) %>%
     mutate ( valid =  !is.na(nuts))  
   
   names(return_df)[which(names(return_df) =='valid')] <- paste0("valid_", nuts_year)
   
-  return_df %>% 
-    dplyr::select ( -tidyselect::all_of("nuts") ) %>%
-    dplyr::distinct_all () %>%
-    dplyr::select ( -tidyselect::starts_with("valid") ) %>%
-    dplyr::bind_cols( return_df %>%
-                        dplyr::select ( starts_with("valid") ) )
+ return_df
   
 }

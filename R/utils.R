@@ -18,6 +18,7 @@ validate_data_frame <- function(dat) {
 #' @importFrom readxl read_excel
 #' @importFrom purrr set_names
 #' @importFrom tidyselect contains
+#' @importFrom utils download.file
 #' @return A data.frame which is also saved and can be retrieved with
 #' \code{data(nuts_lau_2019).} Use this function as a template to 
 #' obtain historical correspondence tables.
@@ -47,7 +48,7 @@ create_nuts_lau_2019 <- function() {
   table_names
   
   tempxl <- tempfile()
-  download.file(eu_lau_2019_link, tempxl, mode="wb")
+  utils::download.file(eu_lau_2019_link, tempxl, mode="wb")
   eu_lau_raw <- readxl::read_excel(path = tempxl, sheet = "Combined")
   
   x <- c("y", "no", "n")

@@ -39,6 +39,7 @@
 #' @importFrom dplyr rename arrange full_join
 #' @importFrom tidyselect all_of
 #' @importFrom tidyr pivot_wider
+#' @importFrom utils data
 #' @examples{
 #' data(mixed_nuts_example)
 #' impute_down_nuts(mixed_nuts_example, nuts_year = 2016)

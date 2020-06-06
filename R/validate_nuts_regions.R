@@ -58,8 +58,11 @@ validate_nuts_regions <- function ( dat,
                                     geo_var = "geo",
                                     nuts_year = 2016 ) {
   
+  ## initialise non-standard evaluation ----------------------
+  . <- country_code <- exception <- geo <- NULL 
   typology2 <- nuts <- all_valid_nuts_codes <- typology <- NULL
   
+  ## validate parameters --------------------------------------
   validate_data_frame (dat = dat)
   
   if (! geo_var %in% names(dat) ) {

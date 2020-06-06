@@ -10,9 +10,12 @@
 #' approximation for the underlying regions.
 #' 
 #' Pseudo-NUTS codes were used in Estonia, Italy, Portugal, Slovenia
-#' and in parts of Latvia, which is not finalized.
+#' and in parts of Latvia.
 #' 
-#' @format A data frame with 813 rows and 6 variables:
+#' In Latvia and Slovenia, the pseudo NUTS code is a combination of the
+#' the containing NUTS3 code and the municipality's LAU code.  
+#' 
+#' @format A data frame with 814 rows and 6 variables:
 #' \describe{
 #'   \item{country_code}{ISO 3166-1 alpha2 code}
 #'   \item{google_region_level}{Hierarchical level in the Google Mobility Reports}

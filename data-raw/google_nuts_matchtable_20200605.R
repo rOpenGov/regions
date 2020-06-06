@@ -98,11 +98,6 @@ regions_and_names_2016 <- all_valid_nuts_codes %>%
     TRUE ~ normalize_text(geo_name_2016)   )
   )
 
-##  What was found at first try  ---------------------------------
-
-found_in_nuts_distinct <- google_region_names %>%
-  left_join ( regions_and_names_2016 , 
-              by = c("country_code", "match_name"))
 
 ## Making google_region_names$match_name equal to regions_and_names_2016$match_name when there is a 1-to-1 correspondence
 
@@ -111,6 +106,13 @@ found_in_nuts_distinct <- google_region_names %>%
 ### character coding issues.
 
 source(file.path('data-raw', 'google_matchtable_by_country.R'))
+
+##  What was found at first try  ---------------------------------
+
+found_in_nuts_distinct <- google_region_names %>%
+  left_join ( regions_and_names_2016 , 
+              by = c("country_code", "match_name"))
+
 
 ### The following codes, due to character coding problems on Windows
 ### do not read well if you use source.  They have to run from 
@@ -247,6 +249,19 @@ google_region_names <- google_region_names %>%
 
 # creating the matchtable ----------------------------------
 names ( google_region_names)
+
+source( file.path('data-raw', 'google_matchtable_by_municipality.R'))
+
+google_region_names <- google_region_names %>%
+  filter ( ! country_code %in% c("LV", "SI"))  %>%
+  dplyr::bind_rows ( 
+    ## Add LV & SI with pseudo-NUTS codes, containing NUTS3 info combined
+    ## with LAU_code of the municipality
+    ## This approach will not work with Portugal.
+    ## LAU data is not available for Norway
+    ## Google data is not available for IS, CY
+    google_lau_si_lv )
+
 google_nuts_matchtable <- google_region_names %>%
   validate_nuts_regions(., geo_var = 'code_2016') %>%
   select ( -all_of(c("google_name", "match_name")))
@@ -280,3 +295,4 @@ usethis::use_data(google_nuts_matchtable,
                   internal=FALSE,
                   overwrite = TRUE)
 data ( google_nuts_matchtable )
+str ( google_nuts_matchtable )

@@ -1,0 +1,197 @@
+iso,iso_name
+GB-BKM,Buckinghamshire
+GB-CAM,Cambridgeshire
+GB-CMA,Cumbria	
+GB-DBY,Derbyshire	
+GB-DEV,Devon	
+GB-DOR,Dorset	
+GB-ESX,East Sussex	
+GB-ESS,Essex	
+GB-GLS,Gloucestershire	
+GB-HAM,Hampshire	
+GB-HRT,Hertfordshire	
+GB-KEN,Kent	
+GB-LAN,Lancashire	
+GB-LEC,Leicestershire	
+GB-LIN,Lincolnshire	
+GB-NFK,Norfolk	
+GB-NYK,North Yorkshire	
+GB-NTH,Northamptonshire	
+GB-NTT,Nottinghamshire	
+GB-OXF,Oxfordshire	
+GB-SOM,Somerset	
+GB-STS,Staffordshire	
+GB-SFK,Suffolk	
+GB-SRY,Surrey	
+GB-WAR,Warwickshire	
+GB-WSX,West Sussex	
+GB-WOR,Worcestershire	
+GB-LND,London, City of	city corporation	ENG
+GB-BDG,Barking and Dagenham
+GB-BNE,Barnet
+GB-BEX,Bexley
+GB-BEN,Brent
+GB-BRY,Bromley
+GB-CMD,Camden
+GB-CRY,Croydon
+GB-EAL,Ealing
+GB-ENF,Enfield
+GB-GRE,Greenwich
+GB-HCK,Hackney
+GB-HMF,Hammersmith and Fulham
+GB-HRY,Haringey
+GB-HRW,Harrow
+GB-HAV,Havering
+GB-HIL,Hillingdon
+GB-HNS,Hounslow
+GB-ISL,Islington
+GB-KEC,Kensington and Chelsea
+GB-KTT,Kingston upon Thames
+GB-LBH,Lambeth
+GB-LEW,Lewisham
+GB-MRT,Merton
+GB-NWM,ewham
+GB-RDB,edbridge
+GB-RIC,Richmond upon Thames
+GB-SWK,Southwark
+GB-STN,Sutton
+GB-TWH,Tower Hamlets
+GB-WFT,Waltham Forest
+GB-WND,Wandsworth
+GB-WSM,Westminster
+GB-BNS,Barnsley
+GB-BIR,Birmingham
+GB-BOL,Bolton
+GB-BRD,Bradford
+GB-BUR,Bury
+GB-CLD,Calderdale
+GB-COV,Coventry
+GB-DNC,Doncaster
+GB-DUD,Dudley
+GB-GAT,Gateshead
+GB-KIR,Kirklees
+GB-KWL,Knowsley
+GB-LDS,Leeds
+GB-LIV,Liverpool
+GB-MAN,Manchester
+GB-NET,Newcastle upon Tyne
+GB-NTY,North Tyneside
+GB-OLD,Oldham
+GB-RCH,Rochdale
+GB-ROT,Rotherham
+GB-SHN,St. Helens
+GB-SLF,Salford
+GB-SAW,Sandwell
+GB-SFT,Sefton
+GB-SHF,Sheffield
+GB-SOL,Solihull
+GB-STY,South Tyneside
+GB-SKP,Stockport
+GB-SND,Sunderland
+GB-TAM,Tameside
+GB-TRF,Trafford
+GB-WKF,Wakefield
+GB-WLL,Walsall
+GB-WGN,Wigan
+GB-WRL,Wirral
+GB-WLV,Wolverhampton
+GB-BAS,Bath and North East Somerset
+GB-BDF,Bedford
+GB-BBD,Blackburn with Darwen
+GB-BPL,Blackpool
+GB-BMH,Bournemouth
+GB-BRC,Bracknell Forest
+GB-BNH,Brighton and Hove
+GB-BST,Bristol, City of
+GB-CBF,Central Bedfordshire
+GB-CHE,Cheshire East
+GB-CHW,Cheshire West and Chester
+GB-CON,Cornwall
+GB-DAL,Darlington
+GB-DER,Derby
+GB-DUR,Durham County
+GB-ERY,East Riding of Yorkshire
+GB-HAL,Halton
+GB-HPL,Hartlepool
+GB-HEF,Herefordshire
+GB-IOW,Isle of Wight
+GB-IOS,Isles of Scilly
+GB-KHL,Kingston upon Hull
+GB-LCE,Leicester
+GB-LUT,Luton
+GB-MDW,Medway
+GB-MDB,Middlesbrough
+GB-MIK,Milton Keynes
+GB-NEL,North East Lincolnshire
+GB-NLN,North Lincolnshire
+GB-NSM,North Somerset
+GB-NBL,Northumberland
+GB-NGM,Nottingham
+GB-PTE,Peterborough
+GB-PLY,Plymouth
+GB-POL,Poole
+GB-POR,Portsmouth
+GB-RDG,Reading
+GB-RCC,Redcar and Cleveland
+GB-RUT,Rutland
+GB-SHR,Shropshire
+GB-SLG,Slough
+GB-SGC,South Gloucestershire
+GB-STH,Southampton
+GB-SOS,Southend-on-Sea
+GB-STT,Stockton-on-Tees
+GB-STE,Stoke-on-Trent
+GB-SWD,Swindon
+GB-TFW,Telford and Wrekin
+GB-THR,Thurrock
+GB-TOB,Torbay
+GB-WRT,Warrington
+GB-WBK,West Berkshire
+GB-WIL,Wiltshire
+GB-WNM,Windsor and Maidenhead
+GB-WOK,Wokingham
+GB-YOR,York
+GB-ANN,Antrim and Newtownabbey
+GB-AND,Ards and North Down
+GB-ABC,Armagh City, Banbridge and Craigavon
+GB-BFS,Belfast
+GB-CCG,Causeway Coast and Glens
+GB-DRS,Derry City and Strabane
+GB-FMO,Fermanagh and Omagh
+GB-LBC,Lisburn and Castlereagh
+GB-MEA,Mid and East Antrim
+GB-MUL,Mid Ulster
+GB-NMD,Newry, Mourne and Down
+GB-ABE,Aberdeen City
+GB-ABD,Aberdeenshire
+GB-ANS,Angus
+GB-AGB,Argyll and Bute
+GB-CLK,Clackmannanshire
+GB-DGY,Dumfries and Galloway
+GB-DND,Dundee City
+GB-EAY,East Ayrshire
+GB-EDU,East Dunbartonshire
+GB-ELN,East Lothian
+GB-ERW,East Renfrewshire
+GB-EDH,Edinburgh, City of
+GB-ELS,Eilean Siar
+GB-FAL,Falkirk
+GB-FIF,Fife
+GB-GLG,Glasgow City
+GB-HLD,Highland
+GB-IVC,Inverclyde
+GB-MLN,Midlothian
+GB-MRY,Moray
+GB-NAY,North Ayrshire
+GB-NLK,North Lanarkshire
+GB-ORK,Orkney Islands
+GB-PKN,Perth and Kinross
+GB-RFW,Renfrewshire
+GB-SCB,Scottish Borders, The
+GB-ZET,Shetland Islands
+GB-SAY,South Ayrshire
+GB-SLK,South Lanarkshire
+GB-STG,Stirling
+GB-WDU,West Dunbartonshire
+GB-WLN,West Lothian
+GB-BGW,Blaenau Gwent

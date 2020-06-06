@@ -117,6 +117,30 @@ found_in_nuts_distinct <- google_region_names %>%
 ### do not read well if you use source.  They have to run from 
 ### the code with "Run"
 
+# Fixing Estonia ------------------------------------------
+# The subdivisions used by Google are ISO-3166-2 subdivisions which can 
+# be paired as a quasi NUTS4 to NUTS3 regions. 
+
+google_region_names <- google_region_names %>%
+  mutate ( code_2016 = case_when (
+    country_code == "EE" & match_name == "harju_county" ~ "EE001_EE37",
+    country_code == "EE" & match_name == "ida-viru_county" ~ "EE007_EE44",
+    country_code == "EE" & match_name == "hiiu_county" ~ "EE004_EE39",
+    country_code == "EE" & match_name == "saare_county" ~ "EE004_EE74",
+    country_code == "EE" & match_name == "pärnu_county" ~ "EE004_EE67",
+    country_code == "EE" & match_name == "lääne_county" ~ "EE004_EE57",
+    country_code == "EE" & match_name == "järva_county" ~ "EE006_EE51",
+    country_code == "EE" & match_name == "lääne-viru_county" ~ "EE006_EE59",
+    country_code == "EE" & match_name == "rapla_county" ~ "EE006_EE70",
+    country_code == "EE" & match_name == "jõgeva_county" ~ "EE008_EE49",
+    country_code == "EE" & match_name == "põlva_county" ~ "EE008_EE65",
+    country_code == "EE" & match_name == "tartu_county" ~ "EE008_EE78",
+    country_code == "EE" & match_name == "valga_county" ~ "EE008_EE82",
+    country_code == "EE" & match_name == "viljandi_county" ~ "EE008_EE84",
+    country_code == "EE" & match_name == "võru_county" ~ "EE008_EE86", 
+    TRUE ~ code_2016)) 
+
+
 ## Fixing Bulgaria -----------------------------------------------
 # changing nuts codes
 google_region_names <- google_region_names %>%
@@ -266,13 +290,14 @@ google_nuts_matchtable <- google_region_names %>%
   select ( -all_of(c("google_name", "match_name")))  %>%
   mutate ( typology = case_when (
     nchar(code_2016) >5 & country_code %in% c("SI", "LV") ~ 'nuts_level_3_lau',
-    nchar(code_2016) >5 & country_code == "EE"~ 'nuts_level_3_iso-3166-2',
+    nchar(code_2016) >5 &
+      country_code %in% c("EE", "PT", "IT", "GB") ~ 'nuts_level_3_iso-3166-2',
     nchar(code_2016) == 6 ~ 'nuts_level_3_ext',
     TRUE ~  'invalid typology'
   ))
 
 test <- google_nuts_matchtable %>%
-  filter ( country_code %in% c("LV", "EE", "PT", "SI", 'HU'))
+  filter ( country_code %in% c("GB"))
 
 #create list of countries where available nuts codes do not cover full country
 countries_missing_full_nuts <- google_nuts_matchtable %>%
@@ -307,3 +332,4 @@ usethis::use_data(google_nuts_matchtable,
                   overwrite = TRUE)
 data ( google_nuts_matchtable )
 str ( google_nuts_matchtable )
+

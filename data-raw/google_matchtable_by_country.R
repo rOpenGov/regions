@@ -29,26 +29,24 @@ google_region_names <- google_region_names %>%
 
 
 # changing some names in HU
-hungary_names <- regions_and_names_2016 %>%
+hungary_table <- regions_and_names_2016 %>%
   filter ( country_code  == "HU") %>%
-  select ( match_name )  %>%
-  unlist() %>% as.character() %>% sort()
+  select ( code_2016, match_name ) %>%
+  rename ( code_2016_HU = code_2016 )
 
 ## Fixing Hungary ------------------------------------------------
-google_region_names_HU <- google_region_names %>%
-  filter ( country_code == "HU") %>%
+google_region_names <- google_region_names %>%
   mutate ( match_name = case_when (
-    country_code == "HU" & grepl("moson-sopron", match_name) ~  hungary_names[grepl("moson-sopron", hungary_names)],
+    country_code == "HU" & grepl("moson-sopron", match_name) ~  hungary_table$match_name[grepl("moson-sopron",  hungary_table$match_name)],
     country_code == "HU" & grepl( "hungary|budapest", match_name) ~ match_name,
     country_code == "HU" & grepl( "_county", match_name) ~ gsub("_county", "", match_name), 
-    TRUE ~ match_name))
-
-google_region_names_HU <- google_region_names %>%
-  mutate ( match_name = case_when (
-    #country_code == "HU" & grepl("moson-sopron", match_name) ~  hungary_names[grepl("moson-sopron", hungary_names)],
-    country_code == "HU" & grepl( "hungary|budapest", match_name) ~ match_name,
-    country_code == "HU" & grepl( "_county", match_name) ~ gsub("_county", "", match_name), 
-    TRUE ~ match_name))
+    TRUE ~ match_name)) %>%
+    left_join ( hungary_table, by = 'match_name') %>%
+  mutate ( code_2016 = case_when (
+    country_code == "HU" & is.na(code_2016) ~ code_2016_HU, 
+    TRUE ~ code_2016
+  )) %>%
+  select ( -all_of(c("code_2016_HU")))
 
 # Fixing Italy ------------------------------------------------------
 # See The Typology Of The Google Mobility Reports (COVID-19) vignette
@@ -65,7 +63,7 @@ google_region_names <- google_region_names %>%
     country_code == "IT" & match_name == "sardinia" ~ "ITG2",
     country_code == "IT" & match_name == "sicily" ~ "ITG1",
     country_code == "IT" & match_name == "tuscany" ~ "ITI1",
-    country_code == "IT" & match_name == "trentino-south_tyrol" ~ "ITDX", #this is a pseudo-code, because these are two regions
+    country_code == "IT" & match_name == "trentino-south_tyrol" ~ "ITD_IT-32", #this is a pseudo-code, because these are two regions
     TRUE ~ code_2016)) 
 
 # changing names
@@ -232,8 +230,6 @@ google_region_names <- google_region_names %>%
 #EE008 Southern Estonia (Jõgeva, Põlva, Tartu, Valga, Viljandi and Võru county)
 # https://www.stat.ee/296050#:~:text=EE004%20Western%20Estonia%20(Hiiu%2C%20L%C3%A4%C3%A4ne,Valga%2C%20Viljandi%20and%20V%C3%B5ru%20county)
 
-check_ee  <- google_region_names %>%
-  filter ( country_code == "EE")
 
 # Fixing Ireland ------------------------------------
 # (Local government level data only, only Dublin County corresponds to NUTS3, skipping the rest for the moment)
@@ -544,23 +540,23 @@ google_region_names <- google_region_names %>%
     country_code == "PT" & match_name == "lisbon"   ~ "PT17",
     country_code == "PT" & match_name == "azores"   ~ "PT20",
     country_code == "PT" & match_name == "madeira"  ~ "PT30",
-    country_code == "PT" & match_name == "aveiro_district" ~ "PT16D",
-    country_code == "PT" & match_name == "faro_district" ~ "PT16D",
+    country_code == "PT" & match_name == "aveiro_district" ~ "PT16_PT-01",
+    country_code == "PT" & match_name == "faro_district" ~ "PT16_PT-08",
     country_code == "PT" & match_name == "setubal" ~ "PT181",
     country_code == "PT" & match_name == "beja_district" ~ "PT184", #with one village in PT181
-    country_code == "PT" & match_name == "santarém_district" ~ "PT16Y", #part of Centro, historical region with cross-boundary changes
-    country_code == "PT" & match_name == "porto_district" ~ "PT11A",
-    country_code == "PT" & match_name == "évora_district" ~ "PT187",
-    country_code == "PT" & match_name == "portalegre_district" ~ "PT187",
+    country_code == "PT" & match_name == "santarém_district" ~ "PT16_PT-14", #part of Centro, historical region with cross-boundary changes
+    country_code == "PT" & match_name == "porto_district" ~ "PT11_PT-13",
+    country_code == "PT" & match_name == "évora_district" ~ "PT187_PT-07",
+    country_code == "PT" & match_name == "portalegre_district" ~ "PT187_PT-13",
     country_code == "PT" & match_name == "guarda_district" ~ "PT16I", #except for one municipality in Norte
     country_code == "PT" & match_name == "braga" ~ "PT11X", #Cross-boundary changes, part of Norte, PT112
     country_code == "PT" & match_name == "bragança_district" ~ "PT11E", #Cross-boundary changes, not fully the same
     country_code == "PT" & match_name == "castelo_branco_district" ~ "PT16X", #Cross-boundary changes, part of Centro
     country_code == "PT" & match_name == "vila_real_district" ~ "PT11W", #Cross-boundary changes, part of Norte
     country_code == "PT" & match_name == "viana_do_castelo_district" ~ "PT111",
-    country_code == "PT" & match_name == "leiria_district" ~ "PT16F",
-    country_code == "PT" & match_name == "coimbra_district" ~ "PT16E",
-    country_code == "PT" & match_name == "viseu_district"~ "PT16W", #Cross-boundary changes, part of Centro
+    country_code == "PT" & match_name == "leiria_district" ~ "PT16_PT-10",
+    country_code == "PT" & match_name == "coimbra_district" ~ "PT16_PT-06",
+    country_code == "PT" & match_name == "viseu_district"~ "PT16_PT-18", #Cross-boundary changes, part of Centro
     TRUE ~ code_2016)
   ) %>%
   arrange ( code_2016 )
@@ -749,14 +745,24 @@ google_region_names <- google_region_names %>%
 
 # Fixing UK ------------------------------------------------------
 
+gb_isotable <- readr::read_csv2(
+  file.path("data-raw", "gb_iso3166-2.csv")
+                                ) %>%
+  mutate ( match_name = tolower (
+    gsub(" ", "_", iso_name))
+    ) %>%
+  select ( -iso_name )
+
+## Use https://en.wikipedia.org/wiki/ISO_3166-2:GB
 # changing nuts codes
 google_region_names <- google_region_names %>%
+  left_join (gb_isotable, by = "match_name") %>%
   mutate ( code_2016 = case_when (
-    
     country_code == "GB" & match_name == "argyll_and_bute_council" ~ "UKM63",
     country_code == "GB" & match_name == "buckinghamshire" ~ "UKJ13",
     country_code == "GB" & match_name == "cambridgeshire" ~ "UKH12",
     country_code == "GB" & match_name == "city_of_bristol" ~ "UKK11",
+    country_code == "GB" & match_name == "bristol_city" ~ "UKK11",
     country_code == "GB" & match_name == "cornwall" ~ "UKK30",
     country_code == "GB" & match_name == "county_durham" ~ "UKC14",
     country_code == "GB" & match_name == "derry_and_strabane" ~ "UKN10",
@@ -773,17 +779,16 @@ google_region_names <- google_region_names %>%
     country_code == "GB" & match_name == "south_ayrshire_council" ~ "UKM94",
     country_code == "GB" & match_name == "staffordshire" ~ "UKG24",
     country_code == "GB" & match_name == "wiltshire" ~ "UKK15",
-    
-    country_code == "GB" & match_name == "aberdeen_city" ~ "UKM50", # this is where we have more than one name that makes up a region
-    country_code == "GB" & match_name == "aberdeenshire" ~ "UKM50",
-    country_code == "GB" & match_name == "angus_council" ~ "UKM21",
+    country_code == "GB" & match_name == "aberdeen_city" ~ "UKM50_GB-ABE", # this is where we have more than one name that makes up a region
+    country_code == "GB" & match_name == "aberdeenshire" ~ "UKM50_GB-ABD",
+    country_code == "GB" & match_name == "angus_council" ~ "UKM21_GB-ANS",
     country_code == "GB" & match_name == "dundee_city_council" ~ "UKM21",
     country_code == "GB" & match_name == "bath_and_north_east_somerset" ~ "UKK12",
     country_code == "GB" & match_name == "north_somerset" ~ "UKK12",
     country_code == "GB" & match_name == "south_gloucestershire" ~ "UKK12",
-    country_code == "GB" & match_name == "blaenau_gwent" ~ "UKL16",
-    country_code == "GB" & match_name == "caerphilly_county_borough" ~ "UKL16",
-    country_code == "GB" & match_name == "torfaen_principal_areaa" ~ "UKL16",
+    country_code == "GB" & match_name == "blaenau_gwent" ~ "UKL16_GB-BGW",
+    country_code == "GB" & match_name == "caerphilly_county_borough" ~ "UKL16_GB-CAF",
+    country_code == "GB" & match_name == "torfaen_principal_area" ~ "UKL16_GB_TOF",
     country_code == "GB" & match_name == "borough_of_halton" ~ "UKD71", #Knowsley and St. Helens missing, not a full nuts3 region
     country_code == "GB" & match_name == "bracknell_forest" ~ "UKJ11", #part of Berkshire nuts3 region (UKJ11)
     country_code == "GB" & match_name == "reading" ~ "UKJ11",
@@ -793,26 +798,27 @@ google_region_names <- google_region_names %>%
     country_code == "GB" & match_name == "slough" ~ "UKJ11",
     country_code == "GB" & match_name == "windsor_and_maidenhead" ~ "UKJ11",
     country_code == "GB" & match_name == "bridgend" ~ "UKL17",
+    country_code == "GB" & match_name == "bridgend_county_borough" ~ "UKL17_GB-BGE",
     country_code == "GB" & match_name == "neath_port_talbot_principle_area" ~ "UKL17",
     country_code == "GB" & match_name == "cardiff" ~ "UKL22",
-    country_code == "GB" & match_name == "vale_of_glamorgan" ~ "UKL22",
-    country_code == "GB" & match_name == "ceredigion" ~ "UKL14",
-    country_code == "GB" & match_name == "carmarthenshire" ~ "UKL14",
-    country_code == "GB" & match_name == "pembrokeshire" ~ "UKL14",
-    country_code == "GB" & match_name == "clackmannanshire" ~ "UKM72",
+    country_code == "GB" & match_name == "vale_of_glamorgan" ~ "UKL22_GB-VGL",
+    country_code == "GB" & match_name == "ceredigion" ~ "UKL14_GB_CGN",
+    country_code == "GB" & match_name == "carmarthenshire" ~ "UKL14_GB-GFY",
+    country_code == "GB" & match_name == "pembrokeshire" ~ "UKL14_GB-PEM",
+    country_code == "GB" & match_name == "clackmannanshire" ~ "UKM72_GB-CLK",
     country_code == "GB" & match_name == "fife" ~ "UKM72",
-    country_code == "GB" & match_name == "conwy_principal_area" ~ "UKL13",
-    country_code == "GB" & match_name == "denbighshire" ~ "UKL13",
-    country_code == "GB" & match_name == "derby" ~ "UKF1", # only nuts2 gives full, consistent coverage
-    country_code == "GB" & match_name == "derbyshire" ~ "UKF1",
-    country_code == "GB" & match_name == "nottingham" ~ "UKF1",
-    country_code == "GB" & match_name == "nottinghamshire" ~ "UKF1",
+    country_code == "GB" & match_name == "conwy_principal_area" ~ "UKL13_GB-CWY",
+    country_code == "GB" & match_name == "denbighshire" ~ "UKL13X",
+    country_code == "GB" & match_name == "derby" ~ "UKF1_GB-DER", # only nuts2 gives full, consistent coverage
+    country_code == "GB" & match_name == "derbyshire" ~ "UKF1_GB-DBY",
+    country_code == "GB" & match_name == "nottingham" ~ "UKF1_GB-NGM",
+    country_code == "GB" & match_name == "nottinghamshire" ~ "UKF1_GN-NTT",
     country_code == "GB" & match_name == "east_ayrshire_council" ~ "UKM93",
     country_code == "GB" & match_name == "north_ayrshire_council" ~ "UKM93",
-    country_code == "GB" & match_name == "east_dunbartonshire_council	" ~ "UKM81", #helensburgh_&_lomond missing, may not be a full nuts3 region
-    country_code == "GB" & match_name == "west_dunbartonshire_council" ~ "UKM81", #helensburgh_&_lomond missing, may not be a full nuts3 region
+    country_code == "GB" & match_name == "east_dunbartonshire_council" ~ "UKM81_GB-EDU", #helensburgh_&_lomond missing, may not be a full nuts3 region
+    country_code == "GB" & match_name == "west_dunbartonshire_council" ~ "UKM81_GB-WDU", #helensburgh_&_lomond missing, may not be a full nuts3 region
     country_code == "GB" & match_name == "inverclyde" ~ "UKM83",
-    country_code == "GB" & match_name == "east_renfrewshire_council" ~ "UKM83",
+    country_code == "GB" & match_name == "east_renfrewshire_council" ~ "UKM83_GB-ERW",
     country_code == "GB" & match_name == "renfrewshire" ~ "UKM83",
     country_code == "GB" & match_name == "flintshire" ~ "UKL23",
     country_code == "GB" & match_name == "wrexham_principal_area" ~ "UKL23",
@@ -822,36 +828,42 @@ google_region_names <- google_region_names %>%
     country_code == "GB" & match_name == "southampton" ~ "UKJ3",
     country_code == "GB" & match_name == "hartlepool" ~ "UKC11",
     country_code == "GB" & match_name == "stockton-on-tees" ~ "UKC11",
-    country_code == "GB" & match_name == "highland_council" ~ "UKM6", #NOT EXACT MATCH!!! nuts2
+    country_code == "GB" & match_name == "highland_council" ~ "UKM6_GB-HLD", #NOT EXACT MATCH!!! nuts2
     country_code == "GB" & match_name == "merthyr_tydfil_county_borough" ~ "UKL15",
-    country_code == "GB" & match_name == "rhondda_cynon_taff	" ~ "UKL15",
+    country_code == "GB" & match_name == "rhondda_cynon_taff" ~ "UKL15_GB-RCT",
     country_code == "GB" & match_name == "middlesbrough" ~ "UKC12",
-    country_code == "GB" & match_name == "redcar_and_cleveland" ~ "UKC12",
-    country_code == "GB" & match_name == "midlothian" ~ "UKM73",
+    country_code == "GB" & match_name == "redcar_and_cleveland" ~ "UKC12_GB-RCC",
+    country_code == "GB" & match_name == "midlothian" ~ "UKM73_GB-MLM",
     country_code == "GB" & match_name == "east_lothian_council" ~ "UKM73",
-    country_code == "GB" & match_name == "monmouthshire" ~ "UKL21",
-    country_code == "GB" & match_name == "newport" ~ "UKL21",
+    country_code == "GB" & match_name == "monmouthshire" ~ "UKL21_GB-MON",
+    country_code == "GB" & match_name == "newport" ~ "UKL21_GB-NWP",
     country_code == "GB" & match_name == "moray" ~ "UKM62", # may not be full nuts3 region, rest of inverness_&_nairn_and_moray_badenoch_&_strathspey missing
-    country_code == "GB" & match_name == "norfolk" ~ "UKH1",# only nuts2 gives full, consistent coverage
-    country_code == "GB" & match_name == "cambridgeshire_cc" ~ "UKH1",
-    country_code == "GB" & match_name == "peterborough" ~ "UKH1",
-    country_code == "GB" & match_name == "suffolk" ~ "UKH1",
-    country_code == "GB" & match_name == "north_east_lincolnshire" ~ "UKE13",
-    country_code == "GB" & match_name == "north_lincolnshire" ~ "UKE13",
-    country_code == "GB" & match_name == "northamptonshire" ~ "UKF2", # only nuts2 gives full, consistent coverage
-    country_code == "GB" & match_name == "leicester" ~ "UKF2",
-    country_code == "GB" & match_name == "leicestershire" ~ "UKF2",
-    country_code == "GB" & match_name == "rutland" ~ "UKF2",
+    country_code == "GB" & match_name == "norfolk" ~ "UKH1_GB-NFK",# only nuts2 gives full, consistent coverage
+    country_code == "GB" & match_name == "cambridgeshire_cc" ~ "UKH1_GB-CAM",
+    country_code == "GB" & match_name == "peterborough" ~ "UKH1_GB-PTE",
+    country_code == "GB" & match_name == "suffolk" ~ "UKH1_GB-SFK",
+    country_code == "GB" & match_name == "north_east_lincolnshire" ~ "UKE13_GB_NEL",
+    country_code == "GB" & match_name == "north_lincolnshire" ~ "UKE13_GB-LNL",
+    country_code == "GB" & match_name == "northamptonshire" ~ "UKF2_GB-NTH", # only nuts2 gives full, consistent coverage
+    country_code == "GB" & match_name == "leicester" ~ "UKF2_GB-LCE",
+    country_code == "GB" & match_name == "leicestershire" ~ "UKF2_GB-LEC",
+    country_code == "GB" & match_name == "rutland" ~ "UKF2_GB-RUT",
     country_code == "GB" & match_name == "perth_and_kinross" ~ "UKM77",
     country_code == "GB" & match_name == "stirling" ~ "UKM77",
     country_code == "GB" & match_name == "surrey" ~ "UKJ2", # only nuts2 gives full, consistent coverage
     country_code == "GB" & match_name == "brighton_and_hove" ~ "UKJ2",
-    country_code == "GB" & match_name == "east_sussex_cc" ~ "UKJ2",
-    country_code == "GB" & match_name == "west_sussex" ~ "UKJ2",
-    country_code == "GB" & match_name == "tyne_and_wear" ~ "UKC2", # only nuts2 gives consistent coverage, Sunderland (UKC23) missing 
+    country_code == "GB" & match_name == "east_sussex_cc" ~ "UKJ2_ESX",
+    country_code == "GB" & match_name == "west_sussex" ~ "UKJ2_WSX",
+    country_code == "GB" & match_name == "tyne_and_wear" ~ "UKC2X", # only nuts2 gives consistent coverage, Sunderland (UKC23) missing 
     country_code == "GB" & match_name == "northumberland" ~ "UKC2",
     country_code == "GB" & match_name == "north_yorkshire" ~ "UKE22", # this is the name of a nuts2 region, but it seem ro refer to nuts3 one (north_yorkshire_cc)
-    TRUE ~ code_2016))
+    TRUE ~ code_2016)
+    ) %>%
+  mutate (  code_2016 = case_when ( 
+    country_code == "GB" & nchar (code_2016)<6 &
+      !is.na(iso) ~ paste0(code_2016,"_", iso), 
+    TRUE ~ code_2016) ) %>%
+  select ( -iso)
 
 # filter out lincolnshire nuts2 (exist in nuts3 too)
 google_region_names <- google_region_names %>% filter (code_2016 != "UKF3" | is.na(code_2016))
@@ -898,5 +910,3 @@ google_region_names <- google_region_names %>%
     country_code == "GR" & match_name == "decentralized_administration_of_thessaly_and_central_greece" ~ "EL6",
     TRUE ~ code_2016)
   )
-
-

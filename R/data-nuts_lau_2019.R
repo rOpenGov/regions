@@ -28,8 +28,8 @@
 #'   \item{fua_id}{FUA ID}
 #'   \item{fua_id_change_last_year}{Change of FUA ID since last year}
 #'   \item{fua_name}{Name in FUA database}
-#'   \item{country}{NUTS country code (EL for Greece, UK for United Kingdom)}
-#'   \item{gisco_id}
+#'   \item{country}{NUTS country code with exceptions: EL for Greece, UK for United Kingdom}
+#'   \item{gisco_id}{GISCO ID}
 #' }
 #' @source \url{https://ec.europa.eu/eurostat/web/nuts/local-administrative-units}
 #' @seealso nuts_recoded, all_valid_nuts_codes

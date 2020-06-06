@@ -1,4 +1,4 @@
-#' Validate Comformity With NUTS Geo Codes
+#' Validate Conformity With NUTS Geo Codes
 #' 
 #' Validate that \code{geo_var} is conforming with the \code{NUTS1}, 
 #' \code{NUTS2}, or \code{NUTS3} typologies.

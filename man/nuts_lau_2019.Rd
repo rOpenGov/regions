@@ -27,8 +27,8 @@ A data frame with 99140 rows and 22 variables:
 \item{fua_id}{FUA ID}
 \item{fua_id_change_last_year}{Change of FUA ID since last year}
 \item{fua_name}{Name in FUA database}
-\item{country}{NUTS country code (EL for Greece, UK for United Kingdom)}
-\item{gisco_id}
+\item{country}{NUTS country code with exceptions: EL for Greece, UK for United Kingdom}
+\item{gisco_id}{GISCO ID}
 }
 }
 \source{

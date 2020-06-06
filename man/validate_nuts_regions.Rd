@@ -2,7 +2,7 @@
 % Please edit documentation in R/validate_nuts_regions.R
 \name{validate_nuts_regions}
 \alias{validate_nuts_regions}
-\title{Validate Comformity With NUTS Geo Codes}
+\title{Validate Conformity With NUTS Geo Codes}
 \usage{
 validate_nuts_regions(dat, geo_var = "geo", nuts_year = 2016)
 }

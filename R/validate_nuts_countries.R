@@ -1,4 +1,4 @@
-#' Validate Comformity with NUTS Country Codes
+#' Validate Conformity with NUTS Country Codes
 #'
 #' This function is mainly a wrapper around the well-known 
 #'  \link[countrycode]{countrycode} function, with three exception that are 

@@ -22,8 +22,7 @@
 #'   \item{google_region_name}{The name used by Google.}
 #'   \item{code_2016}{NUTS code in the 2016 definition}
 #'   \item{typology}{country, NUTS1, NUTS2 or NUTS3}
-#'   \item{valid_2016}{Logical variable, if the coding is valid in 
-#'   NUTS2016}
+#'   \item{valid_2016}{Logical variable, if the coding is valid in NUTS2016}
 #' }
 #' @source \url{https://ec.europa.eu/eurostat/web/nuts/history/}
 #' @author Istvan Zsoldos, Daniel Antal

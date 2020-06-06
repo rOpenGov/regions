@@ -39,7 +39,8 @@ Imports:
     rlang,
     glue,
     stats,
-    tidyr
+    tidyr,
+    readxl
 Suggests: 
     knitr,
     rmarkdown,

@@ -27,10 +27,25 @@ google_region_names <- google_region_names %>%
                 select (c(country_code, code_2016, match_name)) , 
               by = c("country_code", "match_name"))
 
+
+# changing some names in HU
+hungary_names <- regions_and_names_2016 %>%
+  filter ( country_code  == "HU") %>%
+  select ( match_name )  %>%
+  unlist() %>% as.character() %>% sort()
+
 ## Fixing Hungary ------------------------------------------------
-google_region_names <- google_region_names %>%
+google_region_names_HU <- google_region_names %>%
+  filter ( country_code == "HU") %>%
   mutate ( match_name = case_when (
     country_code == "HU" & grepl("moson-sopron", match_name) ~  hungary_names[grepl("moson-sopron", hungary_names)],
+    country_code == "HU" & grepl( "hungary|budapest", match_name) ~ match_name,
+    country_code == "HU" & grepl( "_county", match_name) ~ gsub("_county", "", match_name), 
+    TRUE ~ match_name))
+
+google_region_names_HU <- google_region_names %>%
+  mutate ( match_name = case_when (
+    #country_code == "HU" & grepl("moson-sopron", match_name) ~  hungary_names[grepl("moson-sopron", hungary_names)],
     country_code == "HU" & grepl( "hungary|budapest", match_name) ~ match_name,
     country_code == "HU" & grepl( "_county", match_name) ~ gsub("_county", "", match_name), 
     TRUE ~ match_name))
@@ -180,37 +195,36 @@ google_region_names <- google_region_names %>%
     TRUE ~ match_name))
 
 # Fixing Estonia ------------------------------------------
-# 
+# The subdivisions used by Google are ISO-3166-2 subdivisions which can 
+# be paired as a quasi NUTS4 to NUTS3 regions. 
+
 google_region_names <- google_region_names %>%
-  mutate ( match_name = ifelse(
-    ( test = country_code == "EE" &  grepl( "_county", match_name)), 
-    yes  = gsub("_county", "", match_name), 
-    no   =  match_name)) %>%
   mutate ( code_2016 = case_when (
-    country_code == "EE" & match_name == "harju" ~ "EE001",
-    country_code == "EE" & match_name == "ida-viru" ~ "EE007",
-    country_code == "EE" & match_name == "hiiu" ~ "EE004H",
-    country_code == "EE" & match_name == "saare" ~ "EE004S",
-    country_code == "EE" & match_name == "pärnu" ~ "EE004P",
-    country_code == "EE" & match_name == "lääne" ~ "EE004L",
-    country_code == "EE" & match_name == "järva" ~ "EE006J",
-    country_code == "EE" & match_name == "lääne-viru" ~ "EE006L",
-    country_code == "EE" & match_name == "rapla" ~ "EE006R",
-    country_code == "EE" & match_name == "jõgeva" ~ "EE008J",
-    country_code == "EE" & match_name == "põlva" ~ "EE008P",
-    country_code == "EE" & match_name == "tartu" ~ "EE008T",
-    country_code == "EE" & match_name == "valga" ~ "EE008V",
-    country_code == "EE" & match_name == "viljandi" ~ "EE008I",
-    country_code == "EE" & match_name == "võru" ~ "EE008U", 
-    TRUE ~ code_2016)) %>%
-  mutate ( match_name = case_when (
-    country_code == "EE" & match_name == "harju" ~ paste0("northern estonia ", match_name),
-    country_code == "EE" & match_name == "ida-viru" ~ paste0("northeastern estonia ", match_name), 
-    country_code == "EE" & match_name %in% c("hiiu","saare" ,"pärnu", "lääne") ~ paste0("western estonia ", match_name),
-    country_code == "EE" & match_name %in% c("järva","lääne-viru" ,"rapla") ~ paste0("central estonia", match_name),
-    country_code == "EE" & match_name %in% c("jõgeva", "põlva", "tartu", "valga", 
-                                             "viljandi","võru" ) ~ paste0("southern estonia ", match_name),
-    TRUE ~ match_name))
+    country_code == "EE" & match_name == "harju_county" ~ "EE001_EE37",
+    country_code == "EE" & match_name == "ida-viru_county" ~ "EE007_EE44",
+    country_code == "EE" & match_name == "hiiu_county" ~ "EE004_EE39",
+    country_code == "EE" & match_name == "saare_county" ~ "EE004_EE74",
+    country_code == "EE" & match_name == "pärnu_county" ~ "EE004_EE67",
+    country_code == "EE" & match_name == "lääne_county" ~ "EE004_EE57",
+    country_code == "EE" & match_name == "järva_county" ~ "EE006_EE51",
+    country_code == "EE" & match_name == "lääne-viru_county" ~ "EE006_EE59",
+    country_code == "EE" & match_name == "rapla_county" ~ "EE006_EE70",
+    country_code == "EE" & match_name == "jõgeva_county" ~ "EE008_EE49",
+    country_code == "EE" & match_name == "põlva_county" ~ "EE008_EE65",
+    country_code == "EE" & match_name == "tartu_county" ~ "EE008_EE78",
+    country_code == "EE" & match_name == "valga_county" ~ "EE008_EE82",
+    country_code == "EE" & match_name == "viljandi_county" ~ "EE008_EE84",
+    country_code == "EE" & match_name == "võru_county" ~ "EE008_EE86", 
+    TRUE ~ code_2016)) 
+
+  #mutate ( match_name = case_when (
+    #country_code == "EE" & match_name == "harju" ~ paste0("northern estonia ", match_name),
+    #country_code == "EE" & match_name == "ida-viru" ~ paste0("northeastern estonia ", match_name), 
+    #country_code == "EE" & match_name %in% c("hiiu","saare" ,"pärnu", "lääne") ~ paste0("western estonia ", match_name),
+    #country_code == "EE" & match_name %in% c("järva","lääne-viru" ,"rapla") ~ paste0("central estonia", match_name),
+    #country_code == "EE" & match_name %in% c("jõgeva", "põlva", "tartu", "valga", 
+    #                                         "viljandi","võru" ) ~ paste0("southern estonia ", match_name),
+    #TRUE ~ match_name))
 
 #EE004 Western Estonia (Hiiu, Lääne, Pärnu and Saare county)
 #EE006 Central Estonia (Järve, Lääne-Viru and Rapla county)
@@ -218,7 +232,7 @@ google_region_names <- google_region_names %>%
 #EE008 Southern Estonia (Jõgeva, Põlva, Tartu, Valga, Viljandi and Võru county)
 # https://www.stat.ee/296050#:~:text=EE004%20Western%20Estonia%20(Hiiu%2C%20L%C3%A4%C3%A4ne,Valga%2C%20Viljandi%20and%20V%C3%B5ru%20county)
 
-google_region_names_ee <- google_region_names  %>%
+check_ee  <- google_region_names %>%
   filter ( country_code == "EE")
 
 # Fixing Ireland ------------------------------------
@@ -362,48 +376,11 @@ google_region_names <- google_region_names %>%
     country_code == "HR" & match_name == "zagreb_county" ~ "zagrebačka_županija",
     TRUE ~ match_name))
 
-
 #additional fixing for međimurje_county
 google_region_names <- google_region_names %>%
   mutate( code_2016 = ifelse( country_code == "HR" & grepl( "imurje_county", match_name), "HR046", code_2016))
 google_region_names <- google_region_names %>%
   mutate( match_name = ifelse( country_code == "HR" & grepl( "imurje_county", match_name), "međimurska_županija", match_name))
-
-
-# Fixing Latvia (Municipal data only partially finished) ----------
-# PARTIAL
-
-google_region_names <- google_region_names %>%
-  mutate ( code_2016 = case_when (
-    country_code == "LV" & match_name == "riga" ~ "LV006",
-    country_code == "LV" & match_name == "city_of_liepāja" ~ "LV003L",
-    country_code == "LV" & match_name == "ventspils" ~ "LV003V",
-    country_code == "LV" & match_name == "saldus_municipality" ~ "LV003S",
-    country_code == "LV" & match_name == "talsi_municipality" ~ "LV003T",
-    country_code == "LV" & match_name == "dobele_municipality" ~ "LV003D",
-    country_code == "LV" & match_name == "ādaži_municipality" ~ "LV007A",
-    country_code == "LV" & match_name == "aizkraukle_municipality" ~ "LV009A",
-    country_code == "LV" & match_name == "aloja_municipality" ~ "LV007L",
-    country_code == "LV" & match_name == "alūksne_municipality" ~ "LV008A",
-    country_code == "LV" & match_name == "babīte_municipality" ~ "LV007B",
-    country_code == "LV" & match_name == "baldone_municipality" ~ "LV007X",
-    country_code == "LV" & match_name == "balvi_municipality" ~ "LV005B",
-    country_code == "LV" & match_name == "bauska_municipality" ~ "LV009B",
-    country_code == "LV" & match_name == "burtnieki_municipality" ~ "LV008B",
-    country_code == "LV" & match_name == "carnikava_municipality" ~ "LV007C",
-    country_code == "LV" & match_name == "cēsis_municipality" ~ "LV008C",
-    country_code == "LV" & match_name == "daugavpils" ~ "LV005D",
-    country_code == "LV" & match_name == "daugavpils_municipality" ~ "LV005M",
-    country_code == "LV" & match_name == "engure_municipality" ~ "LV007E",
-    country_code == "LV" & match_name == "iecava_municipality" ~ "LV009I",
-    country_code == "LV" & match_name == "jaunjelgava_municipality" ~ "LV009J",
-    country_code == "LV" & match_name == "latvia" ~ "LV00",
-    country_code == "LV"                 ~ "LV00X",
-    TRUE ~ code_2016)
-  )
-
-google_lv <- google_region_names %>%
-  filter ( country_code == "LV")
 
 # Fixing Lithuania ---------------------------
 # (chaning "_county" to "_apskritis" in name, this should match nuts3 regions)
@@ -588,9 +565,6 @@ google_region_names <- google_region_names %>%
   ) %>%
   arrange ( code_2016 )
 
-
-
-
 # Fixing Slovenia ---------------------------------------------
 #(seems like local municipal data, no change for now)
 
@@ -630,12 +604,12 @@ slovenia_help_table <- google_region_names %>%
   ungroup() %>%
   select ( all_of(c("match_name", "code_2016_4")) )
 
-google_region_names <- google_region_names %>%
-  left_join (slovenia_help_table, by = "match_name" ) %>%
-  mutate ( code_2016 = ifelse (test = is.na(code_2016), 
-                               yes  = code_2016_4, 
-                               no   = code_2016)) %>%
-  select ( -code_2016_4 )
+#google_region_names <- google_region_names %>%
+ # left_join (slovenia_help_table, by = "match_name" ) %>%
+  #mutate ( code_2016 = ifelse (test = is.na(code_2016), 
+  #                             yes  = code_2016_4, 
+  #                             no   = code_2016)) %>%
+  #select ( -code_2016_4 )
   
   #mutate ( code_2016 = case_when (
   #   country_code == "SK" & match_name == "žilina_region" ~ "SK031",
@@ -924,4 +898,5 @@ google_region_names <- google_region_names %>%
     country_code == "GR" & match_name == "decentralized_administration_of_thessaly_and_central_greece" ~ "EL6",
     TRUE ~ code_2016)
   )
+
 

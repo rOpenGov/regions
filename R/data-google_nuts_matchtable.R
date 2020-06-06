@@ -13,15 +13,18 @@
 #' and in parts of Latvia.
 #' 
 #' In Latvia and Slovenia, the pseudo NUTS code is a combination of the
-#' the containing NUTS3 code and the municipality's LAU code.  
+#' the containing NUTS3 code and the municipality's LAU code.
 #' 
-#' @format A data frame with 814 rows and 6 variables:
+#' In Estonia, they are a combination of the NUTS3 code and the 
+#' ISO-3166-2 LAU code (county level.)
+#' 
+#' @format A data frame with 813 rows and 6 variables:
 #' \describe{
 #'   \item{country_code}{ISO 3166-1 alpha2 code}
 #'   \item{google_region_level}{Hierarchical level in the Google Mobility Reports}
 #'   \item{google_region_name}{The name used by Google.}
 #'   \item{code_2016}{NUTS code in the 2016 definition}
-#'   \item{typology}{country, NUTS1, NUTS2 or NUTS3}
+#'   \item{typology}{country, NUTS1, NUTS2 or NUTS3, nuts_level_3_lau, nuts_level_3_iso-3166-2}
 #'   \item{valid_2016}{Logical variable, if the coding is valid in NUTS2016}
 #' }
 #' @source \url{https://ec.europa.eu/eurostat/web/nuts/history/}

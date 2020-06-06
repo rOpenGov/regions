@@ -6,7 +6,7 @@ google_lau_matchtable <- nuts_lau_2019 %>%
     country == "EL" ~ "GR", 
     country == "UK" ~ "GB", 
     TRUE ~ country )) %>%
-  filter ( country_code %in% c("SI", "LV", "PT")) %>%
+  filter ( country_code %in% c("SI", "LV")) %>%
   select ( country_code, code_2016, lau_code,
            contains("name"), 
            -contains("change")) %>%

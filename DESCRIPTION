@@ -1,6 +1,6 @@
 Package: regions
 Title: Processing Regional Statistics
-Version: 0.1.3
+Version: 0.1.5
 Authors@R: 
     c(
   person(given = "Daniel",
@@ -39,7 +39,9 @@ Imports:
     rlang,
     glue,
     stats,
-    tidyr
+    tidyr,
+    readxl,
+    stringr
 Suggests: 
     knitr,
     rmarkdown,

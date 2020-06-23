@@ -39,6 +39,7 @@
 #' @importFrom dplyr rename arrange full_join
 #' @importFrom tidyselect all_of
 #' @importFrom tidyr pivot_wider
+#' @importFrom utils data
 #' @examples{
 #' data(mixed_nuts_example)
 #' impute_down_nuts(mixed_nuts_example, nuts_year = 2016)
@@ -56,12 +57,9 @@ impute_down_nuts <- function (dat,
    nuts <- values <- method <- all_valid_nuts_codes <- NULL
    nuts_level_1 <- nuts_level_2 <- nuts_level_3     <- NULL
    
-   get_valid_nuts_codes <- function( this_env ) {
-     data("all_valid_nuts_codes", 
-          package = "regions",
-          envir = this_env )
-     all_valid_nuts_codes
-   }
+   validation <- paste0("valid_", nuts_year)
+   
+   validate_data_frame(dat)
   
   if (! geo_var %in% names(dat) ) {
     stop(geo_var, " is not among the columns of the data frame.")
@@ -71,7 +69,7 @@ impute_down_nuts <- function (dat,
     stop(values_var, " is not among the columns of the data frame.")
   }
   
-  if ( ! nuts_year %in% c(1999,2003,2006,2010,2013,2016,2021)) {
+  if ( ! nuts_year %in% c(1999,2003,2006,2010,2013,2016,2021) ) {
     stop('"nuts_year" = ', nuts_year, " is an invalid parameter."  )
   }
   
@@ -83,12 +81,29 @@ impute_down_nuts <- function (dat,
   if ( ! method_var %in% names(dat)) {
     stop(method_var, " is not among the columns of the data frame.")
   }
+   
+  if ( "typology" %in% names(dat)) {
+    message ( "The 'typology' column is refreshed.")
+    dat <- dat %>% select ( -all_of("typology") )
+  }
+   
+  if (validation %in% names(dat)) {
+     message( "The '", validation , "' column is refreshed.")
+     dat <- dat %>% select ( -all_of(validation) )
+   }
   
-  validated <- dat %>%
+   get_valid_nuts_codes <- function( this_env ) {
+     data("all_valid_nuts_codes", 
+          package = "regions",
+          envir = this_env )
+     all_valid_nuts_codes
+   }
+
+   validated <- dat %>%
     rename ( ## will be turned back on return, easier to handle
              ## non-programatic geo, values names. 
-             geo = geo_var, 
-             values = values_var ) %>%
+             geo = !! geo_var, 
+             values = !! values_var ) %>%
     validate_nuts_regions( nuts_year = nuts_year ) 
   
   names(validated)[ which(names(validated)==paste0("valid_", nuts_year))] <- "valid"
@@ -122,8 +137,9 @@ impute_down_nuts <- function (dat,
       country_code = get_country_code (geo), 
       row_id       = 1:nrow(.)
     ) %>%
-    pivot_wider ( ., names_from = "typology", 
-                  values_from = 'geo') %>%
+    tidyr::pivot_wider (., 
+      names_from = "typology", 
+      values_from = 'geo') %>%
     mutate ( 
       nuts_level_2 = substr(nuts_level_3, 1, 4), 
       nuts_level_1 = substr(nuts_level_3, 1, 3), 

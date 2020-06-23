@@ -2,13 +2,13 @@
 % Please edit documentation in R/validate_nuts_regions.R
 \name{validate_nuts_regions}
 \alias{validate_nuts_regions}
-\title{Validate Comformity With NUTS Geo Codes}
+\title{Validate Conformity With NUTS Geo Codes}
 \usage{
 validate_nuts_regions(dat, geo_var = "geo", nuts_year = 2016)
 }
 \arguments{
-\item{dat}{A data frame with a 3-5 character \code{geo_var} variable
-to be validated.}
+\item{dat}{A data frame with a 3-5 character \code{geo_var}
+variable to be validated.}
 
 \item{geo_var}{Defaults to \code{"geo"}. The variable that contains
 the 3-5 character geo codes to be validated.}
@@ -20,8 +20,8 @@ NUTS definition, i.e. \code{1999}, \code{2003}, \code{2006},
 already announced and defined \code{2021}.}
 }
 \value{
-Returns the original \code{dat} data frame with a column that
-specifies the comformity with the NUTS definition of the year
+Returns the original \code{dat} data frame with a column
+that specifies the comformity with the NUTS definition of the year
 \code{nuts_year}.
 }
 \description{
@@ -33,8 +33,8 @@ This de facto typology has three exception which are handled by the
 \link[regions]{validate_nuts_countries} function.
 }
 \details{
-NUTS typologies have different versions, therefore the comformity is
-validated with one specific versions, which can be any of these:
+NUTS typologies have different versions, therefore the conformity
+is validated with one specific versions, which can be any of these:
 \code{1999}, \code{2003}, \code{2006}, \code{2010},
 \code{2013}, the currently used \code{2016} and the already
 announced and defined \code{2021}.
@@ -44,8 +44,8 @@ pre-1999 NUTS typologies may confuse programmatic data processing,
 given that some  NUTS1 regions were identified with country codes
 in smaller countries that had no \code{NUTS1} divisions.
 
-Currently the \code{2016} is used by Eurostat, but many datasets still
-contain  \code{2013} and sometimes earlier metadata.
+Currently the \code{2016} is used by Eurostat, but many datasets
+still contain \code{2013} and sometimes earlier metadata.
 }
 \examples{
 {

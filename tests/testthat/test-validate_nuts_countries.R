@@ -1,3 +1,4 @@
+library(testthat)
 
 test_df <- data.frame ( 
   geo = c('AL', 'AT', 'BE', 'BG', 'CH', 'CY',
@@ -15,8 +16,11 @@ small_df <- data.frame (
 
 dat = small_df[1:6,]
 
+validated_small_df <- validate_nuts_countries(dat = small_df[1:6,], 
+                                              geo_var = "geo")
+
 test_that("Correct structure returned", {
-  expect_equal(names(validate_nuts_countries(dat = small_df[1:6,])), 
+  expect_equal(names(validated_small_df), 
                c("geo", "values", "notes", "typology"))
 })
 
@@ -28,15 +32,17 @@ test_that("Error handling workds", {
 
 test_df_2 <- data.frame ( 
   values = runif(8), 
-  countries = c("AL", "GR", "XK", "EL", "UK", "GB", "NLD", "ZZ" ), 
+  countries = c("AL", "GR", "XK", "EL", "UK", "GB", "NLD", "ZZ"), 
   time  = rep(2018,8), 
-  notes = paste0("notes", 1:8))
+  notes = paste0("notes", 1:8)
+  )
 
-
-tested2 <- validate_nuts_countries(test_df_2, geo_var = "countries")
+tested2 <- validate_nuts_countries(dat = test_df_2, 
+                                   geo_var = "countries")
 
 test_that("Different column order works", {
   expect_equal(tested2$typology,
                c(rep("country",6), "iso-3166-alpha-3", 
                  "invalid_iso-3166-alpha-2"))
 })
+

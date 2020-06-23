@@ -74,6 +74,14 @@ validate_nuts_regions <- function ( dat,
   }
   
   original_names <- names (dat)
+  if ( any(
+    c("typology", "nuts",  paste0("valid_", as.character(nuts_year))
+    ) %in% original_names )
+  ) {
+    temporary_names <- paste0("orig_", original_names )
+    geo_var <- paste0("orig_", geo_var )
+    names(dat) <- temporary_names 
+  }
 
   utils::data (all_valid_nuts_codes, package ="regions", 
                envir = environment())
@@ -94,15 +102,10 @@ validate_nuts_regions <- function ( dat,
   filtering <- grepl( as.character(nuts_year), 
                       all_valid_nuts_codes$nuts )
   
-  if ( "typology" %in% original_names) {
-    replace_names <- c(original_names, "nuts",
-                       paste0("valid_", nuts_year))
-  } else {
-    replace_names <- c(original_names, "typology", "nuts",
+ 
+  replace_names <- c(original_names, "typology", "nuts",
                        paste0("valid_", nuts_year) )
-  }
-  replace_names 
-  
+
   filtered_nuts_data_frame <- all_valid_nuts_codes[filtering, ]
   names(filtered_nuts_data_frame)[2] <- geo_var
   
@@ -137,5 +140,11 @@ validate_nuts_regions <- function ( dat,
   names(return_df)[
     which(names(return_df) =='valid')] <- paste0("valid_", nuts_year)
   
- return_df
+  names ( return_df) <- ifelse ( 
+    test = names(return_df) %in% temporary_names, 
+    yes  = substr(names(return_df), 6, nchar(names(return_df))), 
+    no   = names(return_df)
+    )
+
+   return_df
 }

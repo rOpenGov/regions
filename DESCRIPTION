@@ -41,7 +41,8 @@ Imports:
     stats,
     tidyr,
     readxl,
-    regions
+    regions,
+    stringr
 Suggests: 
     knitr,
     rmarkdown,

@@ -24,6 +24,7 @@ validate_data_frame <- function(dat) {
 #' obtain historical correspondence tables.
 
 create_nuts_lau_2019 <- function() {
+  . <- NULL
   eu_lau_2019_link <- "https://ec.europa.eu/eurostat/documents/345175/501971/EU-28-LAU-2019-NUTS-2016.xlsx"
   
   nuts_countries <- c("BE", "BG", "CZ", "DK", "DE", "EE", "IE", "EL", 

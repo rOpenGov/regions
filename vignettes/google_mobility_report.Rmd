@@ -20,7 +20,7 @@ library(regions)
 
 Google is not using those sub-national divisions (region), that the EU or OECD is using for statistical purposes.  This means that any comparison of Google’s Mobility Reports with population, transport, public health, or economic variable requires a sub-national division vocabulary for translation, or in the EU parlance a _correspondence table_.
 
-Google appears to be using, at least in most of the cases, the `ISO-3166-2` sub-national divisions from the *ISO 3166 Codes for the representation of names of countries and their subdivisions* with non-standard naming (labels).  When we want to analyze the Google Mobility Report together with national statistics, this causes several problems:
+Google appears to be using, at least in most of the cases, the `ISO-3166-2` sub-national divisions from the *ISO 3166 Codes for the representation of names of countries and their subdivisions* with non-standard naming (labels).  When we want to analyse the Google Mobility Report together with national statistics, this causes several problems:
 
 * `ISO-3166-2` is not a hierarchical typology, while Europe's statistical typologies, the `NUTS1`-`NUTS2`-`NUTS3` are hierarchical, so we had to create many hundred lines of `R` code to create the necessary descriptive metadata for joining the `ISO`-like Google and the `NUTS` typologies of Europe.
 
@@ -57,6 +57,6 @@ the culturally autonomous, partly German speaking part of Italy was merged into 
 
 For simplicity, we treated some of these historical regions identical to a current one, if the difference was very small. For example, _Bragança_ district in Portugal (in `ISO-3166-2`: `PT-04`) was coded as `PT11E`, because it is almost identical to the `NUTS3` region _Terras de Trás-os-Montes_. 
 
-In other cases, when Google’s typology cuts accross current European statistical region lines, we again chose the creation of `pseudo-NUTS` codes. For example, we created the irregular `pseudo-NUTS` code `PT11X` for the _Braga district_ of Portugal (in `ISO-3166-2`: `PT-03`), because it is certainly part of  `PT11` _Continente_, `PT11` _Norte_, and the technical `NUTS0` `PT` for Portugal, but it does not correspond to any `NUTS3` units of Portugal in the `NUTS2016` definition. This coding will not pass the `validate_nuts_code()` function, but it certainly gives a strong starting point for data imputation. 
+In other cases, when Google’s typology cuts across current European statistical region lines, we again chose the creation of `pseudo-NUTS` codes. For example, we created the irregular `pseudo-NUTS` code `PT11X` for the _Braga district_ of Portugal (in `ISO-3166-2`: `PT-03`), because it is certainly part of  `PT11` _Continente_, `PT11` _Norte_, and the technical `NUTS0` `PT` for Portugal, but it does not correspond to any `NUTS3` units of Portugal in the `NUTS2016` definition. This coding will not pass the `validate_nuts_code()` function, but it certainly gives a strong starting point for data imputation. 
 
 We faced many such problems with Portugal and Wales within Great Britain in the United Kingdom.

@@ -19,7 +19,7 @@
 
 # regions 0.1.3 
 * Further improvements in the Google typology: adding the United Kingdom, Portugal, Greece, Malta, parts of Lativa, Italy and Réunion.
-* `recode_nuts` slightly alterred to follow changes in dependency `dplyr`. 
+* `recode_nuts` slightly altered to follow changes in dependency `dplyr`. 
 
 # regions 0.1.4
 * Documentation improvements.
@@ -30,3 +30,4 @@
 
 # regions 0.1.5
 * Correction of a small bug with input data frames that already have columns that the validation result should contain. 
+* Wordlist added for spell checking with geographical exceptions.

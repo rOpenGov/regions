@@ -20,4 +20,4 @@ Depending on the platform, I get various notes to use size reduction
 of PDF. This should not throw a NOTE on CRAN.
 
 ## very small bug fix
-This submission is a very small bug fix compared to the existing 0.1.3 CRAN version.  0.1.5 resolves a naming conflict in `validate_nuts_regions`. Furthermore, it handles some metadata exceptions for non-EU countries.  The metadata files of the package were updated with new entries [i.e. contain more geographical data], but they do not affect the functioning of codes.  
+This submission is a very small bug fix compared to the existing 0.1.3 CRAN version.  0.1.5 resolves a naming conflict in `validate_nuts_regions`. Furthermore, it handles some metadata exceptions for non-EU countries.  The metadata files of the package were updated with new entries [i.e. contain more geographical data], but they do not affect the functioning of codes. An exception wordlist was added to the spell checker.

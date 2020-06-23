@@ -10,7 +10,7 @@ validate, recode, impute and aggregate.
 }
 \section{validate functions}{
 
-The validate functions validate the comformity of a typological
+The validate functions validate the conformity of a typological
 (geographical) label with a certain typology.  Currently the EU statistical
 NUTS typologies and countries are implemented.
 }

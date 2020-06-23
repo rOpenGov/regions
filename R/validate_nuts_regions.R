@@ -74,6 +74,7 @@ validate_nuts_regions <- function ( dat,
   }
   
   original_names <- names (dat)
+  names_changed <- FALSE
   if ( any(
     c("typology", "nuts",  paste0("valid_", as.character(nuts_year))
     ) %in% original_names )
@@ -81,6 +82,7 @@ validate_nuts_regions <- function ( dat,
     temporary_names <- paste0("orig_", original_names )
     geo_var <- paste0("orig_", geo_var )
     names(dat) <- temporary_names 
+    names_changed <- TRUE
   }
 
   utils::data (all_valid_nuts_codes, package ="regions", 
@@ -101,7 +103,6 @@ validate_nuts_regions <- function ( dat,
 
   filtering <- grepl( as.character(nuts_year), 
                       all_valid_nuts_codes$nuts )
-  
  
   replace_names <- c(original_names, "typology", "nuts",
                        paste0("valid_", nuts_year) )
@@ -140,11 +141,23 @@ validate_nuts_regions <- function ( dat,
   names(return_df)[
     which(names(return_df) =='valid')] <- paste0("valid_", nuts_year)
   
-  names ( return_df) <- ifelse ( 
-    test = names(return_df) %in% temporary_names, 
-    yes  = substr(names(return_df), 6, nchar(names(return_df))), 
-    no   = names(return_df)
+  if ( names_changed ) {
+    
+    potentially_change_back <- temporary_names[names(return_df) %in% temporary_names] 
+     
+    change_back <- potentially_change_back [ 
+      ! potentially_change_back %in% c(
+        'orig_typology', paste0("valid_", as.character(nuts_year)))
+      ]
+    
+    new_names <- ifelse ( 
+      test = names(return_df) %in% change_back, 
+      yes  = stringr::str_sub(names(return_df), 6, -1), 
+      no   = names(return_df)
     )
+    
+    names ( return_df) <- new_names 
+  }
 
    return_df
 }

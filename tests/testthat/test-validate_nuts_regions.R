@@ -33,12 +33,15 @@ test_that("invalid dates give error message", {
 
 with_nuts_df <- data.frame ( 
   nuts = c("DE1", "DE7", "HU1", "BE1"), 
-  values = c(1:4)
+  values = c(1:4),
+  typology = rep("nuts1",4)
 )
 
-tested_with_nuts <- validate_nuts_regions(with_nuts_df,
-                                          geo_var = "nuts")
+tested_with_nuts <- validate_nuts_regions(
+  dat = with_nuts_df,
+  geo_var = "nuts")
 
 test_that("Special column names do not cause confusion", {
   expect_equal(all(tested_with_nuts$valid_2016), TRUE)
+  expect_equal(ncol(tested_with_nuts), 5)
 })

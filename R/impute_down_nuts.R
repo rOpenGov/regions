@@ -137,8 +137,9 @@ impute_down_nuts <- function (dat,
       country_code = get_country_code (geo), 
       row_id       = 1:nrow(.)
     ) %>%
-    pivot_wider ( ., names_from = "typology", 
-                  values_from = 'geo') %>%
+    tidyr::pivot_wider (., 
+      names_from = "typology", 
+      values_from = 'geo') %>%
     mutate ( 
       nuts_level_2 = substr(nuts_level_3, 1, 4), 
       nuts_level_1 = substr(nuts_level_3, 1, 3), 

@@ -40,7 +40,8 @@ Imports:
     glue,
     stats,
     tidyr,
-    readxl
+    readxl,
+    regions
 Suggests: 
     knitr,
     rmarkdown,

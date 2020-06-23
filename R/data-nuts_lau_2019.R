@@ -8,7 +8,7 @@
 #'
 #' @format A data frame with 99140 rows and 22 variables:
 #' \describe{
-#'   \item{nuts_3_code}{NUTS3 code of the local administrative unit, 2016 definition}
+#'   \item{code_2016}{NUTS3 code of the local administrative unit, 2016 definition}
 #'   \item{lau_code}{Local Administrative Unit code}
 #'   \item{lau_name_national}{LAU name, official in national language(s)}
 #'   \item{lau_name_latin}{LAU name, official Latin alphabet version}

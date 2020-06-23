@@ -27,3 +27,6 @@
 * `validate_nuts_regions` is validating non-EU NUTS-like regions as valid if they will be added to `NUTS2021`. These regional codes, while legally not part of the `NUTS2016` typology, are valid and can be placed on the maps created by [EuroGeographics maps provided by Eurostat](https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts).
 * Italy, Portugal, the United Kingdom, Estonia, Slovenia,Latvia pseudo-NUTS3 codes in `google_nuts_matchtable`.
 * New correspondence table for converstion between Local Administration Units (LAUs) and NUTS within the European Union and some other European countries.
+
+# regions 0.1.5
+* Correction of a small bug with input data frames that already have columns that the validation result should contain. 

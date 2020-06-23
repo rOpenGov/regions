@@ -2,7 +2,7 @@
 % Please edit documentation in R/validate_nuts_countries.R
 \name{validate_nuts_countries}
 \alias{validate_nuts_countries}
-\title{Validate Comformity with NUTS Country Codes}
+\title{Validate Conformity with NUTS Country Codes}
 \usage{
 validate_nuts_countries(dat, geo_var = "geo")
 }
@@ -26,7 +26,8 @@ particular to the European Union statistical nomenclature.
 \item{UK}{Treated valid, because NUTS uses UK instead of GB for the United Kingdom.}
 \item{XK}{XK is used for Kosovo, because Eurostat uses this code, too.}
 }
-All ISO-3166 country codes are validated, and the three exceptions, too.
+All ISO-3166-1 country codes are validated, and also the
+three exceptions.
 }
 \examples{
 {

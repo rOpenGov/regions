@@ -60,10 +60,12 @@ Comparing Slovakia and Luxembourg to the federal states or even regions
 within Germany, or the states of Germany and the United States can
 provide more adequate insights. Statistically, the similarity of the
 aggregation level and high number of observations can allow more precise
-control of model parameters and errors. The advantages of switching from
-a national level of the analysis to a sub-national level comes with a
-huge price in data processing, validation and imputation. The package
-Regions aims to help this process.
+control of model parameters and errors.
+
+The advantages of switching from a national level of the analysis to a
+sub-national level comes with a huge price in data processing,
+validation and imputation. The package Regions aims to help this
+process.
 
 This package is an offspring of the
 [eurostat](http://ropengov.github.io/eurostat/) package on
@@ -111,6 +113,17 @@ with other rOpenGov packages.
   - Disaggregation functions from higher hierarchy levels to lower ones,
     again, for example from `NUTS1` to `NUTS2` or from `ISO-3166-1` to
     `ISO-3166-2` (disaggregate; under development)
+
+## Vignettes / Articles
+
+  - [Working With Regional, Sub-National Statistical
+    Products](http://regions.danielantal.eu/articles/Regional_stats.html)
+  - [Validating Your
+    Typology](http://regions.danielantal.eu/articles/validation.html)
+  - [Recoding And
+    Relabelling](http://regions.danielantal.eu/articles/recode.html)
+  - [The Typology Of The Google Mobility Reports
+    (COVID-19)](http://regions.danielantal.eu/articles/google_mobility_report.html)
 
 ## Example
 

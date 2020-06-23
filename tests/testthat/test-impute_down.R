@@ -170,3 +170,8 @@ test_that("impute_down gives correct methods", {
                TRUE)
 })
 
+data("mixed_nuts_example")
+
+test_that("vignette example works", {
+  expect_equal(nrow(impute_down_nuts (dat = mixed_nuts_example)), 150)
+})

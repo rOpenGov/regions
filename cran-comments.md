@@ -9,25 +9,11 @@
 
 ### rhub
 * Fedora Linux, R-devel, on r_hub
-* The Windows server on rhub does not have the vctrs >= 0.3.0, 
-and is not able to handle (yet) the new dplyr 1.0.0; this is unrelated
-to the 'regions' package.
+* Ubuntu Linux 16.04 LTS, R-devel, on r_hub
+* The Windows Server 2008 R2 SP1, R-devel does not have knitr and cannot build the vignettes, but this is not related to regions.
 
 ## R CMD check results
 There were no ERRORs or WARNINGs. 
 
-Depending on the platform, I get various notes to use size reduction
-of PDF. This should not throw a NOTE on CRAN.
-
-## Resubmission With Reviewer Suggestions and Solutions Implemented
-The reviewer saw 0.1.1, and all documentation suggestions were implemented. Than in 0.1.2. further documentation issues were corrected. (see very minor changes in NEWS.md)
-
-0.1.3, is basically a re-submission of 0.1.2, because the reviewer had only one suggestion, that the DESCRIPTION had a word duplicaton. (Sorry!)  As the NEWS contains, a very small addition went into 0.1.3
-1. The metadata vocabulary of Google's proprietary, but ISO-3166-2 based, typology was updated with a few countries. 
-2. `recode_nuts` slightly alterred to follow changes in dependency `dplyr` which does not affect functionality.
-
->meaningful meaningful data
--->
-meaningful data
-
->Please fix and resubmit.
+## This release is very small bug fix
+This submission is a very small bug fix compared to the existing 0.1.3 CRAN version.  0.1.5 resolves a naming conflict in `validate_nuts_regions`. Furthermore, it handles some metadata exceptions for non-EU countries.  The metadata files of the package were updated with new entries [i.e. contain more geographical data], but they do not affect the functioning of codes. An exception wordlist was added to the spell checker.

@@ -22,6 +22,7 @@
 #'  \code{downstream_data} that contains a variable called \code{'method'}
 #' for other purposes.
 #' @importFrom dplyr left_join rename mutate_if mutate
+#' @importFrom rlang .data
 #' @family impute functions
 #' @return The upstream data frame (containing data of a larger unit) and
 #' the downstream data (containing data of smaller sub-divisional units) are

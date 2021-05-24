@@ -29,6 +29,7 @@
 #' @importFrom dplyr full_join
 #' @importFrom assertthat assert_that
 #' @importFrom tibble tibble
+#' @importFrom rlang .data
 #' @return A character list with the valid typology, or 'invalid' in the cases
 #' when the geo coding is not valid.
 #' @examples{
@@ -43,6 +44,8 @@
 #' @export
 
 validate_geo_code <- function ( geo, nuts_year = 2016 ) {
+  
+  all_valid_nuts_codes <- NULL
   
   assertthat::assert_that(
     any ( c("character", "factor") %in% class(geo) ),
@@ -62,13 +65,13 @@ validate_geo_code <- function ( geo, nuts_year = 2016 ) {
   exceptions <- all_valid_nuts_codes %>%
     mutate ( 
       country_code = get_country_code( 
-      geo          = geo, 
+      geo          = .data$geo, 
       typology     = "NUTS" )
     ) %>%
     filter ( .data$country_code %in% c("IS", "LI", "NO", "AL",
                                  "CH", "MK", "RS", "TR", 
                                  "ME"))  %>%
-    distinct ( geo, typology ) %>%
+    distinct ( .data$geo, .data$typology ) %>%
     mutate ( typology = glue::glue ( "non_eu_{typology}") ) %>%
     select ( all_of(c("geo", "typology"))) %>%
     bind_rows ( tibble (
@@ -81,14 +84,15 @@ validate_geo_code <- function ( geo, nuts_year = 2016 ) {
   
   filtered_nuts_data_frame <- all_valid_nuts_codes[filtering, ] %>%
     select ( all_of(c("geo", "typology"))) %>%
-    full_join ( exceptions, by = c("geo", "typology") )
+    full_join ( exceptions, 
+                by = c("geo", "typology") )
   
   tibble::tibble ( 
     geo = geo) %>%
     left_join ( filtered_nuts_data_frame, by = 'geo' ) %>%
-    mutate ( typology = if_else ( condition = is.na(typology), 
+    mutate ( typology = if_else ( condition = is.na(.data$typology), 
                                   true = "invalid", 
-                                  false = as.character(typology) )
+                                  false = as.character(.data$typology) )
              ) %>%
     select ( all_of("typology")) %>%
     unlist () %>%

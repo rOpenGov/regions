@@ -70,9 +70,10 @@ validate_nuts_regions <- function ( dat,
     stop(geo_var, " is not among the columns of the data frame.")
   }
   
-  if ( ! nuts_year %in% c(1999,2003,2006,2010,2013,2016,2021)) {
-    stop('"nuts_year" = ', nuts_year, " is an invalid parameter."  )
-  }
+  assertthat::assert_that(
+    nuts_year %in% c(1999,2003,2006,2010,2013,2016,2021), 
+    msg = glue::glue ( "nuts_year={nuts_year} is an invalid parameter setting.")
+  )
   
   original_names <- names (dat)
   names_changed <- FALSE

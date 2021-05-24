@@ -1,6 +1,6 @@
 Package: regions
 Title: Processing Regional Statistics
-Version: 0.1.5
+Version: 0.1.6
 Authors@R: 
     c(
   person(given = "Daniel",
@@ -25,7 +25,7 @@ URL: https://regions.danielantal.eu/
 BugReports: https://github.com/rOpenGov/regions
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 Depends: 
     R (>= 2.10)
 Imports: 
@@ -41,7 +41,9 @@ Imports:
     stats,
     tidyr,
     readxl,
-    stringr
+    stringr,
+    assertthat,
+    tibble
 Suggests: 
     knitr,
     rmarkdown,

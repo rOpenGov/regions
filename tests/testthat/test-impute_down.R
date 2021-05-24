@@ -34,17 +34,17 @@ downstream3 <- data.frame (
   values = c(NA_real_, 9, 9, NA_real_))
 
 
-upstream_data = NULL
-downstream_data = NULL
-country_var = "country_code"
-regional_code = "geo_code"
-values_var = "values"
-time_var = NULL
-upstream_method_var = NULL
-downstream_method_var = NULL
+upstream_data <- NULL
+downstream_data <- NULL
+country_var <- "country_code"
+regional_code <- "geo_code"
+values_var <- "values"
+time_var <- NULL
+upstream_method_var <- NULL
+downstream_method_var <- NULL
 
 test_that("exception handling (erros) work", {
-  expect_error(impute_down ( 
+  expect_error( impute_down( 
     upstream_data  = upstream1,
     downstream_data = downstream1,
     values_var = 'values',

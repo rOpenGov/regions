@@ -13,7 +13,7 @@ A data frame with 3 variables:
 }
 }
 \source{
-The eventual source of the data is the Eurostat table 'isoc_r_iuse_i'
+The eventual source of the data is the Eurostat table \code{isoc_r_iuse_i}
 \url{https://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=isoc_r_iuse_i&lang=en}
 }
 \usage{

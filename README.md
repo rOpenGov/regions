@@ -11,8 +11,6 @@ coverage](https://codecov.io/gh/antaldaniel/regions/branch/master/graph/badge.sv
 has not yet been a stable, usable release suitable for the
 public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 “[![license](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)”
-[![Travis build
-status](https://travis-ci.org/antaldaniel/regions.svg?branch=master)](https://travis-ci.org/antaldaniel/regions)
 “[![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/regions)](https://cran.r-project.org/package=regions)”
 “[![CRAN\_Status\_Badge\_version\_last\_release](https://www.r-pkg.org/badges/version-last-release/regions)](https://cran.r-project.org/package=regions)”
 “[![metacran
@@ -22,6 +20,7 @@ downloads](https://cranlogs.r-pkg.org/badges/regions)](https://cran.r-project.or
 rOpenGov](https://img.shields.io/twitter/follow/ropengov.svg?style=social)](https://twitter.com/intent/follow?screen_name=ropengov)
 [![Follow
 author](https://img.shields.io/twitter/follow/antaldaniel.svg?style=social)](https://twitter.com/intent/follow?screen_name=antaldaniel)
+[![R-CMD-check](https://github.com/rOpenGov/regions/workflows/R-CMD-check/badge.svg)](https://github.com/rOpenGov/regions/actions)
 <!-- badges: end -->
 
 ## Installation
@@ -36,7 +35,7 @@ devtools::install_github("rOpenGov/regions")
 or the released version from CRAN:
 
 ``` r
-install.packages("devtools")
+install.packages("regions")
 ```
 
 You can review the complete package documentation on
@@ -76,7 +75,7 @@ with other rOpenGov packages.
 
 ## Sub-national Statistics Have Many Challenges
 
-  - **Frequent boundary changes**: as opposed to national boundaries,
+-   **Frequent boundary changes**: as opposed to national boundaries,
     the territorial units, typologies are often change, and this makes
     the validation and recoding of observation necessary across time.
     For example, in the European Union, sub-national typologies change
@@ -84,7 +83,7 @@ with other rOpenGov packages.
     the right French region in time, or, if you can make the time-wise
     comparison at all.
 
-  - **Hierarchical aggregation and special imputation**: missingness is
+-   **Hierarchical aggregation and special imputation**: missingness is
     very frequent in sub-national statistics, because they are created
     with a serious time-lag compared to national ones, and because they
     are often not back-casted after boundary changes. You cannot use
@@ -94,35 +93,35 @@ with other rOpenGov packages.
 
 ## Package functionality
 
-  - Generic vocabulary translation and joining functions for
+-   Generic vocabulary translation and joining functions for
     geographically coded data
-  - Keeping track of the boundary changes within the European Union
+-   Keeping track of the boundary changes within the European Union
     between 1999-2021
-  - Vocabulary translation and joining functions for standardized
+-   Vocabulary translation and joining functions for standardized
     European Union statistics
-  - Vocabulary translation for the `ISO-3166-2` based Google data and
+-   Vocabulary translation for the `ISO-3166-2` based Google data and
     the European Union
-  - Imputation functions from higher aggregation hierarchy levels to
+-   Imputation functions from higher aggregation hierarchy levels to
     lower ones, for example from `NUTS1` to `NUTS2` or from `ISO-3166-1`
     to `ISO-3166-2` (impute down)
-  - Imputation functions from lower hierarchy levels to higher ones
+-   Imputation functions from lower hierarchy levels to higher ones
     (impute up)
-  - Aggregation function from lower hierarchy levels to higher ones, for
+-   Aggregation function from lower hierarchy levels to higher ones, for
     example from NUTS3 to `NUTS1` or from `ISO-3166-2` to `ISO-3166-1`
     (aggregate; under development)
-  - Disaggregation functions from higher hierarchy levels to lower ones,
+-   Disaggregation functions from higher hierarchy levels to lower ones,
     again, for example from `NUTS1` to `NUTS2` or from `ISO-3166-1` to
     `ISO-3166-2` (disaggregate; under development)
 
 ## Vignettes / Articles
 
-  - [Working With Regional, Sub-National Statistical
+-   [Working With Regional, Sub-National Statistical
     Products](http://regions.danielantal.eu/articles/Regional_stats.html)
-  - [Validating Your
+-   [Validating Your
     Typology](http://regions.danielantal.eu/articles/validation.html)
-  - [Recoding And
+-   [Recoding And
     Relabelling](http://regions.danielantal.eu/articles/recode.html)
-  - [The Typology Of The Google Mobility Reports
+-   [The Typology Of The Google Mobility Reports
     (COVID-19)](http://regions.danielantal.eu/articles/google_mobility_report.html)
 
 ## Example
@@ -152,7 +151,7 @@ knitr::kable(imputed)
 ```
 
 | geo\_code | year | geo\_name                              | country\_code | my\_var | method                 |
-| :-------- | ---: | :------------------------------------- | :------------ | ------: | :--------------------- |
+|:----------|-----:|:---------------------------------------|:--------------|--------:|:-----------------------|
 | AU-NSW    | 2019 | New South Wales state                  | AU            |      10 | imputed from AU actual |
 | AU-QLD    | 2019 | Queensland state                       | AU            |      10 | imputed from AU actual |
 | AU-SA     | 2019 | South Australia state                  | AU            |      10 | imputed from AU actual |

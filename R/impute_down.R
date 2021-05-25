@@ -22,6 +22,7 @@
 #'  \code{downstream_data} that contains a variable called \code{'method'}
 #' for other purposes.
 #' @importFrom dplyr left_join rename mutate_if mutate
+#' @importFrom rlang .data
 #' @family impute functions
 #' @return The upstream data frame (containing data of a larger unit) and
 #' the downstream data (containing data of smaller sub-divisional units) are
@@ -57,12 +58,9 @@ impute_down <- function( upstream_data = NULL,
                          upstream_method_var = NULL,
                          downstream_method_var = NULL) {
 
-  ## non-standard evaulation vars -----------------------------
-  impute_values <- country_code <- NULL
-  . <- impute_method <- method <- values <- NULL
-
   ## upstream data --------------------------------------------
-  upstream_df <- dplyr:: mutate_if(upstream_data, is.factor, as.character)
+  upstream_df <- mutate_if(upstream_data, is.factor, as.character)
+  
   if ( country_var %in% names(upstream_df) ) {
     names(upstream_df[which(names(upstream_df)==country_var)]) <- 'country_code'
   } else {
@@ -96,10 +94,11 @@ impute_down <- function( upstream_data = NULL,
     
     possible_method_vars <- ifelse (is.null(downstream_method_var), 
                                     yes = "method", 
-                                    no = c("method", downstream_method_var))
+                                    no = c("method", downstream_method_var)
+    )
     
     if ( any ( names(upstream_df) %in% possible_method_vars ) ) {
-                 # case for potential naming conflict ------------
+      # case for potential naming conflict ------------
       conflicting_var <- which(names(upstream_df) %in% possible_method_vars )
       conflicting_variable_name <- names(upstream_df)[conflicting_var]
       new_variable_name <- paste0(conflicting_variable_name, "_upstream")
@@ -143,27 +142,28 @@ impute_down <- function( upstream_data = NULL,
     }
   } else  {
     downstream_df$method = ifelse ( is.na(downstream_df$values), 
-                                    yes  = NA_character_, no = "actual")
+                                    yes  = NA_character_, 
+                                    no = "actual")
   }
   
   ## Checking if all temporary data frames are correctly created -----------
-  if ( ! all( c("country_code", "impute_values", "impute_method") %in% names ( upstream_df ))) {
+  if ( ! all( c("country_code", "impute_values", "impute_method") %in% names (upstream_df) )) {
     stop("The 'upstream_df' is not well formatted. Please raise an issue on github.")
   }
   
-  if ( !  all( c("country_code", "geo_code", "values", "method") %in% names ( downstream_df )) ) {
+  if ( !  all( c("country_code", "geo_code", "values", "method") %in% names (downstream_df) )) {
     stop("The 'downstream_df' is not well formatted. Please raise an issue on github.")
   }
   
 
   ## Creating an empty grid --------------------------------------
   if ( no_time_var ) {
-    return_df <- expand.grid( unique ( downstream_df$geo_code),
+    return_df <- expand.grid( unique (downstream_df$geo_code),
                               stringsAsFactors = FALSE)
     names(return_df) <- "geo_code"
   } else {
-    return_df <- expand.grid( unique ( downstream_df$geo_code),
-                              unique ( upstream_df$time),
+    return_df <- expand.grid( unique (downstream_df$geo_code),
+                              unique (upstream_df$time),
                               stringsAsFactors = FALSE)
 
     names(return_df) <- c("geo_code", "time")
@@ -176,26 +176,31 @@ impute_down <- function( upstream_data = NULL,
   }
 
   ## Joining the data and filling in the missing data ----------------
-  return_df <- dplyr::left_join ( return_df, downstream_df,
-                                  by = 'geo_code') %>%
-    dplyr::left_join ( upstream_df, by = join_by_vars ) %>%
-     dplyr::mutate ( method = ifelse (is.na(values) & !is.na(impute_values), 
-                              yes = paste0("imputed from ", country_code, " ", 
-                                     impute_method), 
-                              no = method )) %>%
-     dplyr::mutate ( values = ifelse (is.na(values) & !is.na(impute_values), 
-                              yes = impute_values, 
-                              no =  values  )) %>%
-     dplyr::mutate ( method = ifelse (is.na(values),
+  return_df <- left_join ( return_df, 
+                           downstream_df,
+                           by = 'geo_code') %>%
+    left_join ( upstream_df, 
+                by = join_by_vars ) %>%
+    mutate ( method = ifelse (is.na(.data$values) & !is.na(.data$impute_values), 
+                              yes = paste0("imputed from ", .data$country_code, " ", 
+                                           .data$impute_method), 
+                              no = .data$method )
+             ) %>%
+    mutate ( values = ifelse (is.na(values) & !is.na(.data$impute_values), 
+                              yes = .data$impute_values, 
+                              no =  .data$values)
+             ) %>%
+    mutate ( method = ifelse (is.na(.data$values),
                               yes = "missing", 
-                              no = method))
+                              no = .data$method)
+             )
   
   ## Adding the original variable names back  ----------------------
 
-  names(return_df)[which(names(return_df)=="time")] <- time_var
-  names(return_df)[which(names(return_df)=="values")] <- values_var
+  names(return_df)[which(names(return_df)=="time")]         <- time_var
+  names(return_df)[which(names(return_df)=="values")]       <- values_var
   names(return_df)[which(names(return_df)=="country_code")] <- country_var
-  names(return_df)[which(names(return_df)=="geo_code")] <- regional_code
+  names(return_df)[which(names(return_df)=="geo_code")]     <- regional_code
   return_df[which(names(return_df) %in% c("impute_values", "impute_method"))] <- NULL
   return_df
 }

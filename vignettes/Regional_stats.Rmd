@@ -20,6 +20,7 @@ library(dplyr)
 ```
 
 Most economic, social, and environmental situations and developments have a specific territorial dimension. When a statistic is computed to describe a population parameter, the computation is often carried out for a population within the boundaries of this territory.
+ 
 Probably the most widely used and cited statistics are defined within the scope of national boundaries.  The population of France relates to the counting of people living within the boundaries of France (unless we specifically count French citizens living outside these boundaries.)
 
 Most national boundaries are stable, often throughout centuries.  The number of national boundaries is approaching 200, which means that global datasets have boundary changes almost every year _somewhere_.  Just the current European Union has witnessed several such changes in the last decades with the unification of Germany, the breakup of current member states Czechia and Slovakia, and the breakup of the former Yugoslavia to several current and prospective member states. When we are working with long-term data panels, obviously we have to make sure that we are comparing Czechia, Slovakia correctly with Czechoslovakia.
@@ -52,7 +53,8 @@ A typical workflow is this:
 
 When you are working with individual data, you are omitting steps 2-4. When working with national data, especially with small datasets, we can often  join data tables by a country name or country code without the problems of 2-4, but even in these cases, imputation rules like using the median value for missing cases is obviously wrong.  If the missing value represents a very small member state like Malta, which has a total population smaller than most capital cities in Europe, then using a median or mean country value will very much overestimate a count data for Malta.
 
-There are two main international efforts are taking place to standardize sub-national statistics: on the level of the European Union and on the level of the OECD.  Our programmatic solution aims to work with both international data sources, and as much as possible, with any country's data that uses the `ISO-3166-2` standard. However, at this stage we have only included the typology used by the European Union in helper functions and metadata (typological vocabulary) files.  
+There are two main international efforts are taking place to standardize sub-national statistics: on the level of the European Union and on the level of the OECD.  Our programmatic solution aims to work with both international data sources, and as much as possible, with any country's data that uses the `ISO-3166-2` standard. However, at this stage we have only included the typology used by the European Union in helper functions and metadata (typological vocabulary) files.
+
 ## Using a Consistent Typology
 
 The European Union harmonises the national statistical systems of 27 members states, 4 EEA countries and several other potential member states.  Its regional typology, the hierarchical NUTS system is the most complex international system, and the regions package is mainly developed to help working with European regional data.  However, the tasks related to such regional typologies are not unique the European Union.  They are present in almost any national statistical system, and they can be similarly complex in federal states like the United States or Australia.

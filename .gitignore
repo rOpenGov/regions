@@ -45,3 +45,5 @@ _travis
 doc
 Meta
 not_included
+/doc/
+/Meta/

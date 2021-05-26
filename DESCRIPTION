@@ -21,7 +21,7 @@ Description: Validating sub-national statistical typologies, re-coding across
 License: GPL-3
 Encoding: UTF-8
 Language: en-GB
-URL: https://regions.danielantal.eu/
+URL: https://regions.dataobservatory.eu/
 BugReports: https://github.com/rOpenGov/regions
 LazyData: true
 Roxygen: list(markdown = TRUE)

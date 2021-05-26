@@ -39,10 +39,10 @@ install.packages("regions")
 ```
 
 You can review the complete package documentation on
-[regions.danielantal.eu](http://regions.danielantal.eu/). If you find
-any problems with the code, please raise an issue on
-[Github](https://github.com/antaldaniel/regions). Pull requests are
-welcome if you agree with the [Contributor Code of
+[regions.dataobservaotry.eu](http://regions.dataobservatory.eu/). If you
+find any problems with the code, please raise an issue on
+[Github](https://github.com/rOpenGov/regions). Pull requests are welcome
+if you agree with the [Contributor Code of
 Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html)
 
 If you use `regions` in your work, please [cite the
@@ -116,13 +116,13 @@ with other rOpenGov packages.
 ## Vignettes / Articles
 
 -   [Working With Regional, Sub-National Statistical
-    Products](http://regions.danielantal.eu/articles/Regional_stats.html)
+    Products](http://regions.dataobservatory.eu/articles/Regional_stats.html)
 -   [Validating Your
-    Typology](http://regions.danielantal.eu/articles/validation.html)
+    Typology](http://regions.dataobservatory.eu/articles/validation.html)
 -   [Recoding And
-    Relabelling](http://regions.danielantal.eu/articles/recode.html)
+    Relabelling](http://regions.dataobservatory.eu/articles/recode.html)
 -   [The Typology Of The Google Mobility Reports
-    (COVID-19)](http://regions.danielantal.eu/articles/google_mobility_report.html)
+    (COVID-19)](http://regions.dataobservatory.eu/articles/google_mobility_report.html)
 
 ## Example
 
@@ -168,6 +168,11 @@ knitr::kable(imputed)
 | AU-WA     | 2020 | Western Australia state                | AU            |      12 | imputed from AU actual |
 | AU-ACT    | 2020 | Australian Capital Territory territory | AU            |      12 | imputed from AU actual |
 | AU-NT     | 2020 | Northern Territory territory           | AU            |      12 | imputed from AU actual |
+
+## Contributors
+
+Thanks for [@KKulma](https://github.com/KKulma) for the improved
+continous integration on Github.
 
 ## Code of Conduct
 

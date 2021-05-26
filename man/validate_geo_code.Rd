@@ -41,6 +41,6 @@ my_reg_data <- data.frame (
           "EL", "XK", "GB"), 
   values = runif(10))
 
-validate_get (my_reg_data$geo)
+validate_geo_code(my_reg_data$geo)
 }
 }

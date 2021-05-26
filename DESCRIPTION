@@ -20,7 +20,7 @@ Description: Validating sub-national statistical typologies, re-coding across
     lower hierarchical levels to create meaningful data panels and time series.
 License: GPL-3
 Encoding: UTF-8
-Language: en-GB
+Language: en-US
 URL: https://regions.dataobservatory.eu/
 BugReports: https://github.com/rOpenGov/regions
 LazyData: true

@@ -74,9 +74,9 @@ recode_nuts <- function( dat,
                envir = environment())
   
   codes_in_target_year <- all_valid_nuts_codes %>% 
-    dplyr::filter (.data$nuts == paste0("code_", .data$nuts_year)) %>%
+    dplyr::filter (.data$nuts == paste0("code_", nuts_year)) %>%
     dplyr::filter (!is.na(.data$geo)) %>%
-    select ( -tidyselect::all_of("nuts") ) %>%
+    select ( -all_of("nuts") ) %>%
     distinct ( .data$typology, .data$geo ) %>%
     mutate ( geo2 = .data$geo ) %>%
     purrr::set_names ( c("typology", target_code,
@@ -97,7 +97,7 @@ recode_nuts <- function( dat,
     dplyr::filter_at( vars(all_of(geo_var)), 
                       all_vars(. %in% target_geo_codes) )  %>%
     left_join ( all_valid_nuts_codes, by = join_by_vars ) %>%
-    dplyr::filter ( .data$nuts == paste0("code_", .data$nuts_year)) %>%
+    dplyr::filter ( .data$nuts == paste0("code_", nuts_year)) %>%
     mutate ( typology_change = NA_character_ ) %>%
     select ( -all_of("nuts")) %>%
     mutate ( target = as.character(unlist(.[, geo_var])) )

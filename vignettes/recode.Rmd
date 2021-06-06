@@ -63,7 +63,8 @@ example_df <- data.frame (
   values = runif(6, 0, 100 ),
   stringsAsFactors = FALSE )
 
-recode_nuts(dat = example_df, nuts_year = 2013) %>%
+recode_nuts(dat = example_df, 
+            nuts_year = 2013) %>%
   select ( geo, values, code_2013) %>%
   knitr::kable()
 ```
@@ -88,7 +89,7 @@ The following data can be joined with a `NUTS2013` dataset or map:
 recode_nuts(example_df, nuts_year = 2013) %>%
   select ( code_2013, values, typology_change ) %>%
   rename ( geo = code_2013 ) %>% 
-  filter ( !is.na(geo)) %>%
+  filter ( !is.na(.data$geo) ) %>%
   knitr::kable()
 ```
 
@@ -98,7 +99,7 @@ And re-assuringly these data will be compatible with the next NUTS typology, too
 recode_nuts(example_df, nuts_year = 2021) %>%
   select ( code_2021, values, typology_change ) %>%
   rename ( geo = code_2021 ) %>% 
-  filter ( !is.na(geo)) %>%
+  filter ( !is.na(geo.data) ) %>%
   knitr::kable()
 ```
 

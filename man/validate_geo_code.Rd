@@ -6,6 +6,11 @@
 \usage{
 validate_geo_code(geo, nuts_year = 2016)
 }
+\arguments{
+\item{geo}{A vector of geographical code to validate.}
+
+\item{nuts_year}{A valid NUTS edition year.}
+}
 \value{
 A character list with the valid typology, or 'invalid' in the cases
 when the geo coding is not valid.

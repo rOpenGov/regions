@@ -20,7 +20,8 @@
 #' 
 #' Currently the \code{2016} is used by Eurostat, but many datasets 
 #' still contain \code{2013} and sometimes earlier metadata.
-#'
+#' @param geo A vector of geographical code to validate.
+#' @param nuts_year A valid NUTS edition year. 
 #' @importFrom tidyselect all_of
 #' @importFrom purrr set_names
 #' @importFrom utils data 

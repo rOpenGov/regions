@@ -99,7 +99,7 @@ And re-assuringly these data will be compatible with the next NUTS typology, too
 recode_nuts(example_df, nuts_year = 2021) %>%
   select ( code_2021, values, typology_change ) %>%
   rename ( geo = code_2021 ) %>% 
-  filter ( !is.na(geo.data) ) %>%
+  filter ( !is.na(.data$geo) ) %>%
   knitr::kable()
 ```
 

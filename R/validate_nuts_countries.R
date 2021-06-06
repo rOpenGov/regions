@@ -17,6 +17,7 @@
 #' @importFrom tidyselect all_of
 #' @importFrom countrycode countrycode
 #' @importFrom purrr quietly
+#' @importFrom rlang .data
 #' @importFrom magrittr %>%
 #' @return The original data frame extended with the column \code{'typology'}. 
 #' This column states \code{'country'} for valid country typology coding, or
@@ -35,8 +36,6 @@
 
 validate_nuts_countries <- function ( dat, geo_var = "geo" ) {
   
-  . <- geo <- geo_tmp <- iso2c <- use_geo_tmp <- NULL
-  
   validate_data_frame(dat)
 
   dat <-  dplyr::mutate_if ( dat, is.factor, as.character )
@@ -51,26 +50,26 @@ validate_nuts_countries <- function ( dat, geo_var = "geo" ) {
     res$result
     }
   
-  iso_2c <- dat[, geo_var ]
+  iso_2c <- as.character(dat[, geo_var ])
 
   validate_country_df <- dat %>%
     dplyr::select ( all_of ( original_names )) %>%
-    dplyr::mutate ( iso2c =  as.character(iso_2c)) %>%
+    dplyr::mutate ( iso2c =  iso_2c ) %>%
     dplyr::mutate ( iso2c = dplyr::case_when ( 
-      iso2c == "UK" ~ "GB",
-      iso2c == "EL" ~ "GR", 
-      iso2c == "XK" ~ "GR", #only to avoid warning
-      TRUE ~ iso2c)) %>%
+      .data$iso2c == "UK" ~ "GB",
+      .data$iso2c == "EL" ~ "GR", 
+      .data$iso2c == "XK" ~ "GR", #only to avoid warning
+      TRUE ~ .data$iso2c)) %>%
     dplyr::mutate ( 
-      iso3c = quiet_country_codes (iso2c )
+      iso3c = quiet_country_codes (.data$iso2c)
       ) %>%
-    dplyr::mutate ( validation_n_char = nchar(iso2c)) %>%
+    dplyr::mutate ( validation_n_char = nchar(.data$iso2c)) %>%
     dplyr::mutate ( 
       typology = dplyr::case_when ( 
-       is.na (iso3c) & validation_n_char == 2 ~ "invalid_iso-3166-alpha-2",
-       is.na (iso3c) & validation_n_char == 3 ~ "iso-3166-alpha-3",
-       !is.na(iso3c) & validation_n_char == 2 ~ "country", 
-       is.na (iso3c) & validation_n_char != 2  ~ typology 
+       is.na (.data$iso3c) & validation_n_char == 2 ~ "invalid_iso-3166-alpha-2",
+       is.na (.data$iso3c) & validation_n_char == 3 ~ "iso-3166-alpha-3",
+       !is.na(.data$iso3c) & validation_n_char == 2 ~ "country", 
+       is.na (.data$iso3c) & validation_n_char != 2  ~ typology 
     ))
 
   validate_country_df %>%

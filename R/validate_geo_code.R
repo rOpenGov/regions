@@ -1,4 +1,4 @@
-#' Validate Conformity With NUTS Geo Codes (vector)
+#' Validate Conformity with NUTS Geo Codes (vector)
 #' 
 #' Validate that \code{geo} is conforming with the \code{NUTS1}, 
 #' \code{NUTS2}, or \code{NUTS3} typologies.

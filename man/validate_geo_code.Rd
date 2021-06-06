@@ -2,7 +2,7 @@
 % Please edit documentation in R/validate_geo_code.R
 \name{validate_geo_code}
 \alias{validate_geo_code}
-\title{Validate Conformity With NUTS Geo Codes (vector)}
+\title{Validate Conformity with NUTS Geo Codes (vector)}
 \usage{
 validate_geo_code(geo, nuts_year = 2016)
 }

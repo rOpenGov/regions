@@ -39,6 +39,7 @@
 #' @importFrom dplyr rename arrange full_join
 #' @importFrom tidyselect all_of
 #' @importFrom tidyr pivot_wider
+#' @importFrom rlang .data
 #' @importFrom utils data
 #' @examples{
 #' data(mixed_nuts_example)
@@ -53,9 +54,8 @@ impute_down_nuts <- function (dat,
                               nuts_year = 2016 ) {
  
   ## non-standard evaluation initialization
-   . <- geo <- country_code <- typology <- valid    <- NULL
-   nuts <- values <- method <- all_valid_nuts_codes <- NULL
-   nuts_level_1 <- nuts_level_2 <- nuts_level_3     <- NULL
+   . <- NULL
+   all_valid_nuts_codes <- NULL
    
    validation <- paste0("valid_", nuts_year)
    
@@ -92,58 +92,59 @@ impute_down_nuts <- function (dat,
      dat <- dat %>% select ( -all_of(validation) )
    }
   
-   get_valid_nuts_codes <- function( this_env ) {
+  get_valid_nuts_codes <- function( this_env ) {
      data("all_valid_nuts_codes", 
           package = "regions",
           envir = this_env )
      all_valid_nuts_codes
    }
 
-   validated <- dat %>%
+  validated <- dat %>%
     rename ( ## will be turned back on return, easier to handle
-             ## non-programatic geo, values names. 
-             geo = !! geo_var, 
-             values = !! values_var ) %>%
+      ## non-programatic geo, values names. 
+      geo = !! geo_var, 
+      values = !! values_var ) %>%
     validate_nuts_regions( nuts_year = nuts_year ) 
   
   names(validated)[ which(names(validated)==paste0("valid_", nuts_year))] <- "valid"
   
   ## subset for selecting only valid NUTS1 geo codes for imputing down
   validated_nuts_1 <- validated %>%
-    filter ( typology == "nuts_level_1", 
-             valid    == TRUE )
+    filter ( .data$typology == "nuts_level_1", 
+             .data$valid    == TRUE )
   
   ## subset for selecting only valid NUTS2 geo codes for imputing down
   validated_nuts_2 <- validated %>%
-    filter ( typology == "nuts_level_2", 
-             valid    == TRUE )
+    filter ( .data$typology == "nuts_level_2", 
+             .data$valid    == TRUE )
   
   countries_present <- validated %>%
     mutate ( country_code = regions::get_country_code(geo)) %>%
-    select ( country_code ) %>%
-    distinct ( country_code ) %>%
+    select ( .data$country_code ) %>%
+    distinct ( .data$country_code ) %>%
     unlist() %>% as.character() %>% sort()
   
   nuts_filter <- paste0("code_", nuts_year) 
 
-  all_valid_nuts_codes_year <-  get_valid_nuts_codes( 
-                                     this_env = environment() ) 
+  all_valid_nuts_codes_year <-  get_valid_nuts_codes(
+    this_env = environment()
+  ) 
   
   all_valid_nuts_codes_year <- all_valid_nuts_codes_year %>%
-    filter ( nuts     == nuts_filter, 
-             typology == "nuts_level_3") %>%
+    filter ( .data$nuts     == nuts_filter, 
+             .data$typology == "nuts_level_3") %>%
     mutate ( 
       ## start with smallest hierarchival unit, which is NUTS3
-      country_code = get_country_code (geo), 
-      row_id       = 1:nrow(.)
+      country_code = get_country_code (.data$geo), 
+      row_id       = 1:nrow(.)   #this is not nice
     ) %>%
-    tidyr::pivot_wider (., 
+    pivot_wider (
       names_from = "typology", 
       values_from = 'geo') %>%
     mutate ( 
-      nuts_level_2 = substr(nuts_level_3, 1, 4), 
-      nuts_level_1 = substr(nuts_level_3, 1, 3), 
-      country      = substr(nuts_level_3, 1, 2), 
+      nuts_level_2 = substr(.data$nuts_level_3, 1, 4), 
+      nuts_level_1 = substr(.data$nuts_level_3, 1, 3), 
+      country      = substr(.data$nuts_level_3, 1, 2), 
     ) %>%
     select ( -all_of("row_id") )
   
@@ -153,79 +154,82 @@ impute_down_nuts <- function (dat,
   ## Create all possible imputations from NUTS0 >> NUTS1 >> NUTS2 >> NUTS3
   potentially_imputed_from_country <- full_code_table %>%
     filter ( country_code %in% countries_present ) %>%
-    dplyr::rename ( geo  = country_code ) %>%
+    dplyr::rename ( geo  = .data$country_code ) %>%
     left_join ( dat, by = 'geo') %>%
-    filter ( !is.na(values) ) %>%
+    filter ( !is.na(.data$values) ) %>%
     mutate ( method = paste0(
       "imputed from country ", 
-      geo, " [", method, "]")
+      .data$geo, " [", .data$method, "]")
     ) 
   
   ## Create all possible imputations from NUTS1 >> NUTS2 >> NUTS3
   potentially_imputed_from_nuts_1 <- full_code_table %>%
     filter ( nuts_level_1 %in% validated_nuts_1$geo ) %>%
-    rename ( geo = nuts_level_1 ) %>%
+    rename ( geo = .data$nuts_level_1 ) %>%
     left_join ( dat, by = 'geo' ) %>%
     mutate ( method = paste0(
       "imputed from NUTS1 ", 
-      geo, " [", method, "]")
+      .data$geo, " [", .data$method, "]")
     ) %>%
     select ( all_of(c("nuts_level_2", "values", "method"))) %>%
-    dplyr::rename ( geo = nuts_level_2 )
+    dplyr::rename ( geo = .data$nuts_level_2 )
   
   ## Now add potential imputations from NUTS0 if not present in NUTS1
   imputed_from_nuts_1 <- potentially_imputed_from_country %>%
-    distinct_at  ( tidyselect::all_of (c("nuts_level_2", "values", 
-                                         "method")))  %>%
-    rename ( geo = nuts_level_2 ) %>%
+    distinct_at  ( 
+      all_of (c("nuts_level_2", "values", "method"))
+      )  %>%
+    rename ( geo = .data$nuts_level_2 ) %>%
     filter ( ! geo %in% potentially_imputed_from_nuts_1$geo ) %>%
     bind_rows ( potentially_imputed_from_nuts_1  )
   
   ## Create all possible imputations from NUTS2 >> NUTS3
   potentially_imputed_from_nuts_2 <- full_code_table %>%
-    filter ( nuts_level_2 %in% validated_nuts_2$geo ) %>%
-    rename ( geo = nuts_level_2 ) %>%
+    filter ( .data$nuts_level_2 %in% validated_nuts_2$geo ) %>%
+    rename ( geo = .data$nuts_level_2 ) %>%
     select ( -all_of(c("nuts_level_1"))) %>%
     left_join ( dat, by = 'geo' ) %>%
     mutate ( method = paste0(
       "imputed from NUTS2 ", 
-      geo, " [", method, "]")
+      .data$geo, " [", .data$method, "]")
     ) %>%
     select ( all_of(c("nuts_level_3", "values", "method"))) %>%
-    rename ( geo = nuts_level_3 ) %>%
-    filter ( ! geo %in%  validated$geo )
+    rename ( geo = .data$nuts_level_3 ) %>%
+    filter ( ! .data$geo %in% validated$geo )
   
   ## Now add possible imputations from country level NUTS0 >> NUTS3
   imputed_from_nuts_2 <- potentially_imputed_from_country %>%
-    distinct_at  ( tidyselect::all_of (c("nuts_level_3", "values", 
-                                         "method")))  %>%
-    rename ( geo = nuts_level_3 ) %>%
-    filter ( ! geo %in% potentially_imputed_from_nuts_2$geo ) %>%
+    distinct_at  ( 
+      all_of (c("nuts_level_3", "values", "method"))
+      )  %>%
+    rename ( geo = .data$nuts_level_3 ) %>%
+    filter ( ! .data$geo %in% potentially_imputed_from_nuts_2$geo ) %>%
     bind_rows ( potentially_imputed_from_nuts_2 )
   
   ## Now add the original data and the the NUTS2 >> NUTS3 imputations
   actual_to_imputed <- validated %>%
-    dplyr::full_join ( imputed_from_nuts_2,
-                       by = c("geo", "values", "method") ) 
+    full_join ( imputed_from_nuts_2,
+                by = c("geo", "values", "method") ) 
   
   ## Now add whatever can be added from NUTS0 or NUTS1
   imputed_df <- imputed_from_nuts_1 %>%
-    filter ( ! geo %in% actual_to_imputed$geo ) %>%
-    distinct_at ( tidyselect::all_of(c("geo", "values", "method"))) %>%
+    filter ( ! .data$geo %in% actual_to_imputed$geo ) %>%
+    distinct_at ( all_of(c("geo", "values", "method"))) %>%
     bind_rows (  actual_to_imputed ) %>%
-    distinct_at ( tidyselect::all_of( c("geo", "values", "method")) ) 
+    distinct_at ( all_of( c("geo", "values", "method")) ) 
   
   ## And at last, add NUTS0 >> NUTS1 imputations 
   imputed_df_2 <- potentially_imputed_from_country %>%
-    distinct_at ( tidyselect::all_of(c("nuts_level_1", "values", "method"))) %>%
-    dplyr::rename ( geo = nuts_level_1 ) %>%
+    distinct_at ( all_of(c("nuts_level_1", "values", "method"))) %>%
+    dplyr::rename ( geo = .data$nuts_level_1 ) %>%
     bind_rows ( imputed_df )
   
-  imputed_dfv <- validate_nuts_regions(imputed_df_2,
-                                       nuts_year = nuts_year ) %>%
-    dplyr::arrange(geo) %>%
+  imputed_dfv <- validate_nuts_regions(
+    imputed_df_2, 
+    nuts_year = nuts_year ) %>%
+    dplyr::arrange(.data$geo) %>%
     mutate ( ## remove case when method was originally "" and we have [] in the end
-      method = gsub("\\s\\[\\]", "", method)
+      method = gsub("\\s\\[\\]", "", .data$method)
       )
   
   names(imputed_dfv)[which (names(imputed_dfv)=="geo")] <- geo_var

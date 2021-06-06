@@ -116,7 +116,7 @@ recode_nuts <- function( dat,
   different_codes <- as.character(unlist (different_coding[, geo_var]))
   
   valid_different_codes <-  all_valid_nuts_codes %>%
-      dplyr::filter_at( vars(tidyselect::all_of(geo_var)), 
+      dplyr::filter_at( vars(tidyselect::all_of(geo_var)),         ## should be changed with accross
                     dplyr::all_vars(. %in% different_codes)) %>%
     mutate ( years = as.numeric(gsub("code_", "" , .data$nuts )) ) 
   
@@ -128,9 +128,9 @@ recode_nuts <- function( dat,
   
   recoding_changes <- nuts_changes  
 
-  if ( length(valid_different_codes$nuts)>0) {
+  if ( length(valid_different_codes$nuts)>0 ) {
     recoding_changes <- recoding_changes   %>%
-      select ( tidyselect::all_of( select_from_correspondence ) ) %>%
+      select ( all_of( select_from_correspondence ) ) %>%
       rename ( target = !! target_code )   
   }
 
@@ -140,7 +140,7 @@ recode_nuts <- function( dat,
      )
   
   if ( anything_to_fold ) {
-    recoding_changes <- tidyr::pivot_longer (
+    recoding_changes <- pivot_longer (
       recoding_changes,
       cols =  c(starts_with('code')), 
       names_to  = 'nuts', 
@@ -149,7 +149,7 @@ recode_nuts <- function( dat,
   
   recoding_changes <- recoding_changes %>%
     dplyr::filter ( .data$geo %in% different_codes )  %>%
-    dplyr::filter ( !is.na(.data$target)) %>%
+    dplyr::filter ( !is.na(target)) %>%
     mutate ( years = as.numeric(gsub("code_", "", .data$nuts))) 
   
   if ( nrow(recoding_changes)>0 ) {
@@ -184,7 +184,7 @@ recode_nuts <- function( dat,
     recoded_geo_codes <- as.character(unlist(recoded_values[, geo_var]))
    
     return_values <- return_values %>% 
-      dplyr::bind_rows (recoded_values)
+      bind_rows (recoded_values)
     
     ## Add those that are valid but cannot be recoded ---------
     valid_but_not_recoded <- valid_different_codes  %>%
@@ -201,7 +201,7 @@ recode_nuts <- function( dat,
           min_year = min(years, na.rm=TRUE), 
           max_year = max(years, na.rm=TRUE)
         ) %>%
-        tidyr::unite ( typology_change, min_year, max_year, sep =   '-') %>%
+        unite ( typology_change, min_year, max_year, sep =   '-') %>%
         mutate ( typology_change = paste0("Used in NUTS ", .data$typology_change))  %>%
         ungroup()
       

@@ -1,9 +1,9 @@
-#' European Union: NUTS And LAU Correspondence 
+#' European Union: NUTS And LAU Correspondence
 #'
-#' A dataset containing the joined correspondence tables of the 
+#' A dataset containing the joined correspondence tables of the
 #' EU NUTS and local administration units (LAU) typologies.
-#' 
-#' This is also the authoritative vocabulary for local administration, 
+#'
+#' This is also the authoritative vocabulary for local administration,
 #' names, including city and metropolitan area names.
 #'
 #' @format A data frame with 99140 rows and 22 variables:

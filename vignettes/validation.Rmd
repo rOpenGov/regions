@@ -14,7 +14,14 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup, message=FALSE, warnings=FALSE}
+```{r backgroundsetup, message=FALSE, warnings=FALSE, echo=FALSE}
+devtools::load_all()
+library(dplyr)
+library(tidyr)
+data(daily_internet_users)
+```
+
+```{r setup, message=FALSE, warnings=FALSE, eval=FALSE}
 library(regions)
 library(dplyr)
 library(tidyr)

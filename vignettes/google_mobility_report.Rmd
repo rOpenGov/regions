@@ -14,7 +14,11 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+```{r backgroundsetup, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE}
+devtools::load_all()
+```
+
+```{r setup, eval=FALSE}
 library(regions)
 ```
 

@@ -48,5 +48,6 @@ Suggests:
     knitr,
     rmarkdown,
     covr,
-    spelling
+    spelling,
+    devtools
 VignetteBuilder: knitr

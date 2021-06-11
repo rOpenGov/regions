@@ -1,4 +1,4 @@
-#' European Union: All Valid NUTS Codes 
+#' European Union: All Valid NUTS Codes
 #'
 #' A dataset containing all recognised geo codes in the EU
 #' NUTS correspondence tables. This is re-arranged from

@@ -1,6 +1,6 @@
-#' European Union: Recoded NUTS units 1995-2021. 
+#' European Union: Recoded NUTS units 1995-2021.
 #'
-#' Containing all recoded NUTS units from the European Union. 
+#' Containing all recoded NUTS units from the European Union.
 #' This is re-arranged from \code{\link{nuts_changes}}.
 #'
 #' @format A data frame with 8 rows and 3 variables:

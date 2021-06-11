@@ -1,7 +1,7 @@
-#' Example Data Frame: Mixed EU Typologies. 
+#' Example Data Frame: Mixed EU Typologies.
 #'
-#' This data frame is a fictious example that contains in a small, 
-#' easy-to-review example many potential typological problems. It is 
+#' This data frame is a fictious example that contains in a small,
+#' easy-to-review example many potential typological problems. It is
 #' used to test imputation functions and to create examples with them.
 #'
 #' @format A data frame with 22 rows and 3 variables:

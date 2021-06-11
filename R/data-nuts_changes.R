@@ -1,6 +1,6 @@
-#' European Union: Recoded NUTS units 1995-2021. 
+#' European Union: Recoded NUTS units 1995-2021.
 #'
-#' A dataset containing the joined correspondence tables of the 
+#' A dataset containing the joined correspondence tables of the
 #' EU NUTS typologies.
 #'
 #' @format A data frame with 3097 rows and 22 variables:

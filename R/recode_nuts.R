@@ -54,9 +54,8 @@ recode_nuts <- function(dat,
     stop ("The input variable 'dat' must have at least one row (observation)")
   }
   
-  . <- target <- NULL #these still need to be removed with .data$
-  min_year <- max_year <- NULL
-  
+  .  <- nuts_changes <- typology_change <- NULL #these still need to be removed with .data$
+
   original_geo_codes <- as.character(unlist(dat[, geo_var]))
   
   target_code <- paste0("code_", nuts_year)
@@ -137,8 +136,9 @@ recode_nuts <- function(dat,
       rename (target = !!target_code)
   }
   
-  anything_to_fold <- any(grepl("code_",
-                                substr(names(recoding_changes), 1, 5)))
+  anything_to_fold <- any(
+    grepl("code_", substr(names(recoding_changes), 1, 5))
+    )
   
   if (anything_to_fold) {
     recoding_changes <- pivot_longer (
@@ -151,7 +151,7 @@ recode_nuts <- function(dat,
   
   recoding_changes <- recoding_changes %>%
     dplyr::filter (.data$geo %in% different_codes)  %>%
-    dplyr::filter (!is.na(target)) %>%
+    dplyr::filter (!is.na(.data$target)) %>%
     mutate (years = as.numeric(gsub("code_", "", .data$nuts)))
   
   if (nrow(recoding_changes) > 0) {
@@ -162,7 +162,7 @@ recode_nuts <- function(dat,
         max_year = max(.data$years, na.rm = TRUE),
       ) %>%
       tidyr::unite (typology_change,
-                    min_year, max_year, sep =   '-') %>%
+                    .data$min_year, .data$max_year, sep =   '-') %>%
       mutate (
         typology_change = paste0(
           "Recoded from ",
@@ -218,7 +218,7 @@ recode_nuts <- function(dat,
           min_year = min(.data$years, na.rm = TRUE),
           max_year = max(.data$years, na.rm = TRUE)
         ) %>%
-        unite (typology_change, min_year, max_year, sep =   '-') %>%
+        unite (typology_change, .data$min_year, .data$max_year, sep = '-') %>%
         mutate (typology_change = paste0("Used in NUTS ", .data$typology_change))  %>%
         ungroup()
       

@@ -1,0 +1,207 @@
+---
+title: "Regional Choropleth Maps"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{choropleth}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, echo=FALSE}
+library(regions)
+library(eurostat)
+library(dplyr)
+```
+
+
+```{r get-map, echo=FALSE}
+map_nuts_2 <- eurostat::get_eurostat_geospatial(
+  resolution = "60",
+  nuts_level = "2",
+  year = 2016)
+```
+Let's get a long established regional dataset, the full-time equivalent (FTE) R&D workforce, in both sexes, in all sectors and all professional positions:
+
+```{r rd-workforce-get, message=FALSE}
+rd_workforce <- eurostat::get_eurostat_json (
+  id = "rd_p_persreg", 
+  filters = list ( sex = "T",     
+                   prof_pos = "TOTAL",
+                   sectperf = "TOTAL", 
+                   unit = "FTE" )
+)
+```
+
+Limit our data to two years only:
+
+```{r rd-limit, message=FALSE}
+rd_workforce <- rd_workforce %>%
+  filter ( .data$time %in% c("2009", "2018") ) 
+```
+
+We have quiet a few missing cases:
+
+```{r missing-cases}
+summary(is.na(rd_workforce$values))
+```
+But this is not the only problem with the dataset. 
+
+```{r, echo=FALSE}
+library(ggplot2)
+```
+
+```{r}
+indicator_with_map <- map_nuts_2 %>% 
+  left_join ( rd_workforce, by = "geo" ) 
+```
+
+Huge parts of Europe are not covered, but the missing values are not random. France went under a regional reform; Turkey and Albania did not provide this data earlier. Ireland has no regional statistics available.
+
+```{r}
+indicator_with_map  %>%
+  ggplot () +
+  geom_sf(aes(fill=values),
+          color="dim grey", size=.1) + 
+  scale_fill_gradient( low ="#FAE000", high = "#00843A") +
+  facet_wrap ( facets = "time") +
+  labs(title="R&D Personnel & Researchers",
+       subtitle = "In all sectors, both sexes by NUTS 2 regions",
+       caption="\ua9 EuroGeographics for the administrative boundaries 
+                \ua9 Tutorial and ready-to-use data on economy.dataobservatory.eu", 
+       fill = NULL) +
+  theme_light() + 
+  theme(legend.position="none") +
+  coord_sf(xlim=c(-22,48), ylim=c(34,70))
+```
+## Coding Problems
+
+Some of these problems are real missing data problems, but some of them are coding problem. In other words, the data is there, but it is not conforming the boundaries that you have on the `NUTS2016` map.
+
+```{r}
+validated_indicator <- regions::validate_nuts_regions(rd_workforce)
+```
+
+If we validate the dataset, we will see many interesting metadata observations. 
+
+```{r}
+library(dplyr)
+validation_summary_2016 <- validated_indicator %>%
+  group_by ( .data$time, .data$typology) %>%
+  summarize ( observations = n(),
+              values_missing = sum(is.na(.data$values)), 
+              values_present = sum(!is.na(.data$values)), 
+              valid_present = values_present /observations)
+```
+Even though the dataset is called [R&D personnel and researchers by sector of performance, sex and NUTS 2 regions \[rd_p_persreg\]](https://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=rd_p_persreg&lang=en), in fact, it contains data on country and `NUTS1` levels. And it has data on non-EU countries that in 2009 were not part of the NUTS system.
+
+```{r}
+validation_summary_2016  %>%
+  ungroup() %>%
+  filter ( .data$time == "2009")
+```
+The situation is not better in 2018:
+
+```{r}
+validation_summary_2016  %>%
+  ungroup() %>%
+  filter ( .data$time == "2018")
+```
+
+The dataset is plaged with data that has no place in the NUTS2016 definition, and therefore on a NUTS2016 map!
+
+What are the non-conforming bits?
+
+```{r non-conforming-geo}
+ validated_indicator %>%
+  filter ( ! .data$valid_2016 ) %>%
+  select ( all_of("geo") ) %>% 
+  unlist %>% as.character()
+```
+* Plenty of French units.  France went under a regional administrative reform, and we have data about its past, but not in the current boundaries and coding.
+* To a lesser extent, we have the same problem with Poland and the UK.
+* We have comparative data from Asia on country level, which ended up in a regional dataset.
+* We have Norway, which is a member of the EEA, and from 2021 it is officially part of the NUTS2021 system. They were nice to provide their data consistently for the past.
+* We have aggregates like the entire EU or the eurozone.
+
+The questions is, can we save some of the French data?  If the boundaries of regions changed, than we cannot: somebody has to reaggregate the number of researchers who used to work in the newly defined region back then, before the reform.  But in some cases, the regional boundaries did not change, only the name and the code of the region.
+
+```{r}
+recoded_indicator <- rd_workforce %>% 
+  regions::recode_nuts()
+```
+
+```{r, message=FALSE}
+recoding_summary <- recoded_indicator %>%
+  mutate ( observations  = nrow(.data)) %>%
+  mutate ( typology_change = ifelse ( grepl("Recoded", .data$typology_change), 
+                                      yes = "Recoded", 
+                                      no = .data$typology_change) ) %>%
+  group_by ( .data$typology_change, .data$time ) %>%
+  summarize ( values_missing = sum(is.na(.data$values)), 
+              values_present = sum(!is.na(.data$values)), 
+              pct = values_present / (values_present + values_missing ))
+```
+Let's take a look at the problems identified by `regions::recode_nuts()`:
+
+```{r}
+recoding_summary 
+```
+* We were able to recode quiet a few data points to the `NUTS2016` definition for the time of observation 2009 as well as 2018. Sometimes we are recoding rows that have missing values, which does not help that much: we know where the data should be, but it is missing anyway. But particularly for the year 2009 we can save plenty of data by recorded the obsolete coding.
+
+* We identify further problems.  We have coding the that was used in various time periods, but there is no clear recoding possibility, because the regions boundaries have changed.  To have the history of the data, we would need to recalculate them, say, by adding up the R&D personall from each settlement in the new regional boundary.
+
+The following non-empty cases were present in the dataset, just not with the coding that we used in the 2018-2020 period (i.e. the `NUTS2016` coding.) We are able to save 27 observations just by fixing the regional codes!
+
+```{r}
+recoded_indicator %>%
+  filter ( .data$typology == "nuts_level_2" ) %>%
+  filter ( !is.na(.data$typology_change) )  %>%
+  filter ( 
+    # Keep only pairs where we actually save 
+    # non-missing observations
+    !is.na(values) ) %>%
+  distinct ( .data$geo, .data$code_2016 ) %>%
+  filter ( 
+    # We filter out cases of countries who 
+    # joined the NUTS system later
+    .data$geo != .data$code_2016 )
+```
+So let's do the trick: let's change the `geo` variable to `code_2016`, which is, whenever there is an equivalent `geo` code in the `NUTS2016` definition, the data that you should have.
+
+```{r}
+recoded_with_map <- map_nuts_2 %>% 
+  left_join ( recoded_indicator %>%
+                mutate ( geo = .data$code_2016),
+              by = "geo"  ) 
+```
+
+```{r}
+map_nuts_2 %>% 
+  left_join ( rd_workforce_recoded , by = "geo") %>%
+  filter ( 
+    # completely missing cases
+    !is.na(.data$time) ) %>%
+  ggplot () +
+  geom_sf(aes(fill=type),
+          color="dim grey", size=.1) + 
+  scale_fill_manual ( values = c( "#FAE000", "#007CBB", "grey70") ) +
+  guides(fill = guide_legend(reverse=T, title = NULL)) +
+  facet_wrap ( facets = "time") +
+  labs(title="R&D Personnel & Researchers",
+       subtitle = "In all sectors, both sexes by NUTS 2 regions",
+       caption="\ua9 EuroGeographics for the administrative boundaries 
+                \ua9 Daniel Antal, rOpenGov", 
+       fill = NULL) +
+  theme_light() + 
+  theme(legend.position=c(.92,.7)) +
+  coord_sf(xlim=c(-22,48), ylim=c(34,70))
+```
+
+We have found a lot of seamingly missing values. 

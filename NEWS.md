@@ -37,3 +37,4 @@
 * New test_geo_code of for performance enhancement. 
 * Changing non-standard evaluation to dplyr 1.0+
 * Master repo moving to [rOpenGov](http://ropengov.org/)
+* Rewritten README.

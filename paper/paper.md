@@ -47,7 +47,6 @@ In international comparison, using nationally aggregated indicators often have m
 
 Yet the change from national to sub-national level comes with a huge data processing price. While national boundaries are relatively stable, with only a handful of changes in each recent decade. The change of national boundaries requires a more-or-less global consensus. But states are free to change their internal administrative boundaries, and they do it with large frequency. This means that the names, identification codes and boundaries of regions change very frequently. Joining data from different sources and different years can be very difficult.
 
-
 The use of such typologies are very useful for social scientific or policy research.  Within a metropolitan region, people are likely to work in the functional urban center even if they live in a different LAU -- therefore LAU-level economic indicators tend to become meaningless; population density is different at day and night. Island regions tend to have higher level of unemployment levels. In Southern Europe, coastal areas have extremely high level of tourist populations during the summer, and mountain regions often in the winter.  Therefore the analysis of most tourism related indicators should control for coastal and mountain areas. 
 
 

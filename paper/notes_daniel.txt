@@ -1,0 +1,8 @@
+
+
+cities, otherwise referred to as densely populated
+areas — code 1;
+• towns and suburbs, otherwise referred to as
+intermediate density areas — code 2;
+• rural areas, otherwise referred to as thinly populated
+areas — code 3.

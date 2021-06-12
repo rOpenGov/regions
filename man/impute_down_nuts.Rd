@@ -61,7 +61,7 @@ panel data is not supported.
 {
 data(mixed_nuts_example)
 impute_down_nuts(mixed_nuts_example, nuts_year = 2016)
-} 
+}
 }
 \seealso{
 Other impute functions: 

@@ -49,10 +49,10 @@ still contain \code{2013} and sometimes earlier metadata.
 }
 \examples{
 {
-my_reg_data <- data.frame ( 
-  geo = c("BE1", "HU102", "FR1", 
+my_reg_data <- data.frame (
+  geo = c("BE1", "HU102", "FR1",
           "DED", "FR7", "TR", "DED2",
-          "EL", "XK", "GB"), 
+          "EL", "XK", "GB"),
   values = runif(10))
 
 validate_nuts_regions (my_reg_data)

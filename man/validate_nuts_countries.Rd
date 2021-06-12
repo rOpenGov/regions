@@ -31,11 +31,11 @@ three exceptions.
 }
 \examples{
 {
-my_dat <- data.frame ( 
- geo = c("AL", "GR", "XK", "EL", "UK", "GB", "NLD", "ZZ" ), 
+my_dat <- data.frame (
+ geo = c("AL", "GR", "XK", "EL", "UK", "GB", "NLD", "ZZ" ),
  values = runif(8)
  )
- 
+
  ## NLD is an ISO 3-character code and is not validated.
  validate_nuts_countries(my_dat)
 }

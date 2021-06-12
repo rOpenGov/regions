@@ -38,10 +38,10 @@ to join current data with historical data sets.
 }
 \examples{
 {
-foo <- data.frame ( 
+foo <- data.frame (
   geo  =  c("FR", "DEE32", "UKI3" ,
-            "HU12", "DED", 
-            "FRK"), 
+            "HU12", "DED",
+            "FRK"),
   values = runif(6, 0, 100 ),
   stringsAsFactors = FALSE )
 

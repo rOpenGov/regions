@@ -10,9 +10,8 @@
 0 errors v | 0 warnings v | 0 notes 
 
 ### rhub
-* Fedora Linux, R-devel, on r_hub
-* Ubuntu Linux 16.04 LTS, R-devel, on r_hub
-* The Windows Server 2008 R2 SP1, R-devel does not have knitr and cannot build the vignettes, but this is not related to regions.
+* Fedora Linux, R-devel, clang, gfortran, on r_hub
+* Ubuntu Linux 20.04.1 LTS, R-release, GCC, on r_hub
 
 ## R CMD check results
 There were no ERRORs or WARNINGs. 

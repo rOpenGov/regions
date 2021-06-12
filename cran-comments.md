@@ -6,6 +6,7 @@
 * Microsoft Windows Server 2019, window-latest (release)
 * ubuntu-20.04 (release)
 * ubuntu-20.04 (devel)
+* Mac OS X 10.15.7 (release)
 0 errors v | 0 warnings v | 0 notes 
 
 ### rhub

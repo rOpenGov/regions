@@ -24,6 +24,7 @@
 #' @importFrom purrr set_names
 #' @importFrom stats complete.cases
 #' @importFrom utils data
+#' @importFrom rlang .data
 #' @family recode functions
 #' @return The original data frame with a \code{'geo_var'} column is extended
 #' with a \code{'typology'} column that states in which typology is the \code{'geo_var'}

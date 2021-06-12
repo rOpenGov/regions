@@ -54,5 +54,6 @@ Suggests:
     covr,
     spelling,
     devtools,
-    eurostat
+    eurostat,
+    ggplot2
 VignetteBuilder: knitr

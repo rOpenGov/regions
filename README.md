@@ -21,6 +21,10 @@ rOpenGov](https://img.shields.io/twitter/follow/ropengov.svg?style=social)](http
 [![Follow
 author](https://img.shields.io/twitter/follow/antaldaniel.svg?style=social)](https://twitter.com/intent/follow?screen_name=antaldaniel)
 [![R-CMD-check](https://github.com/rOpenGov/regions/workflows/R-CMD-check/badge.svg)](https://github.com/rOpenGov/regions/actions)
+[![Follow
+rOpenGov](https://img.shields.io/twitter/follow/ropengov.svg?style=social)](https://twitter.com/intent/follow?screen_name=ropengov)
+[![Follow
+author](https://img.shields.io/twitter/follow/antaldaniel.svg?style=social)](https://twitter.com/intent/follow?screen_name=antaldaniel)
 <!-- badges: end -->
 
 ## Installation
@@ -48,22 +52,32 @@ Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html)
 If you use `regions` in your work, please [cite the
 package](https://doi.org/10.5281/zenodo.3825696).
 
-## Motivation
+## Working with Sub-national Statistics
 
-Working with sub-national statistics has many benefits. In policymaking
-or in social sciences, it is a common practice to compare national
-statistics, which can be hugely misleading. The United States of
-America, the Federal Republic of Germany, Slovakia and Luxembourg are
-all countries, but they differ vastly in size and social homogeneity.
-Comparing Slovakia and Luxembourg to the federal states or even regions
-within Germany, or the states of Germany and the United States can
-provide more adequate insights. Statistically, the similarity of the
-aggregation level and high number of observations can allow more precise
-control of model parameters and errors.
+In international comparison, using nationally aggregated indicators
+often have many disadvantages, which result from the very different
+levels of homogeneity, but also from the often very limited observation
+numbers in a cross-sectional analysis. When comparing European
+countries, a few missing cases can limit the cross-section of countries
+to around 20 cases which disallows the use of many analytical methods.
+Working with sub-national statistics has many advantages: the similarity
+of the aggregation level and high number of observations can allow more
+precise control of model parameters and errors, and the number of
+observations grows from 20 to 200-300.
 
-The advantages of switching from a national level of the analysis to a
-sub-national level comes with a huge price in data processing,
-validation and imputation. The package Regions aims to help this
+Yet the change from national to sub-national level comes with a huge
+data processing price. While national boundaries are relatively stable,
+with only a handful of changes in each recent decade. The change of
+national boundaries requires a more-or-less global consensus. But states
+are free to change their internal administrative boundaries, and they do
+it with large frequency. This means that the names, identification codes
+and boundaries of regions change very frequently. Joining data from
+different sources and different years can be very difficult.
+
+There are numerous advantages of switching from a national level of the
+analysis to a sub-national level comes with a huge price in data
+processing, validation and imputation. The
+[regions](https://regions.dataobservatory.eu/) package aims to help this
 process.
 
 This package is an offspring of the
@@ -75,28 +89,104 @@ with other rOpenGov packages.
 
 ## Sub-national Statistics Have Many Challenges
 
--   **Frequent boundary changes**: as opposed to national boundaries,
-    the territorial units, typologies are often change, and this makes
-    the validation and recoding of observation necessary across time.
-    For example, in the European Union, sub-national typologies change
-    about every three years and you have to make sure that you compare
-    the right French region in time, or, if you can make the time-wise
-    comparison at all.
+**Frequent boundary changes**: as opposed to national boundaries, the
+territorial units, typologies are often change, and this makes the
+validation and recoding of observation necessary across time. For
+example, in the European Union, sub-national typologies change about
+every three years and you have to make sure that you compare the right
+French region in time, or, if you can make the time-wise comparison at
+all.
 
--   **Hierarchical aggregation and special imputation**: missingness is
-    very frequent in sub-national statistics, because they are created
-    with a serious time-lag compared to national ones, and because they
-    are often not back-casted after boundary changes. You cannot use
-    standard imputation algorithms because the observations are not
-    similarly aggregated or averaged. Often, the information is
-    seemingly missing, and it is present with an obsolete typology code.
+``` r
+library(regions)
+library(dplyr)
+#> 
+#> Attaching package: 'dplyr'
+#> The following objects are masked from 'package:stats':
+#> 
+#>     filter, lag
+#> The following objects are masked from 'package:base':
+#> 
+#>     intersect, setdiff, setequal, union
+example_df <- data.frame ( 
+  geo  =  c("FR", "DEE32", "UKI3" ,
+            "HU12", "DED", 
+            "FRK"), 
+  values = runif(6, 0, 100 ),
+  stringsAsFactors = FALSE )
+
+recode_nuts(dat = example_df, 
+            nuts_year = 2013) %>%
+  select ( geo, values, code_2013) %>%
+  knitr::kable()
+```
+
+| geo   |   values | code\_2013 |
+|:------|---------:|:-----------|
+| FR    | 94.48517 | FR         |
+| UKI3  | 58.56391 | UKI3       |
+| DED   | 86.12269 | DED        |
+| FRK   | 58.70105 | FR7        |
+| HU12  | 62.49930 | NA         |
+| DEE32 | 67.95571 | NA         |
+
+**Hierarchical aggregation and special imputation**: missingness is very
+frequent in sub-national statistics, because they are created with a
+serious time-lag compared to national ones, and because they are often
+not back-casted after boundary changes. You cannot use standard
+imputation algorithms because the observations are not similarly
+aggregated or averaged. Often, the information is seemingly missing, and
+it is present with an obsolete typology code. This is a basic example
+which shows you how to impute data from a larger territorial unit, such
+as a national statistic, to lower territorial units:
+
+``` r
+library(regions)
+
+upstream <- data.frame ( 
+   country_code =  rep("AU", 2),
+   year         = c(2019:2020),
+   my_var       = c(10,12)
+   )
+
+downstream <- australia_states
+
+imputed <- impute_down ( 
+   upstream_data  = upstream,
+   downstream_data = downstream,
+   country_var = "country_code",
+   regional_code = "geo_code",
+   values_var = "my_var",
+   time_var = "year" )
+
+knitr::kable(imputed)
+```
+
+| geo\_code | year | geo\_name                              | country\_code | my\_var | method                 |
+|:----------|-----:|:---------------------------------------|:--------------|--------:|:-----------------------|
+| AU-NSW    | 2019 | New South Wales state                  | AU            |      10 | imputed from AU actual |
+| AU-QLD    | 2019 | Queensland state                       | AU            |      10 | imputed from AU actual |
+| AU-SA     | 2019 | South Australia state                  | AU            |      10 | imputed from AU actual |
+| AU-TAS    | 2019 | Tasmania state                         | AU            |      10 | imputed from AU actual |
+| AU-VIC    | 2019 | Victoria state                         | AU            |      10 | imputed from AU actual |
+| AU-WA     | 2019 | Western Australia state                | AU            |      10 | imputed from AU actual |
+| AU-ACT    | 2019 | Australian Capital Territory territory | AU            |      10 | imputed from AU actual |
+| AU-NT     | 2019 | Northern Territory territory           | AU            |      10 | imputed from AU actual |
+| AU-NSW    | 2020 | New South Wales state                  | AU            |      12 | imputed from AU actual |
+| AU-QLD    | 2020 | Queensland state                       | AU            |      12 | imputed from AU actual |
+| AU-SA     | 2020 | South Australia state                  | AU            |      12 | imputed from AU actual |
+| AU-TAS    | 2020 | Tasmania state                         | AU            |      12 | imputed from AU actual |
+| AU-VIC    | 2020 | Victoria state                         | AU            |      12 | imputed from AU actual |
+| AU-WA     | 2020 | Western Australia state                | AU            |      12 | imputed from AU actual |
+| AU-ACT    | 2020 | Australian Capital Territory territory | AU            |      12 | imputed from AU actual |
+| AU-NT     | 2020 | Northern Territory territory           | AU            |      12 | imputed from AU actual |
 
 ## Package functionality
 
 -   Generic vocabulary translation and joining functions for
     geographically coded data
 -   Keeping track of the boundary changes within the European Union
-    between 1999-2021
+    between 1999-2024
 -   Vocabulary translation and joining functions for standardized
     European Union statistics
 -   Vocabulary translation for the `ISO-3166-2` based Google data and
@@ -121,53 +211,6 @@ with other rOpenGov packages.
     Typology](http://regions.dataobservatory.eu/articles/validation.html)
 -   [Recoding And
     Relabelling](http://regions.dataobservatory.eu/articles/recode.html)
--   [The Typology Of The Google Mobility Reports
-    (COVID-19)](http://regions.dataobservatory.eu/articles/google_mobility_report.html)
-
-## Example
-
-This is a basic example which shows you how to impute data from a larger
-territorial unit, such as a national statistic, to lower territorial
-units:
-
-``` r
-library(regions)
-
-upstream <- data.frame ( country_code =  rep( "AU", 2),
-                         year = c(2019:2020),
-                         my_var  = c(10,12)
-                       )
-
-downstream <- australia_states
-
-imputed <- impute_down ( upstream_data  = upstream,
-              downstream_data = downstream,
-              country_var = "country_code",
-              regional_code = "geo_code",
-              values_var = "my_var",
-              time_var = "year" )
-
-knitr::kable(imputed)
-```
-
-| geo\_code | year | geo\_name                              | country\_code | my\_var | method                 |
-|:----------|-----:|:---------------------------------------|:--------------|--------:|:-----------------------|
-| AU-NSW    | 2019 | New South Wales state                  | AU            |      10 | imputed from AU actual |
-| AU-QLD    | 2019 | Queensland state                       | AU            |      10 | imputed from AU actual |
-| AU-SA     | 2019 | South Australia state                  | AU            |      10 | imputed from AU actual |
-| AU-TAS    | 2019 | Tasmania state                         | AU            |      10 | imputed from AU actual |
-| AU-VIC    | 2019 | Victoria state                         | AU            |      10 | imputed from AU actual |
-| AU-WA     | 2019 | Western Australia state                | AU            |      10 | imputed from AU actual |
-| AU-ACT    | 2019 | Australian Capital Territory territory | AU            |      10 | imputed from AU actual |
-| AU-NT     | 2019 | Northern Territory territory           | AU            |      10 | imputed from AU actual |
-| AU-NSW    | 2020 | New South Wales state                  | AU            |      12 | imputed from AU actual |
-| AU-QLD    | 2020 | Queensland state                       | AU            |      12 | imputed from AU actual |
-| AU-SA     | 2020 | South Australia state                  | AU            |      12 | imputed from AU actual |
-| AU-TAS    | 2020 | Tasmania state                         | AU            |      12 | imputed from AU actual |
-| AU-VIC    | 2020 | Victoria state                         | AU            |      12 | imputed from AU actual |
-| AU-WA     | 2020 | Western Australia state                | AU            |      12 | imputed from AU actual |
-| AU-ACT    | 2020 | Australian Capital Territory territory | AU            |      12 | imputed from AU actual |
-| AU-NT     | 2020 | Northern Territory territory           | AU            |      12 | imputed from AU actual |
 
 ## Contributors
 

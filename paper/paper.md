@@ -41,16 +41,55 @@ This package is an offspring of the Eurostat package, which provides programmati
 
 # Statement of need
 
+Location is a key attribute to many statisticial and business indicators: it provides the structure for collecting, processing, storing, analysing and aggregating data. The framework provided by a specific geographic feature, such as a national border, or a province, proximity to a city as a larger metropolitan area is key to both the creation and understanding of most statistical indicators. While statistical indicators defined over national borders, such as GDP, are the most often cited indicators, they are not always optimal for research purposes. Countries have very different sizes, and therefore, very different levels economic or cultural heteogeneity: the United States or China is one country, and so is Luxembourg, Malta or Liechtenstein.
+
+In international comparison, using nationally aggregated indicators often have many disadvantages, which result from the very different levels of homogeneity, but also from the often very limited observation numbers in a cross-sectional analysis. When comparing European countries, a few missing cases can limit the cross-section of countries to around 20 cases which disallows the use of many analytical methods.  Working with sub-national statistics has many advantages: the similarity of the aggregation level and high number of observations can allow more precise control of model parameters and errors, and the number of observations grows from 20 to 200-300.
+
+Yet the change from national to sub-national level comes with a huge data processing price. While national boundaries are relatively stable, with only a handful of changes in each recent decade. The change of national boundaries requires a more-or-less global consensus. But states are free to change their internal administrative boundaries, and they do it with large frequency. This means that the names, identification codes and boundaries of regions change very frequently. Joining data from different sources and different years can be very difficult.
+
+
+The use of such typologies are very useful for social scientific or policy research.  Within a metropolitan region, people are likely to work in the functional urban center even if they live in a different LAU -- therefore LAU-level economic indicators tend to become meaningless; population density is different at day and night. Island regions tend to have higher level of unemployment levels. In Southern Europe, coastal areas have extremely high level of tourist populations during the summer, and mountain regions often in the winter.  Therefore the analysis of most tourism related indicators should control for coastal and mountain areas. 
+
+
+# Overview of Territorial Nomenclature
+
+Eurostat’s Methodological manual on territorial typologies [] It may also be of interest
+to users of subnational statistics so they may better understand and interpret the wide range of official statistics that are available at a subnational level for the EU.
+
+The decision to make this publication reflects
+
 The NUTS classification (*Nomenclature of territorial units for statistics*) is a hierarchical system for dividing up the economic territory of the EU, the United Kingdom, and some other European countries for the purpose of collection, development and harmonisation of European regional statistics.
 
 It has three hierarchical levels with one connecting top-level territory, i.e. the country itself, and the LAU unit for cities, villages, settlements and their surroundings.
 
 * NUTS 0: the country itself, not formally part of NUTS, but used for practical aggregation tasks in our package. 
-* NUTS 1: major socio-economic regions, which are often historically solid sub-divisions, such as Germany's member states;
-* NUTS 2: basic regions for the application of regional policies; which are often also historically stable units, such as the provinces of the Netherlands;
-* NUTS 3: small regions for specific diagnoses, which is a very fast changing territorial aggregation unit.
+* NUTS 1: major socio-economic regions, which are often historically solid sub-divisions, such as Germany's member states with a population of 3-7 million inhabitants;
+* NUTS 2: basic regions for the application of regional policies; which are often also historically stable units, such as the provinces of the Netherlands, with a population of 800,000 - 3 million inhabitants;
+* NUTS 3: small regions for specific diagnoses, which is a very fast changing territorial aggregation unit, with a population 150,000-800,000 inhabitants.
 
-The NUTS system used to have smaller NUTS 4 and NUTS 5 definitions, but they were so rapidly changing that it became impractical to use them for statistical aggregation.  Eventually they were replaced with the LAU classification, which is updated annually, and which provides a hierarchical connection to settlements, municipalities.
+The NUTS system used to have smaller NUTS 4 and NUTS 5 definitions, but they were so rapidly changing that it became impractical to use them for statistical aggregation.  Eventually they were replaced with the LAU classification (municipalities, communes, parishes or wards), which is updated annually.
+
+The LAU system is the basis of further typologies that can be very useful for researchers and policymakers, such as 
+
+* Degree of urbanisation - cities; towns and suburbs; rural areas. This concept is also applied to NUTS3 small regions as the *Urban-rural typology*.
+* Cities, commuting zones and functionalurban areas - city; functional urban area of the city and its commuting are; and the metropolitan region of the city (one or more NUTS3 small regions.)
+* Coastal areas - Coastal areas are local administrative units (LAUs) that
+are bordering or close to a marine coastline. This concept is also applied to NUTS3 regions as *Coastal regions*.
+* The metropolitan typology is applied at the level of NUTS level 3 regions and identifies metropolitan regions in the European Union (EU). These regions are defined as urban agglomerations (NUTS level 3 regions or groups of NUTS level 3 regions) where at least 50 %
+of the population lives inside a functional urban area (FUA) that is composed of at least 250 000 inhabitants.
+* Border regions: The border typology is applied at the level of NUTS level 3 regions: it identifies border regions in the European Union (EU) as those regions with a land border, or those regions where more than half of the population lives within 25 km of such a border.
+* Island regions: The island typology is applied at the level of NUTS
+regions. Island regions are defined as NUTS level 3 regions within the European Union (EU) that are entirely composed of one or more islands. 
+* Moutain regions: The mountain typology is applied at the level of NUTS level 3 regions: it identifies mountain regions in the European Union (EU) as NUTS level 3 regions where
+more than half of the surface is covered by mountain areas, or in which more than half of the population lives in mountain areas. (See xxx [, p108] for the exact definition of a "mountain".)
+
+
+
+
+The NUTS classification is set out in Annex I of Regulation
+(EC) No 1059/2003. I
+
+, and which provides a hierarchical connection to settlements, municipalities.
 
 The currently valid *NUTS 2021 classification* lists 104 regions at NUTS 1, 283 regions at NUTS 2 and 1345 regions at NUTS 3 level. The currently most used NUTS 2016 classification that was valid in the period 2018-2020 listed 104 regions at NUTS 1, 281 regions at NUTS 2 and 1348 regions at NUTS 3 level.
 

@@ -92,7 +92,7 @@ Eurostat offers so-called correspondence tables to follow boundary changes, reco
 
 The `data-raw` library contains these Excel tables and very long data wrangling code that unifies the relevant vocabulary of these Excel files and brings the tables into a single, tidy format , starting with the definition `NUTS1999`.  The resulting data file `nuts_changes` is included in the `regions` package. It already contains the changes that will come into force in 2021.
 
-The vignette [Validating Your Typology](http://regions.danielantal.eu/articles/validation.html) gives a real-life example to the use of these functions. Validations are the starting points for [Recoding and re-labelling](#recoding), [Aggregation And Re-Aggregation ](#aggregation) and [Disaggregation And Projection](#projection) operations.
+The vignette [Validating Your Typology](https://regions.dataobservatory.eu/articles/validation.html) gives a real-life example to the use of these functions. Validations are the starting points for [Recoding and re-labelling](#recoding), [Aggregation And Re-Aggregation ](#aggregation) and [Disaggregation And Projection](#projection) operations.
 
 ### Recoding and re-labelling {#recoding}
 
@@ -126,7 +126,7 @@ knitr::kable(
 
 This is in fact a simpler recoding than the earlier example of _Budapest_. _La Réunion_ did change its name and code, so you find its data under different labels, but it is still within the `NUTS2` typology.  Its comparators are likely to be found in the same statistical table. In the case of _Budapest_, the name did not change, but the change of the geo label reflects the fact that Budapest was moved from the `NUTS3` typology to the `NUTS2` typology, because it can be much better compared with `NUTS2` regions. For data concerning the time period before 2017, you need to look for data about Budapest in datasets that follow the `NUTS3` typology, or in national data sources, but you can fill in these historical data to pre-2017 cells of your `NUTS2` regional data. The size of Budapest did not change that much - it should have been compared with `NUTS2` regions in 2014, like in 2020, and not with smaller `NUTS3` units.
 
-See in more detail the vignette [Recoding & Relabelling](http://regions.danielantal.eu/articles/recode.html) for our programmatic solution.
+See in more detail the vignette [Recoding & Relabelling](https://regions.dataobservatory.eu/articles/recode.html) for our programmatic solution.
 
 ## Imputation
 

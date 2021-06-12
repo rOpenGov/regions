@@ -43,8 +43,8 @@ install.packages("regions")
 ```
 
 You can review the complete package documentation on
-[regions.dataobservaotry.eu](http://regions.dataobservatory.eu/). If you
-find any problems with the code, please raise an issue on
+[regions.dataobservaotry.eu](https://regions.dataobservatory.eu/). If
+you find any problems with the code, please raise an issue on
 [Github](https://github.com/rOpenGov/regions). Pull requests are welcome
 if you agree with the [Contributor Code of
 Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html)
@@ -81,11 +81,11 @@ processing, validation and imputation. The
 process.
 
 This package is an offspring of the
-[eurostat](http://ropengov.github.io/eurostat/) package on
-[rOpenGov](http://ropengov.github.io/). It started as a tool to validate
-and re-code regional Eurostat statistics, but it aims to be a general
-solution for all sub-national statistics. It will be developed parallel
-with other rOpenGov packages.
+[eurostat](https://ropengov.github.io/eurostat/) package on
+[rOpenGov](https://ropengov.github.io/). It started as a tool to
+validate and re-code regional Eurostat statistics, but it aims to be a
+general solution for all sub-national statistics. It will be developed
+parallel with other rOpenGov packages.
 
 ## Sub-national Statistics Have Many Challenges
 
@@ -121,14 +121,14 @@ recode_nuts(dat = example_df,
   knitr::kable()
 ```
 
-| geo   |   values | code\_2013 |
-|:------|---------:|:-----------|
-| FR    | 12.23506 | FR         |
-| UKI3  | 86.36690 | UKI3       |
-| DED   | 96.70375 | DED        |
-| FRK   | 97.06458 | FR7        |
-| HU12  | 20.91753 | NA         |
-| DEE32 | 72.82175 | NA         |
+| geo   |    values | code\_2013 |
+|:------|----------:|:-----------|
+| FR    |  1.820664 | FR         |
+| UKI3  | 42.641856 | UKI3       |
+| DED   | 58.184540 | DED        |
+| FRK   | 80.965518 | FR7        |
+| HU12  | 78.022209 | NA         |
+| DEE32 | 47.090812 | NA         |
 
 **Hierarchical aggregation and special imputation**: missingness is very
 frequent in sub-national statistics, because they are created with a
@@ -206,11 +206,11 @@ knitr::kable(imputed)
 ## Vignettes / Articles
 
 -   [Working With Regional, Sub-National Statistical
-    Products](http://regions.dataobservatory.eu/articles/Regional_stats.html)
+    Products](https://regions.dataobservatory.eu/articles/Regional_stats.html)
 -   [Validating Your
-    Typology](http://regions.dataobservatory.eu/articles/validation.html)
+    Typology](https://regions.dataobservatory.eu/articles/validation.html)
 -   [Recoding And
-    Relabelling](http://regions.dataobservatory.eu/articles/recode.html)
+    Relabelling](https://regions.dataobservatory.eu/articles/recode.html)
 
 ## Contributors
 

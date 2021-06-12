@@ -150,11 +150,23 @@ recode_nuts <- function(dat,
   }
   
   recoding_changes <- recoding_changes %>%
-    dplyr::filter (.data$geo %in% different_codes)  %>%
-    dplyr::filter (!is.na(.data$target)) %>%
-    mutate (years = as.numeric(gsub("code_", "", .data$nuts)))
+    dplyr::filter (.data$geo %in% different_codes) 
   
   if (nrow(recoding_changes) > 0) {
+    ## There are recoding changes, but they may not be relevant for 
+    ## the target coding.
+    recoding_changes <- recoding_changes %>%
+      dplyr::filter (!is.na(.data$target)) %>%
+      mutate (years = as.numeric(gsub("code_", "", .data$nuts)))
+  }
+  
+  if (nrow(recoding_changes) > 0) {
+    ## There are relevant recoding changes for the target.
+    
+    recoding_changes <- recoding_changes %>%
+      dplyr::filter (!is.na(.data$target)) %>%
+      mutate (years = as.numeric(gsub("code_", "", .data$nuts)))
+    
     recoding_changes <-  recoding_changes %>%
       group_by_at (dplyr::vars(-all_of(c("years", "nuts")))) %>%
       summarize (

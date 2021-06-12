@@ -25,9 +25,6 @@ test <- data.frame (
 tested1 <- recode_nuts(dat = test,
                        geo_var = "geo",
                        nuts_year = 2013)
-sort(unique(tested1$geo))
-
-tested1$code_2013
 
 test_that("all geo codes are returned", {
   expect_equal(sort(unique(tested1$geo)), sort(unique(test$geo)))

@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 The [regions](https://regions.dataobservatory.eu/) package offers tools two work with regional statistics.  It is an offspring of the [eurostat](http://ropengov.github.io/eurostat/) package of [rOpenGov](http://ropengov.org/), which offers data search, download, manipulation and visualization for Eurostat's [European statistics](https://ec.europa.eu/eurostat). While you can use *regions* for any European regional statistics, and with a limited functionality, any regional statistics from other parts of the world, this articles provides a combined use case for the two packages. 
 
-```{r setup, echo=FALSE}
+```{r setup, echo=FALSE, message=FALSE, warning=FALSE}
 library(regions)
 library(eurostat)
 library(dplyr)

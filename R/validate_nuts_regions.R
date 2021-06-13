@@ -65,17 +65,9 @@ validate_nuts_regions <- function (dat,
   all_valid_nuts_codes <- NULL
   
   ## validate parameters --------------------------------------
-  validate_data_frame (dat = dat)
-  
-  assertthat::assert_that(
-    geo_var %in% names(dat), 
-    msg = glue::glue ("geo_var={geo_var} is not among names(dat)")
-  )
-
-  assertthat::assert_that(
-    nuts_year %in% c(1999, 2003, 2006, 2010, 2013, 2016, 2021),
-    msg = glue::glue ("nuts_year={nuts_year} is an invalid parameter setting.")
-  )
+  validate_data_frame (dat = dat, 
+                       geo_var = geo_var, 
+                       nuts_year = nuts_year)
   
   original_names <- names (dat)
   names_changed <- FALSE
@@ -126,20 +118,26 @@ validate_nuts_regions <- function (dat,
                by = geo_var) %>%
     mutate (typology = ifelse (is.na(.data$typology),
                                .data$typology2,
-                               .data$typology)) %>%
+                               .data$typology)
+            ) %>%
     mutate (
       # make exception for country codes, which are anyway not
       # part of NUTS and may be valid codes
       nuts = ifelse(
         test = is.na(.data$nuts) & .data$typology == "country",
-        yes  = unique(nuts[which(!is.na(unique(.data$nuts)))]),
+        yes  = unique(.data$nuts[which(!is.na(unique(.data$nuts)))]),
         no = .data$nuts
       )) %>%  ## countries may not be EU countries
     left_join (# join non-EU valid codes
       exceptions, 
       by = geo_var) %>%
-    mutate (nuts = ifelse(is.na(.data$nuts), .data$exception, .data$nuts)) %>%
-    mutate (typology = ifelse(is.na(typology), .data$exception, .data$typology)) %>%
+    mutate (nuts = ifelse(is.na(.data$nuts), 
+                          yes = .data$exception, 
+                          no  = .data$nuts)) %>%
+    mutate (typology = ifelse(is.na(.data$typology), 
+                              yes = .data$exception, 
+                              no  = .data$typology)
+            ) %>%
     mutate (valid =  !is.na(.data$nuts))  %>%
     select (-all_of(c("typology2", "exception", "nuts")))
   

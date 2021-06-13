@@ -35,9 +35,12 @@
 #' @export
 
 validate_nuts_countries <- function (dat, geo_var = "geo") {
-  validate_data_frame(dat)
   
-  dat <-  dplyr::mutate_if (dat, is.factor, as.character)
+  validate_data_frame(dat, geo_var = geo_var )
+  
+  dat <-  dat %>%
+    mutate_if (dat, is.factor, as.character)
+  
   if (!"typology" %in% names(dat)) {
     dat$typology <- NA_character_
   }
@@ -52,10 +55,10 @@ validate_nuts_countries <- function (dat, geo_var = "geo") {
   iso_2c <- as.character(dat[, geo_var])
   
   validate_country_df <- dat %>%
-    dplyr::select (all_of (original_names)) %>%
-    dplyr::mutate (iso2c =  iso_2c) %>%
-    dplyr::mutate (
-      iso2c = dplyr::case_when (
+    select (all_of (original_names)) %>%
+    mutate (iso2c = iso_2c) %>%
+    mutate (
+      iso2c = case_when (
         .data$iso2c == "UK" ~ "GB",
         .data$iso2c == "EL" ~ "GR",
         .data$iso2c == "XK" ~ "GR",
@@ -63,10 +66,10 @@ validate_nuts_countries <- function (dat, geo_var = "geo") {
         TRUE ~ .data$iso2c
       )
     ) %>%
-    dplyr::mutate (iso3c = quiet_country_codes (.data$iso2c)) %>%
-    dplyr::mutate (validation_n_char = nchar(.data$iso2c)) %>%
-    dplyr::mutate (
-      typology = dplyr::case_when (
+    mutate (iso3c = quiet_country_codes (.data$iso2c)) %>%
+    mutate (validation_n_char = nchar(.data$iso2c)) %>%
+    mutate (
+      typology = case_when (
         is.na (.data$iso3c) &
           validation_n_char == 2 ~ "invalid_iso-3166-alpha-2",
         is.na (.data$iso3c) &

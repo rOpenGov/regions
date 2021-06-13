@@ -4,7 +4,7 @@
 \alias{validate_data_frame}
 \title{Validate Parameter 'dat'}
 \usage{
-validate_data_frame(dat)
+validate_data_frame(dat, geo_var = NULL, nuts_year = NULL)
 }
 \arguments{
 \item{dat}{A data frame input to be validated.}

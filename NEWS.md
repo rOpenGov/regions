@@ -38,3 +38,7 @@
 * Changing non-standard evaluation to dplyr 1.0+
 * Master repo moving to [rOpenGov](http://ropengov.org/)
 * Rewritten README.
+
+# regions 0.1.7
+* Added the `regional_rd_personnel` dataset and the `Maping Regional Data, Maping Metadata Problems` vignette.
+* This is a release candidate on CRAN.

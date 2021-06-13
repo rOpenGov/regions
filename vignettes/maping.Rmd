@@ -19,7 +19,7 @@ The [regions](https://regions.dataobservatory.eu/) package offers tools two work
 ```{r setup, echo=FALSE, message=FALSE, warning=FALSE}
 library(regions)
 library(eurostat)
-library(dplyr)
+library(dplyr, quietly = T)
 ```
 
 Eurostat's main function for data access is [get_eurostat()](http://ropengov.github.io/eurostat/reference/get_eurostat.html), but in this case we will use the more specific [get_eurostat_json](http://ropengov.github.io/eurostat/reference/get_eurostat_json.html) to avoid downloading unnecessary aspects of this data product. Let us get a long-established regional dataset, the full-time equivalent (FTE) R&D workforce, in both sexes, in all sectors and all professional positions, and limit our data to two years only:
@@ -34,20 +34,20 @@ regional_rd_personnel <- eurostat::get_eurostat_json (
     unit = "FTE" )
 )
 
-rd_workforce <- regional_rd_personnel %>%
+regional_rd_personnel <- regional_rd_personnel %>%
   filter ( .data$time %in% c("2009", "2018") ) 
 ```
 
 We have saved this filtered datasets as `regional_rd_personnel`.
 
-```{r rd-presaved, include=FALSE}
+```{r rd-presaved}
 data("regional_rd_personnel")
 ```
 
 We have quiet a few missing cases:
 
 ```{r missing-cases}
-summary(is.na(rd_workforce$values))
+summary(is.na(regional_rd_personnel$values))
 ```
 But this is not the only problem with the dataset.
 
@@ -72,7 +72,7 @@ You should always join your data with the geometric information of the regions s
 
 ```{r}
 indicator_with_map <- map_nuts_2 %>% 
-  left_join ( rd_workforce, by = "geo" ) 
+  left_join ( regional_rd_personnel, by = "geo" ) 
 ```
 
 Huge parts of Europe are not covered, but the missing values are not randomly missing. France went under a regional reform; Turkey and Albania did not provide this data earlier. Ireland has no regional statistics available.
@@ -99,7 +99,7 @@ indicator_with_map  %>%
 Some of these problems are real missing data problems, but some of them are coding problem. In other words, the data is there, but it is not conforming the boundaries that you have on the `NUTS2016` map. First we need to validate the geographical coding of the dataset. This is the task of [validate_nuts_regions()](https://regions.dataobservatory.eu/reference/validate_nuts_regions.html).
 
 ```{r}
-validated_indicator <- regions::validate_nuts_regions(rd_workforce)
+validated_indicator <- regions::validate_nuts_regions(regional_rd_personnel)
 ```
 
 If we validate the dataset, we will see many interesting metadata observations. 
@@ -121,6 +121,7 @@ validation_summary_2016  %>%
   ungroup() %>%
   filter ( .data$time == "2009")
 ```
+
 The situation is not better in 2018:
 
 ```{r}
@@ -152,7 +153,7 @@ The question is, can we save some of the French data? If the boundaries of regio
 But in some cases, the regional boundaries did not change, only the name and the code of the region, which is the task performed by [recode_nuts()](https://regions.dataobservatory.eu/reference/recode_nuts.html):
 
 ```{r}
-recoded_indicator <- rd_workforce %>% 
+recoded_indicator <- regional_rd_personnel %>% 
   regions::recode_nuts(
     geo_var = "geo", # your geograhical ID variable name
     nuts_year = 2016 # change this for other definitions
@@ -213,12 +214,12 @@ Let us make our work visible by creating three observation `type` variables:
 * `after` which became visible after recoding.
 
 ```{r}
-rd_workforce_recoded <- recoded_indicator %>%
+regional_rd_personnel_recoded <- recoded_indicator %>%
   mutate ( geo = .data$code_2016 ) %>%
   rename ( values_2016 = .data$values ) %>%
   select ( -all_of(c("typology", "typology_change", "code_2016"))) %>%
   full_join ( 
-    rd_workforce, 
+    regional_rd_personnel, 
     by = c("prof_pos", "sex", "sectperf", "unit", "geo", "time")
              ) %>%
   mutate ( type = case_when ( 
@@ -232,7 +233,7 @@ And let's place it now on the map:
 
 ```{r}
 map_nuts_2 %>% 
-  left_join ( rd_workforce_recoded , by = "geo") %>%
+  left_join ( regional_rd_personnel_recoded , by = "geo") %>%
   filter ( 
     # remove completely missing cases
     !is.na(.data$time) ) %>%
@@ -251,6 +252,7 @@ map_nuts_2 %>%
   theme(legend.position=c(.93,.7)) +
   coord_sf(xlim=c(-22,48), ylim=c(34,70))
 ```
+
 ## Conclusion
 
 We did improve our dataset, and this improvement would not have worked with traditional imputation techniques very well. For example, replacing the missing French data with the median value of Europe would have created a huge bias in our dataset.

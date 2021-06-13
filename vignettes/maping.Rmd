@@ -1,8 +1,8 @@
 ---
-title: "Maping the Problems"
+title: "Maping Regional Data, Maping Metadata Problems"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{maping}
+  %\VignetteIndexEntry{Maping Regional Data, Maping Metadata Problems}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -24,7 +24,7 @@ library(dplyr)
 
 Eurostat's main function for data access is [get_eurostat()](http://ropengov.github.io/eurostat/reference/get_eurostat.html), but in this case we will use the more specific [get_eurostat_json](http://ropengov.github.io/eurostat/reference/get_eurostat_json.html) to avoid downloading unnecessary aspects of this data product. Let us get a long-established regional dataset, the full-time equivalent (FTE) R&D workforce, in both sexes, in all sectors and all professional positions:
 
-```{r rd-workforce-get, message=FALSE}
+```{r rd-workforce-get, eval=FALSE, message=FALSE}
 rd_workforce <- eurostat::get_eurostat_json (
   id = "rd_p_persreg", 
   filters = list (
@@ -34,6 +34,32 @@ rd_workforce <- eurostat::get_eurostat_json (
     unit = "FTE" )
 )
 ```
+
+```{r rd-workforce-max-5, include=FALSE}
+n_try <- 0
+
+while ( n_try < 5) {
+  n_try <- n_try+1
+  
+  rd_workforce <- purrr::safely(
+    eurostat::get_eurostat_json, NULL)(
+                id = "rd_p_persreg", 
+                filters = list (
+                      sex = "T",     
+                      prof_pos = "TOTAL",
+                      sectperf = "TOTAL", 
+                      unit = "FTE" )
+    )
+
+if ( is.null(rd_workforce$error) ) {
+  n_try <- 5
+  rd_workforce <- rd_workforce$result 
+  } else {
+  Sys.sleep(1)
+  }
+}
+```
+
 
 Limit our data to two years only:
 

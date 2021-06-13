@@ -17,4 +17,10 @@
 There were no ERRORs or WARNINGs. 
 
 ## This release is a minor release
-This submission is a minor relase that only contains good coding practices, compatibility with tidyverse 1.0+ and documentation improvements.
+This submission is a minor relase that only contains good coding practices, compatibility with tidyverse 1.0+ and documentation improvements. 
+
+This is a resubmission, because while all Github, rhub, and local tests passed, on CRAN one vignette did not build because of a short lapse of the Eurostat server (the data was not downloaded from the API.)  This affected only one build. 
+
+The re-written vignette tries up to 5 times, with one second intervalls, to receive a small JSON format response from the Eurostat server. With many years of experience working with the Eurostat API, such server outages are very infrequent and usually do not last longer than a fraction of the second. 
+
+

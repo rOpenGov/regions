@@ -34,4 +34,5 @@
 #'
 #' @docType package
 #' @name regions
+#' @importFrom purrr safely
 NULL

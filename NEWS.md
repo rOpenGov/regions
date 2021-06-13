@@ -33,10 +33,10 @@
 * Wordlist added for spell checking with geographical exceptions.
 
 # regions 0.1.6
-* Exception handling partly moved to assertthat
+* Exception handling partly moved to assertthat.
 * New test_geo_code of for performance enhancement. 
 * Changing non-standard evaluation to dplyr 1.0+
-* Master repo moving to [rOpenGov](http://ropengov.org/)
+* Master repo moving to [rOpenGov](http://ropengov.org/).
 * Rewritten README.
 
 # regions 0.1.7

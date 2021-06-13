@@ -37,6 +37,7 @@
 #' @importFrom utils data
 #' @importFrom stringr str_sub
 #' @importFrom assertthat assert_that
+#' @importFrom rlang .data
 #' @family validate functions
 #' @return Returns the original \code{dat} data frame with a column
 #' that specifies the comformity with the NUTS definition of the year

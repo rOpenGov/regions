@@ -36,6 +36,7 @@
 #' @importFrom purrr set_names
 #' @importFrom utils data
 #' @importFrom stringr str_sub
+#' @importFrom assertthat assert_that
 #' @family validate functions
 #' @return Returns the original \code{dat} data frame with a column
 #' that specifies the comformity with the NUTS definition of the year
@@ -59,16 +60,17 @@ validate_nuts_regions <- function (dat,
                                    geo_var = "geo",
                                    nuts_year = 2016) {
   ## initialise non-standard evaluation ----------------------
-  . <- country_code <- exception <- geo <- NULL
-  typology2 <- nuts <- all_valid_nuts_codes <- typology <- NULL
+  . <- NULL
+  all_valid_nuts_codes <- NULL
   
   ## validate parameters --------------------------------------
   validate_data_frame (dat = dat)
   
-  if (!geo_var %in% names(dat)) {
-    stop(geo_var, " is not among the columns of the data frame.")
-  }
-  
+  assertthat::assert_that(
+    geo_var %in% names(dat), 
+    msg = glue::glue ("geo_var={geo_var} is not among names(dat)")
+  )
+
   assertthat::assert_that(
     nuts_year %in% c(1999, 2003, 2006, 2010, 2013, 2016, 2021),
     msg = glue::glue ("nuts_year={nuts_year} is an invalid parameter setting.")
@@ -76,7 +78,11 @@ validate_nuts_regions <- function (dat,
   
   original_names <- names (dat)
   names_changed <- FALSE
-  if (any(c("typology", "nuts",  paste0("valid_", as.character(nuts_year))) %in% original_names)) {
+  
+  if (any(
+    c("typology", "nuts",  paste0("valid_", as.character(nuts_year))
+      ) %in% original_names)
+    ) {
     temporary_names <- paste0("orig_", original_names)
     geo_var <- paste0("orig_", geo_var)
     names(dat) <- temporary_names
@@ -88,12 +94,14 @@ validate_nuts_regions <- function (dat,
                envir = environment())
   
   exceptions <- all_valid_nuts_codes %>%
-    mutate (country_code = get_country_code(geo = geo, typology = "NUTS")) %>%
-    filter (country_code %in% c("IS", "LI", "NO", "AL",
+    mutate (country_code = get_country_code(geo = .data$geo, 
+                                            typology = "NUTS")
+            ) %>%
+    filter (.data$country_code %in% c("IS", "LI", "NO", "AL",
                                 "CH", "MK", "RS", "TR",
                                 "ME"))  %>%
-    distinct (geo, typology) %>%
-    mutate (exception = paste0('non_eu_', typology)) %>%
+    distinct (.data$geo, .data$typology) %>%
+    mutate (exception = paste0('non_eu_', .data$typology)) %>%
     select (all_of(c("geo", "exception")))
   
   names(exceptions)[1] <- geo_var
@@ -111,25 +119,27 @@ validate_nuts_regions <- function (dat,
   
   return_df <- validate_nuts_countries(dat = dat,
                                        geo_var = geo_var) %>%
-    dplyr::rename (typology2 = typology) %>%
+    dplyr::rename (typology2 = .data$typology) %>%
     dplyr::mutate_if(is.factor, as.character) %>%
     left_join (filtered_nuts_data_frame,
                by = geo_var) %>%
-    mutate (typology = ifelse (is.na(typology),
-                               typology2,
-                               typology)) %>%
-    mutate (#make exceptionf for country codes, which are anyway not
-      #part of NUTS and may be valid codes
+    mutate (typology = ifelse (is.na(.data$typology),
+                               .data$typology2,
+                               .data$typology)) %>%
+    mutate (
+      # make exception for country codes, which are anyway not
+      # part of NUTS and may be valid codes
       nuts = ifelse(
-        test = is.na(nuts) & typology == "country",
-        yes  = unique(nuts[which(!is.na(unique(nuts)))]),
-        no = nuts
+        test = is.na(.data$nuts) & .data$typology == "country",
+        yes  = unique(nuts[which(!is.na(unique(.data$nuts)))]),
+        no = .data$nuts
       )) %>%  ## countries may not be EU countries
     left_join (# join non-EU valid codes
-      exceptions, by = geo_var) %>%
-    mutate (nuts = ifelse(is.na(nuts), exception, nuts)) %>%
-    mutate (typology = ifelse(is.na(typology), exception, typology)) %>%
-    mutate (valid =  !is.na(nuts))  %>%
+      exceptions, 
+      by = geo_var) %>%
+    mutate (nuts = ifelse(is.na(.data$nuts), .data$exception, .data$nuts)) %>%
+    mutate (typology = ifelse(is.na(typology), .data$exception, .data$typology)) %>%
+    mutate (valid =  !is.na(.data$nuts))  %>%
     select (-all_of(c("typology2", "exception", "nuts")))
   
   names(return_df)[which(names(return_df) == 'valid')] <-
@@ -139,7 +149,10 @@ validate_nuts_regions <- function (dat,
     potentially_change_back <-
       temporary_names[names(return_df) %in% temporary_names]
     
-    change_back <- potentially_change_back [!potentially_change_back %in% c('orig_typology', paste0("valid_", as.character(nuts_year)))]
+    change_back <- potentially_change_back [
+      !potentially_change_back %in% c('orig_typology', 
+                                      paste0("valid_", as.character(nuts_year)))
+      ]
     
     new_names <- ifelse (
       test = names(return_df) %in% change_back,

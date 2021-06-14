@@ -1,6 +1,9 @@
 #' Validate Parameter 'dat'
 #' @importFrom assertthat assert_that
 #' @param dat A data frame input to be validated.
+#' @param geo_var The variable that contains the geographical codes in the
+#' NUTS typologies.
+#' @param nuts_year The year of the NUTS typology to use.
 
 validate_data_frame <- function(dat, 
                                 geo_var = NULL, 

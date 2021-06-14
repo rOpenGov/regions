@@ -38,8 +38,7 @@ validate_nuts_countries <- function (dat, geo_var = "geo") {
   
   validate_data_frame(dat, geo_var = geo_var )
   
-  dat <-  dat %>%
-    mutate_if (dat, is.factor, as.character)
+  dat <- mutate_if(dat, is.factor, as.character)
   
   if (!"typology" %in% names(dat)) {
     dat$typology <- NA_character_

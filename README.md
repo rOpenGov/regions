@@ -117,18 +117,18 @@ example_df <- data.frame (
 
 recode_nuts(dat = example_df, 
             nuts_year = 2013) %>%
-  select ( geo, values, code_2013) %>%
+  select ( .data$geo, .data$values, .data$code_2013) %>%
   knitr::kable()
 ```
 
-| geo   |   values | code\_2013 |
-|:------|---------:|:-----------|
-| FR    | 38.49596 | FR         |
-| UKI3  | 40.76678 | UKI3       |
-| DED   | 55.13242 | DED        |
-| FRK   | 41.02883 | FR7        |
-| HU12  | 56.08605 | NA         |
-| DEE32 | 96.86564 | NA         |
+| geo   |    values | code\_2013 |
+|:------|----------:|:-----------|
+| FR    | 32.559077 | FR         |
+| UKI3  | 56.672710 | UKI3       |
+| DED   | 87.818697 | DED        |
+| FRK   | 29.071375 | FR7        |
+| HU12  |  2.817158 | NA         |
+| DEE32 |  6.149496 | NA         |
 
 **Hierarchical aggregation and special imputation**: missingness is very
 frequent in sub-national statistics, because they are created with a

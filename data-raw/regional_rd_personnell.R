@@ -10,11 +10,9 @@ rd_workforce <- eurostat::get_eurostat_json (
 )
 
 regional_rd_personnel <- rd_workforce  %>%
-  dplyr::filter ( .data$time %in% c("2009", "2018") )
+  dplyr::filter ( .data$time %in% c("2009", "2018") ) %>%
+  mutate_if (is.character, stringi::stri_enc_toutf8)
 
 if ( nrow(regional_rd_personnel) > 0) {
-  usethis::use_data ( regional_rd_personnel, overwrite = TRUE) 
+  usethis::use_data (regional_rd_personnel, overwrite = TRUE) 
 }
-
-regional_rd_workforce
-

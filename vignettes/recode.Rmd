@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 ```
 
 
-```{r setup, message=FALSE, warnings=FALSE, eval=FALSE}
+```{r setup, message=FALSE, warnings=FALSE, echo=FALSE}
 library(regions)
 library(dplyr)
 library(tidyr)

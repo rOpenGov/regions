@@ -41,4 +41,5 @@
 
 # regions 0.1.7
 * Added the `regional_rd_personnel` dataset and the `Maping Regional Data, Maping Metadata Problems` vignette.
+* A new function, `validate_parameters()` takes over several parameter validations. The aim of this function is to provide consistent error messages, and thorough validation of function parameters whenever they must conform to a closed vocabulary or parameter range.
 * This is a release candidate on CRAN.

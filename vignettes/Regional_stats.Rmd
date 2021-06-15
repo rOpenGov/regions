@@ -149,15 +149,16 @@ So, what are our possibilities if we have only country-level `MT`data, but we wo
 ```{r}
 data("mixed_nuts_example")
 mixed_nuts_example %>%
-  filter ( substr(geo,1,2) == "MT") %>%
-  knitr::kable ()
+  dplyr::filter(substr(geo,1,2) == "MT") %>%
+  knitr::kable()
 ```
 
 Malta offers two technical imputation slots on `NUTS1` level, `MT0` for territorially attributed data, and `MTZ` for non-territorial exceptions.  On NUTS2 level, `MT00` and `MTZZ`.  And at last, what is a real imputation, you can impute the `MT` = `MT0` = `MT00` values to `MT001`, should you have only data for `MT002`, etc.  (In this simple example, we impute the `MT` values to both subdivisions, `MT001` and `MT002`.)
 
 ```{r}
-impute_down_nuts (mixed_nuts_example) %>%
-  filter ( substr(geo,1,2) == "MT") %>%
+data("mixed_nuts_example")
+impute_down_nuts(mixed_nuts_example) %>%
+  dplyr::filter(substr(geo,1,2) == "MT") %>%
   knitr::kable ()
 ```
 

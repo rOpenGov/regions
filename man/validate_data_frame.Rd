@@ -8,6 +8,11 @@ validate_data_frame(dat, geo_var = NULL, nuts_year = NULL)
 }
 \arguments{
 \item{dat}{A data frame input to be validated.}
+
+\item{geo_var}{The variable that contains the geographical codes in the
+NUTS typologies.}
+
+\item{nuts_year}{The year of the NUTS typology to use.}
 }
 \description{
 Validate Parameter 'dat'

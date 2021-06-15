@@ -109,12 +109,10 @@ recode_nuts <- function(dat,
   
   different_codes <-
     as.character(unlist (different_coding[, geo_var]))
-  
-  valid_different_codes <-  all_valid_nuts_codes %>%
-    dplyr::filter_at(vars(tidyselect::all_of(geo_var)),
-                     ## should be changed with accross
-                     dplyr::all_vars(. %in% different_codes)) %>%
-    mutate (years = as.numeric(gsub("code_", "" , .data$nuts)))
+
+  valid_different_codes <- all_valid_nuts_codes %>%
+    dplyr::filter(.data[[geo_var]] %in% different_codes) %>%
+    dplyr::mutate(years = as.numeric(gsub("code_", "" , .data$nuts)))
   
   ## Find the valid different codes in correspondence -------------
   

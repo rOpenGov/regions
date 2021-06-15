@@ -70,6 +70,13 @@ map_nuts_2 <- eurostat::get_eurostat_geospatial(
 
 You should always join your data with the geometric information of the regions starting from left with the map:
 
+```{r, include=FALSE}
+## Make sure that regional_rd_personnel does not remain a promise.
+regional_rd_personnel <- regional_rd_personnel
+stopifnot(!is.null(regional_rd_personnel))
+```
+
+
 ```{r}
 indicator_with_map <- map_nuts_2 %>% 
   left_join ( regional_rd_personnel, by = "geo" ) 

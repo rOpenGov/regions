@@ -21,4 +21,4 @@ This submission is a minor relase that only contains good coding practices, comp
 
 This is a resubmission of 0.1.6, because while all Github, rhub, and local tests passed, on CRAN one vignette did not build because of a short lapse of the Eurostat server (the data was not downloaded from the API.)  This affected only one build.  To avoid this happening, we placed the `regional_rd_personnel`, a small, filtered subset of the Eurostat dataset in question among the saved datasets.
 
-
+Furthermore, for easier use, many parameter (range) assumptions were moved to assertions.R.

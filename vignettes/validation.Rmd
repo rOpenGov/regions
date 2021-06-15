@@ -14,14 +14,14 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup, message=FALSE, warnings=FALSE, eval=FALSE}
+```{r setup, message=FALSE, warnings=FALSE, echo=FALSE}
 library(regions)
 library(dplyr)
 library(tidyr)
 data(daily_internet_users)
 ```
 
-The `daily_internet_users` data set is created by this code, which is not evaluated here: 
+The `daily_internet_users` data set is created by this code, which is not evaluated here in this vignette: 
 
 ```{r example, eval=FALSE}
 isoc_r_iuse_i <- eurostat::get_eurostat("isoc_r_iuse_i",

@@ -42,7 +42,8 @@
 #' @return Returns the original \code{dat} data frame with a column
 #' that specifies the comformity with the NUTS definition of the year
 #' \code{nuts_year}.
-#' @examples{
+#' @examples
+#' \dontrun{
 #' my_reg_data <- data.frame (
 #'   geo = c("BE1", "HU102", "FR1",
 #'           "DED", "FR7", "TR", "DED2",

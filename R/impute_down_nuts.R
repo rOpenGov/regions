@@ -41,7 +41,8 @@
 #' @importFrom tidyr pivot_wider
 #' @importFrom rlang .data
 #' @importFrom utils data
-#' @examples{
+#' @examples
+#' \dontrun{
 #' data(mixed_nuts_example)
 #' impute_down_nuts(mixed_nuts_example, nuts_year = 2016)
 #' }

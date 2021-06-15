@@ -16,7 +16,12 @@ Authors@R:
          family = "Zsoldos",
          role = c("ctb"), 
          email = "istvan.zsoldos@gmail.com",
-         comment = c(ORCID = "0000-0001-5712-2103"))
+         comment = c(ORCID = "0000-0001-5712-2103")),
+  person(given = "Leo",
+         family = "Lahti",
+         role = c("ctb"), 
+         email = "leo.lahti@iki.fi",
+         comment = c(ORCID = "0000-0001-5537-637X"))
     )
 Description: Validating sub-national statistical typologies, re-coding across 
     standard typologies of sub-national statistics, and making valid aggregate
@@ -34,7 +39,6 @@ Depends:
     R (>= 2.10)
 Imports: 
     dplyr,
-    testthat,
     magrittr,
     countrycode,
     tidyselect,
@@ -50,6 +54,7 @@ Imports:
     tibble
 Suggests: 
     knitr,
+    testthat,    
     rmarkdown,
     covr,
     spelling,

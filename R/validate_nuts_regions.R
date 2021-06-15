@@ -60,6 +60,7 @@
 validate_nuts_regions <- function (dat,
                                    geo_var = "geo",
                                    nuts_year = 2016) {
+  
   ## initialise non-standard evaluation ----------------------
   . <- NULL
   all_valid_nuts_codes <- NULL

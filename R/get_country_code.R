@@ -8,6 +8,8 @@
 #' the NUTS typologies. The technical typology \code{"NUTS0"}
 #' can be used to translate Eurostat country codes to ISO 3166-1 alpha-2
 #' country codes.
+#' @importFrom tibble tibble
+#' @importFrom dplyr case_when
 #' @return The ISO 3166-1 alpha-2 codes of the countries as a character
 #' vector.
 #' @family recode functions
@@ -17,22 +19,20 @@
 #' @export
 
 get_country_code <- function(geo, typology = "NUTS") {
-  . <- NULL
+
+  validate_parameters ( param = typology, 
+                       param_name = "typology", 
+                       typology = typology)
   
-  if (!typology %in% c("NUTS", "NUTS1", "NUTS2", "NUTS3", "NUTS0")) {
-    stop("Currently only NUTS-like typologies are supported.")
-  }
-  
-  df <- data.frame(
+  df <- tibble::tibble(
     geo  = as.character(geo),
-    code = substr(geo, 1, 2),
-    stringsAsFactors = FALSE
+    code = substr(geo, 1, 2)
   )
   
-  df <- validate_nuts_countries(df, geo_var = "code") %>%
-    mutate (code = case_when (code == 'EL' ~ "GR",
-                              code == "UK" ~ "GB",
-                              TRUE ~ code))
+  df <- validate_nuts_countries(dat = df, geo_var = "code") %>%
+    mutate (code = case_when (.data$code == 'EL' ~ "GR",
+                              .data$code == "UK" ~ "GB",
+                              TRUE ~ .data$code))
   
   as.character(df$code)
   

@@ -47,13 +47,8 @@
 recode_nuts <- function(dat,
                         geo_var = "geo",
                         nuts_year = 2016) {
-  if (!"data.frame" %in% class(dat)) {
-    stop ("The input variable 'dat' must be a data.frame (like) object.")
-  }
   
-  if (nrow(dat) < 1) {
-    stop ("The input variable 'dat' must have at least one row (observation)")
-  }
+  validate_data_frame(dat)
   
   .  <- nuts_changes <- typology_change <- NULL #these still need to be removed with .data$
 

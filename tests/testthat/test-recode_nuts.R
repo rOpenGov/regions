@@ -72,3 +72,4 @@ recode_nuts(dat = example_df,
   select (code_2021, values, typology_change) %>%
   rename (geo = code_2021) %>%
   filter (!is.na(geo))
+

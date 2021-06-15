@@ -39,7 +39,7 @@ validate_nuts_countries <- function (dat, geo_var = "geo") {
   validate_data_frame(dat, geo_var = geo_var )
   
   dat <-  dat %>%
-    mutate_if (dat, is.factor, as.character)
+    mutate_if (is.factor, as.character)
   
   if (!"typology" %in% names(dat)) {
     dat$typology <- NA_character_
@@ -55,7 +55,7 @@ validate_nuts_countries <- function (dat, geo_var = "geo") {
   iso_2c <- as.character(dat[, geo_var])
   
   validate_country_df <- dat %>%
-    select (all_of (original_names)) %>%
+    select ( all_of(original_names) ) %>%
     mutate (iso2c = iso_2c) %>%
     mutate (
       iso2c = case_when (

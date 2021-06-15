@@ -121,14 +121,14 @@ recode_nuts(dat = example_df,
   knitr::kable()
 ```
 
-| geo   |    values | code\_2013 |
-|:------|----------:|:-----------|
-| FR    |  1.820664 | FR         |
-| UKI3  | 42.641856 | UKI3       |
-| DED   | 58.184540 | DED        |
-| FRK   | 80.965518 | FR7        |
-| HU12  | 78.022209 | NA         |
-| DEE32 | 47.090812 | NA         |
+| geo   |   values | code\_2013 |
+|:------|---------:|:-----------|
+| FR    | 38.49596 | FR         |
+| UKI3  | 40.76678 | UKI3       |
+| DED   | 55.13242 | DED        |
+| FRK   | 41.02883 | FR7        |
+| HU12  | 56.08605 | NA         |
+| DEE32 | 96.86564 | NA         |
 
 **Hierarchical aggregation and special imputation**: missingness is very
 frequent in sub-national statistics, because they are created with a

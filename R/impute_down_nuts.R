@@ -60,17 +60,10 @@ impute_down_nuts <- function (dat,
   
   validate_data_frame(dat)
   
-  if (!geo_var %in% names(dat)) {
-    stop(geo_var, " is not among the columns of the data frame.")
-  }
-  
   if (!values_var %in% names(dat)) {
     stop(values_var, " is not among the columns of the data frame.")
   }
   
-  if (!nuts_year %in% c(1999, 2003, 2006, 2010, 2013, 2016, 2021)) {
-    stop('"nuts_year" = ', nuts_year, " is an invalid parameter.")
-  }
   
   if (is.null(method_var)) {
     dat$method <- ""
@@ -178,7 +171,7 @@ impute_down_nuts <- function (dat,
   potentially_imputed_from_nuts_2 <- full_code_table %>%
     filter (.data$nuts_level_2 %in% validated_nuts_2$geo) %>%
     rename (geo = .data$nuts_level_2) %>%
-    select (-all_of(c("nuts_level_1"))) %>%
+    select ( -all_of(c("nuts_level_1")) ) %>%
     left_join (dat, by = 'geo') %>%
     mutate (method = paste0("imputed from NUTS2 ",
                             .data$geo, " [", .data$method, "]")) %>%

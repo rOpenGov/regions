@@ -14,13 +14,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r backgroundsetup, message=FALSE, warnings=FALSE, echo=FALSE}
-devtools::load_all()
-library(dplyr)
-library(tidyr)
-data(daily_internet_users)
-```
-
 ```{r setup, message=FALSE, warnings=FALSE, eval=FALSE}
 library(regions)
 library(dplyr)
@@ -47,7 +40,7 @@ Let's have a look at these countries in two years, using the helper function `ge
 
 ```{r testvalidate}
 test <- daily_internet_users  %>% 
-  mutate ( country_code = get_country_code(geo = geo) ) %>%
+  mutate ( country_code = get_country_code(geo = .data$geo) ) %>%
   dplyr::filter ( time %in% c(2012, 2018),
                   country_code %in% c("FR", "HU", "LT")) %>%
   mutate ( time = paste0("Y", time )) %>%

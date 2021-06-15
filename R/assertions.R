@@ -17,7 +17,8 @@
 #' the NUTS typologies. The technical typology \code{"NUTS0"}
 #' can be used to translate Eurostat country codes to ISO 3166-1 alpha-2
 #' country codes.
-#' @importFrom  assertthat assert_that
+#' @importFrom assertthat assert_that
+#' @importFrom glue glue
 #' @return A boolean if the parameter matches the Spotify Web API parameter range.
 #' @export
 validate_parameters <- function(typology = NULL, 

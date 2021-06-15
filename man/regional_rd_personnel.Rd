@@ -28,7 +28,7 @@ A subset of the Eurostat dataset
 \code{R&D personnel and researchers by sector of performance, sex and NUTS 2 regions}.
 }
 \details{
-Maping Regional Data, Maping Metadata Problem
+Mapping Regional Data, Mapping Metadata Problem
 
 The fresh version of this statistic can be obtained by
 \code{eurostat::get_eurostat_json (id = "rd_p_persreg", 

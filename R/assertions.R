@@ -1,10 +1,10 @@
-#' Asssertion for Correct Function Calls
+#' Assertion for Correct Function Calls
 #'
 #' Assertions are made to give early and precise error messages for wrong
 #' API call parameters.
 #'
 #' These assertions are called from various wrapper functions.  However, you can also call this
-#' function directly to make sure that you are adding (programatically) the correct
+#' function directly to make sure that you are adding (programmatically) the correct
 #' parameters to a call.
 #'
 #' All \code{\link{validate_parameters}} parameters default to \code{NULL}.

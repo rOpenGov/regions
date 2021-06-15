@@ -1,8 +1,8 @@
 ---
-title: "Maping Regional Data, Maping Metadata Problems"
+title: "Mapping Regional Data, Mapping Metadata Problems"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Maping Regional Data, Maping Metadata Problems}
+  %\VignetteIndexEntry{Mapping Regional Data, Mapping Metadata Problems}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

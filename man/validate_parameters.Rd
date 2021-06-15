@@ -2,7 +2,7 @@
 % Please edit documentation in R/assertions.R
 \name{validate_parameters}
 \alias{validate_parameters}
-\title{Asssertion for Correct Function Calls}
+\title{Assertion for Correct Function Calls}
 \usage{
 validate_parameters(typology = NULL, param = NULL, param_name = NULL)
 }
@@ -26,7 +26,7 @@ API call parameters.
 }
 \details{
 These assertions are called from various wrapper functions.  However, you can also call this
-function directly to make sure that you are adding (programatically) the correct
+function directly to make sure that you are adding (programmatically) the correct
 parameters to a call.
 
 All \code{\link{validate_parameters}} parameters default to \code{NULL}.

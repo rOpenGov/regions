@@ -48,7 +48,7 @@ Currently the \code{2016} is used by Eurostat, but many datasets
 still contain \code{2013} and sometimes earlier metadata.
 }
 \examples{
-\dontrun{
+\donttest{
 my_reg_data <- data.frame (
   geo = c("BE1", "HU102", "FR1",
           "DED", "FR7", "TR", "DED2",

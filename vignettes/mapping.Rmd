@@ -12,6 +12,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+here::here()
 ```
 
 The [regions](https://regions.dataobservatory.eu/) package offers tools two work with regional statistics.  It is an offspring of the [eurostat](http://ropengov.github.io/eurostat/) package of [rOpenGov](http://ropengov.org/), which offers data search, download, manipulation and visualization for Eurostat's [European statistics](https://ec.europa.eu/eurostat). While you can use [regions](https://regions.dataobservatory.eu/) for any European regional statistics, and with a limited functionality, any regional statistics from other parts of the world, this article provides a combined use case for the two packages. 
@@ -44,6 +45,12 @@ We have saved this filtered datasets as `regional_rd_personnel`.
 data("regional_rd_personnel")
 ```
 
+```{r, include=FALSE}
+## make sure that regional_rd_personnel does not remain a promise
+regional_rd_personnel <- regional_rd_personnel
+```
+
+
 We have quiet a few missing cases:
 
 ```{r missing-cases}
@@ -61,7 +68,7 @@ library(ggplot2)
 
 Let us download a map with [get_eurostat_geospatial](http://ropengov.github.io/eurostat/reference/get_eurostat_geospatial.html).  We will use the `NUTS2016`, i.e., `year = 2016`, which is the regional boundary definition set in 2016 and used in the period 2018-2020. This is the most used definition in 2021.
 
-```{r get-map, echo=FALSE}
+```{r get-map, eval=FALSE}
 map_nuts_2 <- eurostat::get_eurostat_geospatial(
   resolution = "60",
   nuts_level = "2",
@@ -70,21 +77,14 @@ map_nuts_2 <- eurostat::get_eurostat_geospatial(
 
 You should always join your data with the geometric information of the regions starting from left with the map:
 
-```{r, include=FALSE}
-## Make sure that regional_rd_personnel does not remain a promise.
-regional_rd_personnel <- regional_rd_personnel
-stopifnot(!is.null(regional_rd_personnel))
-```
-
-
-```{r}
+```{r, eval=FALSE}
 indicator_with_map <- map_nuts_2 %>% 
   left_join ( regional_rd_personnel, by = "geo" ) 
 ```
 
 Huge parts of Europe are not covered, but the missing values are not randomly missing. France went under a regional reform; Turkey and Albania did not provide this data earlier. Ireland has no regional statistics available.
 
-```{r}
+```{r, eval=FALSE}
 indicator_with_map  %>%
   ggplot () +
   geom_sf(aes(fill=values),
@@ -100,7 +100,12 @@ indicator_with_map  %>%
   theme(legend.position="none") +
   coord_sf(xlim=c(-22,48), ylim=c(34,70))
 ```
-</br>
+```{r original-map, include=FALSE, out.width='80%', fig.align='center'}
+knitr::include_graphics(
+  here::here("vignettes", "indicator_with_map.png")
+)
+```
+
 ## Missing Values and Seemingly Missing Values
 
 Some of these problems are real missing data problems, but some of them are coding problem. In other words, the data is there, but it is not conforming the boundaries that you have on the `NUTS2016` map. First we need to validate the geographical coding of the dataset. This is the task of [validate_nuts_regions()](https://regions.dataobservatory.eu/reference/validate_nuts_regions.html).
@@ -126,7 +131,7 @@ Even though the dataset is called [R\&D personnel and researchers by sector of p
 ```{r}
 validation_summary_2016  %>%
   ungroup() %>%
-  filter ( .data$time == "2009")
+  filter (.data$time == "2009")
 ```
 
 The situation is not better in 2018:
@@ -134,7 +139,7 @@ The situation is not better in 2018:
 ```{r}
 validation_summary_2016  %>%
   ungroup() %>%
-  filter ( .data$time == "2018")
+  filter (.data$time == "2018")
 ```
 
 The dataset is plagued with data that has no place in the `NUTS2016` boundary definition, and therefore on a `NUTS2016` map!
@@ -147,6 +152,7 @@ What are the non-conforming bits?
   select ( all_of("geo") ) %>% 
   unlist %>% as.character()
 ```
+
 * Plenty of French units.  France went under a regional administrative reform, and we have data about its past, but not in the current boundaries and coding.
 * To a lesser extent, we have the same problem with Poland and the UK.
 * We have comparative data from Asia on country level, which ended up in a regional dataset.
@@ -159,7 +165,7 @@ The question is, can we save some of the French data? If the boundaries of regio
 
 But in some cases, the regional boundaries did not change, only the name and the code of the region, which is the task performed by [recode_nuts()](https://regions.dataobservatory.eu/reference/recode_nuts.html):
 
-```{r}
+```{r recoding}
 recoded_indicator <- regional_rd_personnel %>% 
   regions::recode_nuts(
     geo_var = "geo", # your geograhical ID variable name
@@ -167,7 +173,7 @@ recoded_indicator <- regional_rd_personnel %>%
     )
 ```
 
-```{r, message=FALSE}
+```{r recode-summary, message=FALSE}
 recoding_summary <- recoded_indicator %>%
   mutate ( observations  = nrow(.data)) %>%
   mutate ( typology_change = ifelse ( grepl("Recoded", .data$typology_change), 
@@ -190,7 +196,7 @@ recoding_summary
 
 The following non-empty cases were present in the dataset, just not with the coding that we used in the 2018-2020 period (i.e., the `NUTS2016` coding.) We are able to save 27 observations just by fixing the regional codes!
 
-```{r}
+```{r geocode-changes}
 recoded_indicator %>%
   filter ( .data$typology == "nuts_level_2" ) %>%
   filter ( !is.na(.data$typology_change) )  %>%
@@ -206,7 +212,7 @@ recoded_indicator %>%
 ```
 So, let us do the trick: change the `geo` variable to `code_2016`, which is, whenever there is an equivalent `geo` code in the `NUTS2016` definition, the data that you should have. Your original geo variable contains codes that were used, for example, in the `NUTS2010` or `NUTS2013` boundary definitions.
 
-```{r change-to-nuts2016}
+```{r change-to-nuts2016, eval=FALSE}
 recoded_with_map <- map_nuts_2 %>% 
   left_join ( 
     recoded_indicator %>%
@@ -238,7 +244,7 @@ regional_rd_personnel_recoded <- recoded_indicator %>%
 
 And let's place it now on the map:
 
-```{r}
+```{r, eval=FALSE}
 map_nuts_2 %>% 
   left_join ( regional_rd_personnel_recoded , by = "geo") %>%
   filter ( 
@@ -258,6 +264,11 @@ map_nuts_2 %>%
   theme_light() + 
   theme(legend.position=c(.93,.7)) +
   coord_sf(xlim=c(-22,48), ylim=c(34,70))
+```
+```{r recoded-map, include=FALSE, out.width='80%', fig.align='center'}
+knitr::include_graphics(
+  here::here("vignettes", "recoded_indicator_with_map.png")
+)
 ```
 
 ## Conclusion

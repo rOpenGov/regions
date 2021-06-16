@@ -51,7 +51,8 @@ Imports:
     readxl,
     stringr,
     assertthat,
-    tibble
+    tibble,
+    here
 Suggests: 
     knitr,
     testthat,    

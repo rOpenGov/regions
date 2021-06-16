@@ -2,7 +2,10 @@
 title: "Release-017"
 author: "Daniel Antal, CFA"
 date: "6/16/2021"
-output: html_document
+output:
+  md_document: default
+  html_document: default
+  word_document: default
 ---
 
 ```{r setup, include=FALSE}

@@ -21,10 +21,6 @@ rOpenGov](https://img.shields.io/twitter/follow/ropengov.svg?style=social)](http
 [![Follow
 author](https://img.shields.io/twitter/follow/antaldaniel.svg?style=social)](https://twitter.com/intent/follow?screen_name=antaldaniel)
 [![R-CMD-check](https://github.com/rOpenGov/regions/workflows/R-CMD-check/badge.svg)](https://github.com/rOpenGov/regions/actions)
-[![Follow
-rOpenGov](https://img.shields.io/twitter/follow/ropengov.svg?style=social)](https://twitter.com/intent/follow?screen_name=ropengov)
-[![Follow
-author](https://img.shields.io/twitter/follow/antaldaniel.svg?style=social)](https://twitter.com/intent/follow?screen_name=antaldaniel)
 <!-- badges: end -->
 
 ## Installation
@@ -65,14 +61,36 @@ of the aggregation level and high number of observations can allow more
 precise control of model parameters and errors, and the number of
 observations grows from 20 to 200-300.
 
+<div class="figure" style="text-align: center">
+
+<img src="C:/_packages/regions/vignettes/indicator_with_map.png" alt="The change from national to sub-national level comes with a huge data processing price: internal administrative boundaries, their names, codes codes change very frequently." width="80%" />
+<p class="caption">
+The change from national to sub-national level comes with a huge data
+processing price: internal administrative boundaries, their names, codes
+codes change very frequently.
+</p>
+
+</div>
+
 Yet the change from national to sub-national level comes with a huge
 data processing price. While national boundaries are relatively stable,
 with only a handful of changes in each recent decade. The change of
 national boundaries requires a more-or-less global consensus. But states
 are free to change their internal administrative boundaries, and they do
 it with large frequency. This means that the names, identification codes
-and boundaries of regions change very frequently. Joining data from
-different sources and different years can be very difficult.
+and boundary definitions of sub-national regions change very frequently.
+Joining data from different sources and different years can be very
+difficult.
+
+<div class="figure" style="text-align: center">
+
+<img src="C:/_packages/regions/vignettes/recoded_indicator_with_map.png" alt="Our regions R package helps the data processing, validation and imputation of sub-national, regional datasets and their coding." width="80%" />
+<p class="caption">
+Our regions R package helps the data processing, validation and
+imputation of sub-national, regional datasets and their coding.
+</p>
+
+</div>
 
 There are numerous advantages of switching from a national level of the
 analysis to a sub-national level comes with a huge price in data
@@ -121,14 +139,14 @@ recode_nuts(dat = example_df,
   knitr::kable()
 ```
 
-| geo   |    values | code\_2013 |
-|:------|----------:|:-----------|
-| FR    | 27.984557 | FR         |
-| UKI3  |  9.029099 | UKI3       |
-| DED   | 66.173701 | DED        |
-| FRK   | 79.617194 | FR7        |
-| HU12  | 71.058648 | NA         |
-| DEE32 | 48.028425 | NA         |
+| geo   |   values | code\_2013 |
+|:------|---------:|:-----------|
+| FR    | 22.43088 | FR         |
+| UKI3  | 35.09964 | UKI3       |
+| DED   | 36.58893 | DED        |
+| FRK   | 29.48080 | FR7        |
+| HU12  | 98.35853 | NA         |
+| DEE32 | 67.02309 | NA         |
 
 **Hierarchical aggregation and special imputation**: missingness is very
 frequent in sub-national statistics, because they are created with a

@@ -34,7 +34,7 @@
 #' @return A character list with the valid typology, or 'invalid' in the cases
 #' when the geo coding is not valid.
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' my_reg_data <- data.frame (
 #'   geo = c("BE1", "HU102", "FR1",
 #'           "DED", "FR7", "TR", "DED2",

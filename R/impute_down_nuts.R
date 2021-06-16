@@ -42,7 +42,7 @@
 #' @importFrom rlang .data
 #' @importFrom utils data
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' data(mixed_nuts_example)
 #' impute_down_nuts(mixed_nuts_example, nuts_year = 2016)
 #' }

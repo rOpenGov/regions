@@ -100,7 +100,7 @@ indicator_with_map  %>%
   theme(legend.position="none") +
   coord_sf(xlim=c(-22,48), ylim=c(34,70))
 ```
-```{r original-map, include=FALSE, out.width='80%', fig.align='center'}
+```{r original-map, echo=FALSE, out.width='80%', fig.align='center'}
 knitr::include_graphics(
   here::here("vignettes", "indicator_with_map.png")
 )
@@ -265,7 +265,7 @@ map_nuts_2 %>%
   theme(legend.position=c(.93,.7)) +
   coord_sf(xlim=c(-22,48), ylim=c(34,70))
 ```
-```{r recoded-map, include=FALSE, out.width='80%', fig.align='center'}
+```{r recoded-map, echo=FALSE, out.width='80%', fig.align='center'}
 knitr::include_graphics(
   here::here("vignettes", "recoded_indicator_with_map.png")
 )

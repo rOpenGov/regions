@@ -26,8 +26,6 @@ knitr::opts_chunk$set(
 [![Follow rOpenGov](https://img.shields.io/twitter/follow/ropengov.svg?style=social)](https://twitter.com/intent/follow?screen_name=ropengov) 
 [![Follow author](https://img.shields.io/twitter/follow/antaldaniel.svg?style=social)](https://twitter.com/intent/follow?screen_name=antaldaniel)
 [![R-CMD-check](https://github.com/rOpenGov/regions/workflows/R-CMD-check/badge.svg)](https://github.com/rOpenGov/regions/actions)
-[![Follow rOpenGov](https://img.shields.io/twitter/follow/ropengov.svg?style=social)](https://twitter.com/intent/follow?screen_name=ropengov) 
-[![Follow author](https://img.shields.io/twitter/follow/antaldaniel.svg?style=social)](https://twitter.com/intent/follow?screen_name=antaldaniel)
 <!-- badges: end -->
 
 ## Installation

@@ -13,10 +13,12 @@ knitr::opts_chunk$set(echo = TRUE)
 here::here()
 ```
 
-The new version of our [rOpenGov](https://ropengov.org/) R package [regions](https://regions.dataobservatory.eu/) was released today on CRAN. This package is one of the engines of our experimental open data-as-service  [Green Deal Data Observatory](https://greendeal.dataobservatory.eu/) ,  [Economy Data Observatory](https://economy.dataobservatory.eu/) ,  [Digital Music Observatory](https://music.dataobservatory.eu/) prototypes, which aim to place open data packages into open-source applications. 
+The new version of our [rOpenGov](https://ropengov.org/) R package [regions](https://regions.dataobservatory.eu/) was released today on CRAN. This package is one of the engines of our experimental open data-as-service [Green Deal Data Observatory](https://greendeal.dataobservatory.eu/), [Economy Data Observatory](https://economy.dataobservatory.eu/), and [Digital Music Observatory](https://music.dataobservatory.eu/) prototypes, which aim to place open data packages into open-source applications.
 
 
-In international comparison the use of nationally aggregated indicators often have many disadvantages: they inhibit very different levels of homogeneity, and data is often very limited in number of observations for a cross-sectional analysis. When comparing European countries, a few missing cases can limit the cross-section of countries to around 20 cases which disallows the use of many analytical methods.  Working with sub-national statistics has many advantages: the similarity of the aggregation level and high number of observations can allow more precise control of model parameters and errors, and the number of observations grows from 20 to 200-300.
+In international comparison the use of nationally aggregated indicators often have many disadvantages: they inhibit very different levels of homogeneity, and data is often very limited in number of observations for a cross-sectional analysis. When comparing European countries, a few missing cases can limit the cross-section of countries to around 20 cases which disallows the use of many analytical methods. 
+
+Working with sub-national statistics has many advantages: the similarity of the aggregation level and high number of observations can allow more precise control of model parameters and errors, and the number of observations grows from 20 to 200-300.
 
 ```{r original-map, echo=FALSE, out.width='80%', fig.align='center', fig.cap='The change from national to sub-national level comes with a huge data processing price: internal administrative boundaries, their names, codes codes change very frequently.'}
 knitr::include_graphics(
@@ -24,7 +26,7 @@ knitr::include_graphics(
 )
 ```
 
-Yet the change from national to sub-national level comes with a huge data processing price. While national boundaries are relatively stable, with only a handful of changes in each recent decade. The change of national boundaries requires a more-or-less global consensus. But states are free to change their internal administrative boundaries, and they do it with large frequency. This means that the names, identification codes and boundary definitions of sub-national regions change very frequently. Joining data from different sources and different years can be very difficult.
+Yet the change from national to sub-national level comes with a huge data processing price. While national boundaries are relatively stable, with only a handful of changes in each recent decade, the change of national boundaries requires a more-or-less global consensus. But states are free to change their internal administrative boundaries, and they do it with high frequency. This means that the names, identification codes and boundary definitions of sub-national regions change very frequently. Joining data from different sources and different years can therefore be very difficult.
 
 ```{r recoded-map, echo=FALSE, out.width='80%', fig.align='center', fig.cap='Our regions R package helps the data processing, validation and imputation of sub-national, regional datasets and their coding.'}
 
@@ -33,9 +35,9 @@ knitr::include_graphics(
 )
 ```
 
-There are numerous advantages of switching from a national level of the analysis to a sub-national level comes with a huge price in data processing, validation and imputation, and the [regions](https://regions.dataobservatory.eu/) package aims to help this process. 
+There are numerous advantages in switching from a national level of the analysis to a sub-national level. This, however, requires more effort in data processing, validation and imputation. Our [regions](https://regions.dataobservatory.eu/) package aims to help in this process. 
 
-You can review the problem, and the code that created the two map comparisons, in the [Maping Regional Data, Maping Metadata Problems](https://regions.dataobservatory.eu/articles/maping.html) vignette article of the package.  A more detailed problem description can be found in [Working With Regional, Sub-National Statistical Products](https://regions.dataobservatory.eu/articles/Regional_stats.html).
+You can review the problem, and the code that created the two map comparisons, in the [Mapping Regional Data, Mapping Metadata Problems](https://regions.dataobservatory.eu/articles/maping.html) vignette article of the package. A more detailed problem description can be found in the [Working With Regional, Sub-National Statistical Products](https://regions.dataobservatory.eu/articles/Regional_stats.html) vignette.
 
 This package is an offspring of the [eurostat](https://ropengov.github.io/eurostat/) package on [rOpenGov](https://ropengov.github.io/). It started as a tool to validate and re-code regional Eurostat statistics, but it aims to be a general solution for all sub-national statistics. It will be developed parallel with other rOpenGov packages.
 

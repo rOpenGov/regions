@@ -18,7 +18,7 @@ country codes.}
 \item{param_name}{The name of the parameter that must not have a value of \code{NULL}.}
 }
 \value{
-A boolean if the parameter matches the Spotify Web API parameter range.
+A boolean, logical variable if the parameter calls are valid.
 }
 \description{
 Assertions are made to give early and precise error messages for wrong

@@ -12,7 +12,7 @@ validate_param(param, param_name)
 \item{param_name}{The name of the parameter that must not have a value of \code{NULL}.}
 }
 \value{
-A boolean if the parameter matches the Spotify Web API parameter range.
+A boolean, logical variable if the mandatory parameter is present.
 }
 \description{
 These parameters must not be \code{NULL}. The \code{param_name} is needed for a

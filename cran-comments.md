@@ -16,9 +16,8 @@
 ## R CMD check results
 There were no ERRORs or WARNINGs. 
 
-## This release is a minor release
-This submission is a minor relase that only contains good coding practices, compatibility with tidyverse 1.0+ and documentation improvements. 
+## This release is a minor bug fix
+Apologies for a very quick new submission.
 
-This is a resubmission of 0.1.6, because while all Github, rhub, and local tests passed, on CRAN one vignette did not build because of a short lapse of the Eurostat server (the data was not downloaded from the API.)  This affected only one build.  To avoid this happening, we placed the `regional_rd_personnel`, a small, filtered subset of the Eurostat dataset in question among the saved datasets.
-
-Furthermore, for easier use, many parameter (range) assumptions were moved to assertions.R.
+Version 0.1.8 is a essentially a bug fix for the recently released 0.1.7.  While 0.1.7 works are expected, there is a huge performance bottleneck in two functions which can be considered as a bug. 
+* Removing a bottleneck from `validate_geo_code()` and `validate_nuts_regions()`.  The NUTS exceptions are essentially constants, and it was unnecessary to calculate with resource-intensive joins on large data frames each time these functions were running. They were moved to the `nuts_exceptions` dataset.

@@ -27,6 +27,9 @@ imputed to the downstream data, defaults to \code{"values"}.}
 processing information, defaults to \code{NULL} in which case it will
 be returned as \code{'method'}.}
 }
+\value{
+A logical variable showing if all assertions were met.
+}
 \description{
 Validate Parameter 'dat'
 }

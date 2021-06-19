@@ -45,4 +45,6 @@
 * This version is released on CRAN.
 
 # regions 0.1.8
-* Removing a bottleneck from `validate_geo_code()`.  The NUTS exceptions are essentially constants, and it was unnecessary to calculate them each time these functions were running. They  were moved to the `nuts_exceptions` dataset.
+* Removing a bottleneck from `validate_geo_code()` and `validate_nuts_regions()`.  The NUTS exceptions are essentially constants, and it was unnecessary to calculate them each time these functions were running. They were moved to the `nuts_exceptions` dataset.
+* Citation info was given the the vignette articles.
+* Some error messages in assertions were made clearer are more consistent.

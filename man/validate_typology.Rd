@@ -14,7 +14,7 @@ can be used to translate Eurostat country codes to ISO 3166-1 alpha-2
 country codes.}
 }
 \value{
-A boolean if the parameter matches the Spotify Web API parameter range.
+A boolean, logical variable if the typology in question exists, the typology parameter is valid.
 }
 \description{
 Validate typology Parameter

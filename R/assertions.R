@@ -9,6 +9,7 @@
 #' processing information, defaults to \code{NULL} in which case it will
 #' be returned as \code{'method'}.
 #' @param nuts_year The year of the NUTS typology to use.
+#' @return A logical variable showing if all assertions were met.
 #' @keywords internal
 
 validate_data_frame <- function(dat, 
@@ -77,7 +78,7 @@ validate_data_frame <- function(dat,
 #' country codes.
 #' @importFrom assertthat assert_that
 #' @importFrom glue glue
-#' @return A boolean if the parameter matches the Spotify Web API parameter range.
+#' @return A boolean, logical variable if the parameter calls are valid.
 #' @export
 
 validate_parameters <- function(typology = NULL, 
@@ -98,7 +99,7 @@ validate_parameters <- function(typology = NULL,
 #' meaningful error message.
 #'
 #' @inheritParams validate_parameters
-#' @return A boolean if the parameter matches the Spotify Web API parameter range.
+#' @return A boolean, logical variable if the mandatory parameter is present.
 #' @keywords internal
 validate_param <- function (param, param_name ) {
   
@@ -112,7 +113,7 @@ validate_param <- function (param, param_name ) {
 #' Validate typology Parameter
 #' 
 #' @inheritParams validate_parameters
-#' @return A boolean if the parameter matches the Spotify Web API parameter range.
+#' @return A boolean, logical variable if the typology in question exists, the typology parameter is valid.
 #' @keywords internal
 validate_typology <- function (typology) {
   assertthat::assert_that(

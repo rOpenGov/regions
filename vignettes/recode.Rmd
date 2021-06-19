@@ -123,3 +123,27 @@ The description in the correspondence tables clarifies that in fact historical d
 - It can be calculated by deducting the Budapest data from the former Central Hungary `NUTS1` region data.
 
 That will be the topic of a later vignette on aggregation and re-aggregation.
+
+# Citations and related work
+
+### Citing the data sources
+
+Eurostat data: cite [Eurostat](http://ec.europa.eu/eurostat/).
+
+Administrative boundaries: cite [EuroGeographics](https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units).
+
+### Citing the regions R package
+
+For main developer and contributors, see the [package homepage](https://regions.dataobservatory.eu/).
+
+This work can be freely used, modified and distributed under the
+GPL-3 license:
+
+```{r citation-regions, message=FALSE, eval=TRUE, echo=TRUE}
+citation("regions")
+```
+
+### Contact
+
+For contact information, see the [package homepage](https://regions.dataobservatory.eu/).
+

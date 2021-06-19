@@ -202,3 +202,38 @@ The Online Browsing Platform (OBP) of the International Organization for Standar
 
 It would be tempting to use `ISO-3166-2` definitions for sub-national boundaries, however, the `ISO-3166-2` itself is changing relatively often, and in time series or panel data we can only refer to  a certain version of the `ISO-3166-2`. All the boundary definitions are valid for a certain time period and certain boundaries. We currently incorporated only European metadata for the last 20 years, and we are planning to continue with OECD metadata in the forthcoming releases.  However, we are welcoming any pull requests for other countries or country-groups.  
 
+
+# Citations and related work
+
+### Citing the data sources
+
+Eurostat data: cite [Eurostat](http://ec.europa.eu/eurostat/).
+
+Administrative boundaries: cite [EuroGeographics](https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units).
+
+### Citing the eurostat R package
+
+For main developers and contributors, see the [package homepage](http://ropengov.github.io/eurostat).
+
+This work can be freely used, modified and distributed under the
+BSD-2-clause (modified FreeBSD) license:
+
+```{r citation-eurostat, message=FALSE, eval=TRUE, echo=TRUE}
+citation("eurostat")
+```
+
+### Citing the regions R package
+
+For main developer and contributors, see the [package homepage](https://regions.dataobservatory.eu/).
+
+This work can be freely used, modified and distributed under the
+GPL-3 license:
+
+```{r citation-regions, message=FALSE, eval=TRUE, echo=TRUE}
+citation("regions")
+```
+
+### Contact
+
+For contact information, see the [package homepage](https://regions.dataobservatory.eu/).
+

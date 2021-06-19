@@ -46,6 +46,8 @@
 #' @export
 
 validate_geo_code <- function (geo, nuts_year = 2016) {
+  
+  ## These will be loaded into the function environment:
   all_valid_nuts_codes <- nuts_exceptions <- NULL
   
   assertthat::assert_that(any (c("character", "factor") %in% class(geo)),

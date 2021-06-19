@@ -1,6 +1,7 @@
 Package: regions
 Title: Processing Regional Statistics
 Version: 0.1.8
+Date: 2021-06-19
 Authors@R: 
     c(
   person(given = "Daniel",

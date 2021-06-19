@@ -30,7 +30,7 @@ isoc_r_iuse_i <- eurostat::get_eurostat("isoc_r_iuse_i",
 daily_internet_users <- isoc_r_iuse_i  %>%
   dplyr::filter ( unit == "PC_IND",          # percentage of individuals
                   indic_is == "I_IDAY") %>%  # daily internet users
-  select (geo, time, values )
+  select ( all_of(c("geo", "time", "values") )
 ```
 
 Simply downloading a regional statistics from the Eurostat data warehouse and placing the observation on the same map does not work.  If you look into the data, you may realize that the geo codes of French, Lithuanian or Hungarian regions, to name a few, do not match in the years 2012 and 2018. 
@@ -44,9 +44,9 @@ test <- daily_internet_users  %>%
   dplyr::filter ( time %in% c(2012, 2018),
                   country_code %in% c("FR", "HU", "LT")) %>%
   mutate ( time = paste0("Y", time )) %>%
-  pivot_wider (., names_from ="time", values_from = "values") %>%
+  pivot_wider ( names_from ="time", values_from = "values") %>%
   validate_nuts_regions() %>%  # default year the current valid 2016
-  validate_nuts_regions(.,  nuts_year = 2010 )
+  validate_nuts_regions( nuts_year = 2010 )
 ```
 
 The following NUTS regions codes are not valid in the 2010 definition. These sub-national divisions were defined in 2013 or 2016. Some of these regional boundaries did not change, but got new codes after altering the administrative divisions of France. Some of the seemingly missing 2012 data can be found under different codes.
@@ -67,3 +67,26 @@ knitr::kable(
 ```
 
 Especially in the case of Budapest and Central Hungary, the comparative data can be produced for different boundary definitions, because the boundary change was simple.  (Budapest was removed from Central Hungary.) In Lithuania, the change was not more complex, but unfortunately it cut through a far less rarely used typology level, `NUTS3`. While the change is simple, the replacement data is usually not published. 
+
+# Citations and related work
+
+### Citing the data sources
+
+Eurostat data: cite [Eurostat](http://ec.europa.eu/eurostat/).
+
+Administrative boundaries: cite [EuroGeographics](https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units).
+
+### Citing the regions R package
+
+For main developer and contributors, see the [package homepage](https://regions.dataobservatory.eu/).
+
+This work can be freely used, modified and distributed under the
+GPL-3 license:
+
+```{r citation-regions, message=FALSE, eval=TRUE, echo=TRUE}
+citation("regions")
+```
+
+### Contact
+
+For contact information, see the [package homepage](https://regions.dataobservatory.eu/).

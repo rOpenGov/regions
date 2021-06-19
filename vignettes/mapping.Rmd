@@ -1,11 +1,15 @@
 ---
 title: "Mapping Regional Data, Mapping Metadata Problems"
+author: Daniel Antal, CFA
+date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Mapping Regional Data, Mapping Metadata Problems}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
+
+# Mapping Regional Data, Mapping Metadata Problems
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
@@ -276,3 +280,47 @@ knitr::include_graphics(
 We did improve our dataset, and this improvement would not have worked with traditional imputation techniques very well. For example, replacing the missing French data with the median value of Europe would have created a huge bias in our dataset.
 
 This example is a simplification. There are many territorial typologies in use in Europe and globally, but the main takeaway is clear: sub-national boundaries are changing very fast, and you must make sure that you join datasets, or data with a map with the same boundary definitions.
+
+
+# Citations and related work
+
+### Citing the data sources
+
+Eurostat data: cite [Eurostat](http://ec.europa.eu/eurostat/).
+
+Administrative boundaries: cite [EuroGeographics](https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units).
+
+### Citing the eurostat R package
+
+For main developers and contributors, see the [package homepage](http://ropengov.github.io/eurostat).
+
+This work can be freely used, modified and distributed under the
+BSD-2-clause (modified FreeBSD) license:
+
+```{r citation-eurostat, message=FALSE, eval=TRUE, echo=TRUE}
+citation("eurostat")
+```
+
+### Citing the regions R package
+
+For main developer and contributors, see the [package](https://regions.dataobservatory.eu/).
+
+This work can be freely used, modified and distributed under the
+GPL-3 license:
+
+```{r citation-regions, message=FALSE, eval=TRUE, echo=TRUE}
+citation("regions")
+```
+
+### Contact
+
+For contact information, see the [package homepage](http://ropengov.github.io/eurostat).
+
+
+# Version info
+
+This tutorial was created with
+
+```{r sessioninfo, message=FALSE, warning=FALSE}
+sessionInfo()
+```

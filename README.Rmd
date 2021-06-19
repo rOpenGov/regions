@@ -18,10 +18,10 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 [![Codecov test coverage](https://codecov.io/gh/antaldaniel/regions/branch/master/graph/badge.svg)](https://codecov.io/gh/antaldaniel/regions?branch=master)
 [![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
-"[![license](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)"
-"[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/regions)](https://cran.r-project.org/package=regions)"
-"[![CRAN_Status_Badge_version_last_release](https://www.r-pkg.org/badges/version-last-release/regions)](https://cran.r-project.org/package=regions)"
-"[![metacran downloads](https://cranlogs.r-pkg.org/badges/regions)](https://cran.r-project.org/package=regions)"
+[![license](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/regions)](https://cran.r-project.org/package=regions)
+[![CRAN_Status_Badge_version_last_release](https://www.r-pkg.org/badges/version-last-release/regions)](https://cran.r-project.org/package=regions)"
+[![metacran downloads](https://cranlogs.r-pkg.org/badges/regions)](https://cran.r-project.org/package=regions)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4965909.svg)](http://doi.org/10.5281/zenodo.4965909)
 [![Follow rOpenGov](https://img.shields.io/twitter/follow/ropengov.svg?style=social)](https://twitter.com/intent/follow?screen_name=ropengov) 
 [![Follow author](https://img.shields.io/twitter/follow/antaldaniel.svg?style=social)](https://twitter.com/intent/follow?screen_name=antaldaniel)
@@ -126,6 +126,7 @@ knitr::kable(imputed)
 
 ## Vignettes / Articles
 
+- [Mapping Regional Data, Mapping Metadata Problem](https://regions.dataobservatory.eu/articles/mapping.html)
 - [Working With Regional, Sub-National Statistical Products](https://regions.dataobservatory.eu/articles/Regional_stats.html)
 - [Validating Your Typology](https://regions.dataobservatory.eu/articles/validation.html)
 - [Recoding And Relabelling](https://regions.dataobservatory.eu/articles/recode.html)

@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 here::here()
 ```
 
-The [regions](https://regions.dataobservatory.eu/) package offers tools two work with regional statistics.  It is an offspring of the [eurostat](http://ropengov.github.io/eurostat/) package of [rOpenGov](http://ropengov.org/), which offers data search, download, manipulation and visualization for Eurostat's [European statistics](https://ec.europa.eu/eurostat). While you can use [regions](https://regions.dataobservatory.eu/) for any European regional statistics, and with a limited functionality, any regional statistics from other parts of the world, this article provides a combined use case for the two packages. 
+The [regions](https://regions.dataobservatory.eu/) package offers tools two work with regional statistics.  It is an offspring of the [eurostat](https://ropengov.github.io/eurostat/) package of [rOpenGov](https://ropengov.org/), which offers data search, download, manipulation and visualization for Eurostat's [European statistics](https://ec.europa.eu/eurostat). While you can use [regions](https://regions.dataobservatory.eu/) for any European regional statistics, and with a limited functionality, any regional statistics from other parts of the world, this article provides a combined use case for the two packages. 
 
 ```{r setup, echo=FALSE, message=FALSE, warning=FALSE}
 library(regions)
@@ -27,7 +27,7 @@ library(eurostat)
 library(dplyr, quietly = T)
 ```
 
-Eurostat's main function for data access is [get_eurostat()](http://ropengov.github.io/eurostat/reference/get_eurostat.html), but in this case we will use the more specific [get_eurostat_json](http://ropengov.github.io/eurostat/reference/get_eurostat_json.html) to avoid downloading unnecessary aspects of this data product. Let us get a long-established regional dataset, the full-time equivalent (FTE) R&D workforce, in both sexes, in all sectors and all professional positions, and limit our data to two years only:
+Eurostat's main function for data access is [get_eurostat()](https://ropengov.github.io/eurostat/reference/get_eurostat.html), but in this case we will use the more specific [get_eurostat_json](https://ropengov.github.io/eurostat/reference/get_eurostat_json.html) to avoid downloading unnecessary aspects of this data product. Let us get a long-established regional dataset, the full-time equivalent (FTE) R&D workforce, in both sexes, in all sectors and all professional positions, and limit our data to two years only:
 
 ```{r rd-workforce-get, eval=FALSE, message=FALSE}
 regional_rd_personnel <- eurostat::get_eurostat_json (
@@ -70,7 +70,7 @@ Let us try to place the data on a `ggplot2` map.
 library(ggplot2)
 ```
 
-Let us download a map with [get_eurostat_geospatial](http://ropengov.github.io/eurostat/reference/get_eurostat_geospatial.html).  We will use the `NUTS2016`, i.e., `year = 2016`, which is the regional boundary definition set in 2016 and used in the period 2018-2020. This is the most used definition in 2021.
+Let us download a map with [get_eurostat_geospatial](https://ropengov.github.io/eurostat/reference/get_eurostat_geospatial.html).  We will use the `NUTS2016`, i.e., `year = 2016`, which is the regional boundary definition set in 2016 and used in the period 2018-2020. This is the most used definition in 2021.
 
 ```{r get-map, eval=FALSE}
 map_nuts_2 <- eurostat::get_eurostat_geospatial(
@@ -286,13 +286,13 @@ This example is a simplification. There are many territorial typologies in use i
 
 ### Citing the data sources
 
-Eurostat data: cite [Eurostat](http://ec.europa.eu/eurostat/).
+Eurostat data: cite [Eurostat](https://ec.europa.eu/eurostat/).
 
 Administrative boundaries: cite [EuroGeographics](https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units).
 
 ### Citing the eurostat R package
 
-For main developers and contributors, see the [package homepage](http://ropengov.github.io/eurostat).
+For main developers and contributors, see the [package homepage](https://ropengov.github.io/eurostat).
 
 This work can be freely used, modified and distributed under the
 BSD-2-clause (modified FreeBSD) license:
@@ -314,7 +314,7 @@ citation("regions")
 
 ### Contact
 
-For contact information, see the [package homepage](http://ropengov.github.io/eurostat).
+For contact information, see the [package homepage](https://ropengov.github.io/eurostat).
 
 
 # Version info

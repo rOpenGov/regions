@@ -72,7 +72,7 @@ Especially in the case of Budapest and Central Hungary, the comparative data can
 
 ### Citing the data sources
 
-Eurostat data: cite [Eurostat](http://ec.europa.eu/eurostat/).
+Eurostat data: cite [Eurostat](https://ec.europa.eu/eurostat/).
 
 Administrative boundaries: cite [EuroGeographics](https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units).
 

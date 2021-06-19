@@ -207,13 +207,13 @@ It would be tempting to use `ISO-3166-2` definitions for sub-national boundaries
 
 ### Citing the data sources
 
-Eurostat data: cite [Eurostat](http://ec.europa.eu/eurostat/).
+Eurostat data: cite [Eurostat](https://ec.europa.eu/eurostat/).
 
 Administrative boundaries: cite [EuroGeographics](https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units).
 
 ### Citing the eurostat R package
 
-For main developers and contributors, see the [package homepage](http://ropengov.github.io/eurostat).
+For main developers and contributors, see the [package homepage](https://ropengov.github.io/eurostat).
 
 This work can be freely used, modified and distributed under the
 BSD-2-clause (modified FreeBSD) license:

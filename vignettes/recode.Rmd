@@ -128,7 +128,7 @@ That will be the topic of a later vignette on aggregation and re-aggregation.
 
 ### Citing the data sources
 
-Eurostat data: cite [Eurostat](http://ec.europa.eu/eurostat/).
+Eurostat data: cite [Eurostat](https://ec.europa.eu/eurostat/).
 
 Administrative boundaries: cite [EuroGeographics](https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units).
 

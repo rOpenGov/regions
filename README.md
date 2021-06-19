@@ -10,11 +10,11 @@ coverage](https://codecov.io/gh/antaldaniel/regions/branch/master/graph/badge.sv
 [![Project Status: WIP – Initial development is in progress, but there
 has not yet been a stable, usable release suitable for the
 public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
-“[![license](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)”
-“[![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/regions)](https://cran.r-project.org/package=regions)”
-“[![CRAN\_Status\_Badge\_version\_last\_release](https://www.r-pkg.org/badges/version-last-release/regions)](https://cran.r-project.org/package=regions)”
-“[![metacran
-downloads](https://cranlogs.r-pkg.org/badges/regions)](https://cran.r-project.org/package=regions)”
+[![license](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
+[![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/regions)](https://cran.r-project.org/package=regions)
+[![CRAN\_Status\_Badge\_version\_last\_release](https://www.r-pkg.org/badges/version-last-release/regions)](https://cran.r-project.org/package=regions)"
+[![metacran
+downloads](https://cranlogs.r-pkg.org/badges/regions)](https://cran.r-project.org/package=regions)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4965909.svg)](http://doi.org/10.5281/zenodo.4965909)
 [![Follow
 rOpenGov](https://img.shields.io/twitter/follow/ropengov.svg?style=social)](https://twitter.com/intent/follow?screen_name=ropengov)
@@ -139,14 +139,14 @@ recode_nuts(dat = example_df,
   knitr::kable()
 ```
 
-| geo   |   values | code\_2013 |
-|:------|---------:|:-----------|
-| FR    | 22.43088 | FR         |
-| UKI3  | 35.09964 | UKI3       |
-| DED   | 36.58893 | DED        |
-| FRK   | 29.48080 | FR7        |
-| HU12  | 98.35853 | NA         |
-| DEE32 | 67.02309 | NA         |
+| geo   |    values | code\_2013 |
+|:------|----------:|:-----------|
+| FR    | 56.213587 | FR         |
+| UKI3  | 50.958849 | UKI3       |
+| DED   |  2.412442 | DED        |
+| FRK   |  2.249496 | FR7        |
+| HU12  | 84.853021 | NA         |
+| DEE32 | 26.631857 | NA         |
 
 **Hierarchical aggregation and special imputation**: missingness is very
 frequent in sub-national statistics, because they are created with a
@@ -223,6 +223,8 @@ knitr::kable(imputed)
 
 ## Vignettes / Articles
 
+-   [Mapping Regional Data, Mapping Metadata
+    Problem](https://regions.dataobservatory.eu/articles/mapping.html)
 -   [Working With Regional, Sub-National Statistical
     Products](https://regions.dataobservatory.eu/articles/Regional_stats.html)
 -   [Validating Your

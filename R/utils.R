@@ -1,38 +1,4 @@
-#' Validate Parameter 'dat'
-#' @importFrom assertthat assert_that
-#' @param dat A data frame input to be validated.
-#' @param geo_var The variable that contains the geographical codes in the
-#' NUTS typologies.
-#' @param nuts_year The year of the NUTS typology to use.
 
-validate_data_frame <- function(dat, 
-                                geo_var = NULL, 
-                                nuts_year = NULL) {
-  
-  assertthat::assert_that(
-    "data.frame" %in% class(dat), 
-    msg = "The parameter 'dat' must be a data.frame-like object, like a data frame or a tibble."
-  )
-  
-  assertthat::assert_that (
-    nrow(dat) > 0, 
-    msg = "The data frame has no observations."
-  )
-  
-  if (!is.null(geo_var)) {
-    assertthat::assert_that(
-      geo_var %in% names(dat), 
-      msg = glue::glue ("geo_var={geo_var} is not among names(dat)")
-    )
-  }
-  
- if (!is.null(nuts_year)) {
-   assertthat::assert_that(
-     nuts_year %in% c(1999, 2003, 2006, 2010, 2013, 2016, 2021),
-     msg = glue::glue ("nuts_year={nuts_year} is an invalid parameter setting.")
-   )
- }
-}
 #' Create the nuts_lau_2019 correspondence table
 #' May be used to create similar historical correspondence tables.
 #' @importFrom dplyr across mutate case_when

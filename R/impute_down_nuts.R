@@ -59,21 +59,16 @@ impute_down_nuts <- function (dat,
   
   validation <- paste0("valid_", nuts_year)
   
-  validate_data_frame(dat)
-  
-  if (!values_var %in% names(dat)) {
-    stop(values_var, " is not among the columns of the data frame.")
-  }
-  
-  
   if (is.null(method_var)) {
     dat$method <- ""
     method_var <- 'method'
   }
   
-  if (!method_var %in% names(dat)) {
-    stop(method_var, " is not among the columns of the data frame.")
-  }
+  validate_data_frame(dat, 
+                      values_var = values_var,
+                      geo_var = geo_var,
+                      method_var = method_var,
+                      nuts_year = nuts_year )
   
   if ("typology" %in% names(dat)) {
     message ("The 'typology' column is refreshed.")

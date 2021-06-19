@@ -42,4 +42,7 @@
 # regions 0.1.7
 * Added the `regional_rd_personnel` dataset and the `Maping Regional Data, Maping Metadata Problems` vignette.
 * A new function, `validate_parameters()` takes over several parameter validations. The aim of this function is to provide consistent error messages, and thorough validation of function parameters whenever they must conform to a closed vocabulary or parameter range.
-* This is a release candidate on CRAN.
+* This version is released on CRAN.
+
+# regions 0.1.8
+* Removing a bottleneck from `validate_geo_code()`.  The NUTS exceptions are essentially constants, and it was unnecessary to calculate them each time these functions were running. They  were moved to the `nuts_exceptions` dataset.

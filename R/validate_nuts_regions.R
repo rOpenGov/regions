@@ -62,11 +62,10 @@ validate_nuts_regions <- function (dat,
                                    geo_var = "geo",
                                    nuts_year = 2016) {
   
-  ## initialise non-standard evaluation ----------------------
-  . <- NULL
-  all_valid_nuts_codes <- NULL
+  ## These will be loaded into the environment of the function----------------------
+  all_valid_nuts_codes <- nuts_exceptions <- NULL
   
-  ## validate parameters --------------------------------------
+  ## validate parameters -----------------------------------------------------------
   validate_data_frame (dat = dat, 
                        geo_var = geo_var, 
                        nuts_year = nuts_year)
@@ -84,22 +83,19 @@ validate_nuts_regions <- function (dat,
     names_changed <- TRUE
   }
   
+  ## Loading correspondence tables ------------------------------------------------------
+  
   utils::data (all_valid_nuts_codes,
                package = "regions",
                envir = environment())
   
-  exceptions <- all_valid_nuts_codes %>%
-    mutate (country_code = get_country_code(geo = .data$geo, 
-                                            typology = "NUTS")
-            ) %>%
-    filter (.data$country_code %in% c("IS", "LI", "NO", "AL",
-                                "CH", "MK", "RS", "TR",
-                                "ME"))  %>%
-    distinct (.data$geo, .data$typology) %>%
-    mutate (exception = paste0('non_eu_', .data$typology)) %>%
-    select (all_of(c("geo", "exception")))
+  utils::data (nuts_exceptions,
+               package = "regions",
+               envir = environment())
   
-  names(exceptions)[1] <- geo_var
+  ## Validation starts here  ------------------------------------------------------------
+  names(nuts_exceptions)[1] <- geo_var
+  names(nuts_exceptions)[2] <- "exception"
   
   filtering <- grepl(as.character(nuts_year),
                      all_valid_nuts_codes$nuts)
@@ -114,14 +110,19 @@ validate_nuts_regions <- function (dat,
   
   return_df <- validate_nuts_countries(dat = dat,
                                        geo_var = geo_var) %>%
-    dplyr::rename (typology2 = .data$typology) %>%
+    dplyr::rename (
+      ## Typology exceptions
+      typology2 = .data$typology
+      ) %>%
     dplyr::mutate_if(is.factor, as.character) %>%
     left_join (filtered_nuts_data_frame,
                by = geo_var) %>%
-    mutate (typology = ifelse (is.na(.data$typology),
-                               .data$typology2,
-                               .data$typology)
-            ) %>%
+    mutate (
+      ## Try exceptions if not found in original
+      typology = ifelse (is.na(.data$typology),
+                         .data$typology2,
+                         .data$typology)
+    ) %>%
     mutate (
       # make exception for country codes, which are anyway not
       # part of NUTS and may be valid codes
@@ -131,8 +132,8 @@ validate_nuts_regions <- function (dat,
         no = .data$nuts
       )) %>%  ## countries may not be EU countries
     left_join (# join non-EU valid codes
-      exceptions, 
-      by = geo_var) %>%
+      nuts_exceptions, 
+      by = c(geo_var)) %>%
     mutate (nuts = ifelse(is.na(.data$nuts), 
                           yes = .data$exception, 
                           no  = .data$nuts)) %>%

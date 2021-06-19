@@ -24,6 +24,6 @@ NUTS correspondence tables. This is re-arranged from
 \code{\link{nuts_changes}}.
 }
 \seealso{
-nuts_recoded, nuts_changes
+nuts_recoded, nuts_changes, nuts_exceptions
 }
 \keyword{datasets}

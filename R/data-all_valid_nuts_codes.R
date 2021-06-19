@@ -11,5 +11,5 @@
 #'   \item{nuts}{The NUTS definition where the geo code can be found.}
 #' }
 #' @source \url{https://ec.europa.eu/eurostat/web/nuts/history/}
-#' @seealso nuts_recoded, nuts_changes
+#' @seealso nuts_recoded, nuts_changes, nuts_exceptions
 "all_valid_nuts_codes"

@@ -213,7 +213,7 @@ Administrative boundaries: cite [EuroGeographics](https://ec.europa.eu/eurostat/
 
 ### Citing the eurostat R package
 
-For main developers and contributors, see the [package homepage](https://ropengov.github.io/eurostat).
+For main developers and contributors, see the [package homepage](https://ropengov.github.io/eurostat/).
 
 This work can be freely used, modified and distributed under the
 BSD-2-clause (modified FreeBSD) license:
@@ -235,5 +235,5 @@ citation("regions")
 
 ### Contact
 
-For contact information, see the [package homepage](https://regions.dataobservatory.eu/).
+For contact information, see the package homepages.
 

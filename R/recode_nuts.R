@@ -72,17 +72,18 @@ recode_nuts <- function(dat,
     purrr::set_names (c("typology", target_code,
                         "geo"))
   
-  names(codes_in_target_year)[which(names(codes_in_target_year) == "geo")] <-
-    geo_var
-  names(all_valid_nuts_codes)[which(names(all_valid_nuts_codes) == "geo")] <-
-    geo_var
+  names(codes_in_target_year)[
+    which(names(codes_in_target_year) == "geo")] <- geo_var
+  names(all_valid_nuts_codes)[
+    which(names(all_valid_nuts_codes) == "geo")] <- geo_var
   
-  join_by_vars <-
-    names(codes_in_target_year)[names(codes_in_target_year) %in% names(dat)]
+  join_by_vars <- names(codes_in_target_year)[
+    names(codes_in_target_year) %in% names(dat)]
   
   ## Valid geo codes in the targeted year ---------------------------
-  target_geo_codes <- codes_in_target_year[,
-                                           which(names(codes_in_target_year) == target_code)]
+  target_geo_codes <- codes_in_target_year[
+    ,which(names(codes_in_target_year) == target_code)]
+  
   target_geo_codes <- as.character(unlist(target_geo_codes))
   
   target_coding <- dat %>%
@@ -94,13 +95,14 @@ recode_nuts <- function(dat,
     select (-all_of("nuts")) %>%
     mutate (target = as.character(unlist(.[, geo_var])))
   
-  names(target_coding)[which(names(target_coding) == "target")] <-
-    target_code
+  names(target_coding)[
+    which(names(target_coding) == "target")] <- target_code
   
   correct_geo_codes <-
     as.character(unlist(target_coding[, geo_var]))
   
-  return_values <- target_coding
+  return_values <- target_coding %>%
+    mutate ( typology_change = "unchanged")
   
   ## These are differently coded ------------------------------------
   different_coding <- dat %>%

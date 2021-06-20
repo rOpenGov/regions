@@ -7,6 +7,7 @@
 * Added the `regional_rd_personnel` dataset and the `Maping Regional Data, Maping Metadata Problems` vignette.
 * A new function, `validate_parameters()` takes over several parameter validations. The aim of this function is to provide consistent error messages, and thorough validation of function parameters whenever they must conform to a closed vocabulary or parameter range.
 * This version is released on CRAN.
+* We started building an experimental APIs data is running regions regularly and improving known statistical data sources.  See: [Digital Music Observatory](https://music.dataobservatory.eu/), [Green Deal Data Observatory](https://greendeal.dataobservatory.eu/), [Economy Data Observatory](https://economy.dataobservatory.eu/).
 
 # regions 0.1.6
 * Exception handling partly moved to assertthat.

@@ -141,12 +141,12 @@ recode_nuts(dat = example_df,
 
 | geo   |    values | code\_2013 |
 |:------|----------:|:-----------|
-| FR    | 56.213587 | FR         |
-| UKI3  | 50.958849 | UKI3       |
-| DED   |  2.412442 | DED        |
-| FRK   |  2.249496 | FR7        |
-| HU12  | 84.853021 | NA         |
-| DEE32 | 26.631857 | NA         |
+| FR    |  7.021889 | FR         |
+| UKI3  | 36.031441 | UKI3       |
+| DED   | 73.559949 | DED        |
+| FRK   | 78.441882 | FR7        |
+| HU12  | 77.530184 | NA         |
+| DEE32 |  8.597155 | NA         |
 
 **Hierarchical aggregation and special imputation**: missingness is very
 frequent in sub-national statistics, because they are created with a
@@ -220,6 +220,12 @@ knitr::kable(imputed)
 -   Disaggregation functions from higher hierarchy levels to lower ones,
     again, for example from `NUTS1` to `NUTS2` or from `ISO-3166-1` to
     `ISO-3166-2` (disaggregate; under development)
+
+We started building an experimental APIs data is running regions
+regularly and improving known statistical data sources. See: [Digital
+Music Observatory](https://music.dataobservatory.eu/), [Green Deal Data
+Observatory](https://greendeal.dataobservatory.eu/), [Economy Data
+Observatory](https://economy.dataobservatory.eu/).
 
 ## Vignettes / Articles
 

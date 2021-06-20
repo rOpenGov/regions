@@ -124,6 +124,8 @@ knitr::kable(imputed)
 * Aggregation function from lower hierarchy levels to higher ones, for example from NUTS3 to `NUTS1` or from `ISO-3166-2` to `ISO-3166-1` (aggregate; under development)
 * Disaggregation functions from higher hierarchy levels to lower ones, again, for example from `NUTS1` to `NUTS2` or from `ISO-3166-1` to `ISO-3166-2`  (disaggregate; under development)
 
+We started building an experimental APIs data is running regions regularly and improving known statistical data sources.  See: [Digital Music Observatory](https://music.dataobservatory.eu/), [Green Deal Data Observatory](https://greendeal.dataobservatory.eu/), [Economy Data Observatory](https://economy.dataobservatory.eu/).
+
 ## Vignettes / Articles
 
 - [Mapping Regional Data, Mapping Metadata Problem](https://regions.dataobservatory.eu/articles/mapping.html)

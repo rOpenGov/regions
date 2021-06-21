@@ -15,7 +15,7 @@ public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostat
 [![CRAN\_Status\_Badge\_version\_last\_release](https://www.r-pkg.org/badges/version-last-release/regions)](https://cran.r-project.org/package=regions)"
 [![metacran
 downloads](https://cranlogs.r-pkg.org/badges/regions)](https://cran.r-project.org/package=regions)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4965909.svg)](https://doi.org/10.5281/zenodo.4965909)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5006056.svg)](https://doi.org/10.5281/zenodo.5006056)
 [![Follow
 rOpenGov](https://img.shields.io/twitter/follow/ropengov.svg?style=social)](https://twitter.com/intent/follow?screen_name=ropengov)
 [![Follow
@@ -46,7 +46,7 @@ if you agree with the [Contributor Code of
 Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html)
 
 If you use `regions` in your work, please [cite the
-package](https://doi.org/10.5281/zenodo.4965909).
+package](https://doi.org/10.5281/zenodo.5006056).
 
 ## Working with Sub-national Statistics
 
@@ -139,14 +139,14 @@ recode_nuts(dat = example_df,
   knitr::kable()
 ```
 
-| geo   |    values | code\_2013 |
-|:------|----------:|:-----------|
-| FR    | 25.502412 | FR         |
-| UKI3  |  2.070591 | UKI3       |
-| DED   | 40.306681 | DED        |
-| FRK   | 42.378169 | FR7        |
-| HU12  | 48.944542 | NA         |
-| DEE32 | 98.442229 | NA         |
+| geo   |   values | code\_2013 |
+|:------|---------:|:-----------|
+| FR    | 79.70385 | FR         |
+| UKI3  | 53.50594 | UKI3       |
+| DED   | 84.45034 | DED        |
+| FRK   | 63.54153 | FR7        |
+| HU12  | 23.97015 | NA         |
+| DEE32 | 26.95203 | NA         |
 
 **Hierarchical aggregation and special imputation**: missingness is very
 frequent in sub-national statistics, because they are created with a

@@ -22,7 +22,7 @@ knitr::opts_chunk$set(
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/regions)](https://cran.r-project.org/package=regions)
 [![CRAN_Status_Badge_version_last_release](https://www.r-pkg.org/badges/version-last-release/regions)](https://cran.r-project.org/package=regions)"
 [![metacran downloads](https://cranlogs.r-pkg.org/badges/regions)](https://cran.r-project.org/package=regions)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4965909.svg)](https://doi.org/10.5281/zenodo.4965909)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5006056.svg)](https://doi.org/10.5281/zenodo.5006056)
 [![Follow rOpenGov](https://img.shields.io/twitter/follow/ropengov.svg?style=social)](https://twitter.com/intent/follow?screen_name=ropengov) 
 [![Follow author](https://img.shields.io/twitter/follow/antaldaniel.svg?style=social)](https://twitter.com/intent/follow?screen_name=antaldaniel)
 [![R-CMD-check](https://github.com/rOpenGov/regions/workflows/R-CMD-check/badge.svg)](https://github.com/rOpenGov/regions/actions)
@@ -44,7 +44,7 @@ install.packages("regions")
 
 You can review the complete package documentation on  [regions.dataobservaotry.eu](https://regions.dataobservatory.eu/). If you find any problems with the code, please raise an issue on [Github](https://github.com/rOpenGov/regions). Pull requests are welcome if you agree with the [Contributor Code of Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html)
 
-If you use `regions` in your work, please [cite the package](https://doi.org/10.5281/zenodo.4965909).
+If you use `regions` in your work, please [cite the package](https://doi.org/10.5281/zenodo.5006056).
 
 ## Working with Sub-national Statistics
 

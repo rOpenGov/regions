@@ -18,23 +18,21 @@ when the geo coding is not valid.
 \description{
 Validate that \code{geo} is conforming with the \code{NUTS1},
 \code{NUTS2}, or \code{NUTS3} typologies.
+}
+\details{
 While country codes are technically not part of the NUTS typologies,
 Eurostat de facto uses a \code{NUTS0} typology to identify countries.
 This de facto typology has three exception which are handled by the
-\link[regions]{validate_nuts_countries} function.
-}
-\details{
+\link[regions]{validate_nuts_countries} function. \cr \cr
 NUTS typologies have different versions, therefore the conformity
 is validated with one specific versions, which can be any of these:
 \code{1999}, \code{2003}, \code{2006}, \code{2010},
 \code{2013}, the currently used \code{2016} and the already
-announced and defined \code{2021}.
-
+announced and defined \code{2021}. \cr\cr
 The NUTS typology was codified with the \code{NUTS2003}, and the
 pre-1999 NUTS typologies may confuse programmatic data processing,
 given that some  NUTS1 regions were identified with country codes
-in smaller countries that had no \code{NUTS1} divisions.
-
+in smaller countries that had no \code{NUTS1} divisions. \cr\cr#'
 Currently the \code{2016} is used by Eurostat, but many datasets
 still contain \code{2013} and sometimes earlier metadata.
 }
@@ -49,3 +47,4 @@ my_reg_data <- data.frame (
 validate_geo_code(my_reg_data$geo)
 }
 }
+\concept{regions functions}

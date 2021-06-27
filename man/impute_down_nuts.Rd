@@ -47,7 +47,7 @@ hierarchical typologies. All valid actual rows will be projected down
 to all smaller constituent typologies where data is missing.
 }
 \details{
-The more general function requires typology information from the higher
+The more general \code{\link{impute_down}} function requires typology information from the higher
 and lower level typologies.  This is not needed when the EU vocabulary
 is used, and the hierarchy can be established from the EU vocabularies.
 

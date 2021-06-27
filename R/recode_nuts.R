@@ -1,9 +1,11 @@
-#' Recode Region Codes From Source To Target NUTS Typology
+#' @title Recode Region Codes From Source To Target NUTS Typology
 #'
-#' Validate your geo codes, pair them with the appropriate standard
+#' @description Validate your geo codes, pair them with the appropriate standard
 #' typology, look up potential causes of invalidity in the EU correspondence
 #' tables, and look up the appropriate geographical codes in the other
-#' (target) typology.  For example, validate geo codes in the \code{'NUTS2016'}
+#' (target) typology.  
+#' 
+#' @details A usual task is for example to validate geo codes in the \code{'NUTS2016'}
 #' typology and translate them to the now obsolete the \code{'NUTS2010'} typology
 #' to join current data with historical data sets.
 #' @param dat A data frame with a 3-5 character \code{geo_var} variable

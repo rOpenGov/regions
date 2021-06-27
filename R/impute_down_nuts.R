@@ -1,10 +1,10 @@
-#' Imputing Data From Larger To Smaller Units in the EU NUTS
+#' @title Imputing Data From Larger To Smaller Units in the EU NUTS
 #'
-#' This is a special case of \code{\link{impute_down}} for the EU NUTS
+#' @description This is a special case of \code{\link{impute_down}} for the EU NUTS
 #' hierarchical typologies. All valid actual rows will be projected down
 #' to all smaller constituent typologies where data is missing.
 #'
-#' The more general function requires typology information from the higher
+#' @details The more general \code{\link{impute_down}} function requires typology information from the higher
 #' and lower level typologies.  This is not needed when the EU vocabulary
 #' is used, and the hierarchy can be established from the EU vocabularies.
 #'

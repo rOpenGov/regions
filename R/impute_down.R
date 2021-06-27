@@ -1,4 +1,12 @@
-#' Imputing Data From Larger To Smaller Units
+#' @title Imputing Data From Larger To Smaller Units
+#' 
+#' @description This is a generic function to impute data from broader hierarchical
+#' geographical areas to smaller ones.  It requires the exact specification of the
+#' of the geographical typology.  
+#' 
+#' @details The more general \code{\link{impute_down}} function requires typology information from the higher
+#' and lower level typologies.  This is not needed when the EU vocabulary
+#' is used, and the hierarchy can be established from the EU vocabularies.
 #'
 #' @param upstream_data An upstream data frame to project on containing
 #' smaller geographical units, for example, country-level data.

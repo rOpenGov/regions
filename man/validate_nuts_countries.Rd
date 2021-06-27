@@ -21,13 +21,16 @@ appropriate label for invalid ISO-3166-alpha-2 and ISO-3166-alpha-3 codes.
 This function is mainly a wrapper around the well-known
 \link[countrycode]{countrycode} function, with three exception that are
 particular to the European Union statistical nomenclature.
+}
+\details{
+All ISO-3166-1 country codes are validated, and also the
+three exceptions.
+
 \describe{
 \item{EL}{Treated valid, because NUTS uses EL instead of GR for Greece since 2010.}
 \item{UK}{Treated valid, because NUTS uses UK instead of GB for the United Kingdom.}
 \item{XK}{XK is used for Kosovo, because Eurostat uses this code, too.}
 }
-All ISO-3166-1 country codes are validated, and also the
-three exceptions.
 }
 \examples{
 {

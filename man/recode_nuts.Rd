@@ -32,7 +32,10 @@ target typology, for example, in the NUTS2013 typology.
 Validate your geo codes, pair them with the appropriate standard
 typology, look up potential causes of invalidity in the EU correspondence
 tables, and look up the appropriate geographical codes in the other
-(target) typology.  For example, validate geo codes in the \code{'NUTS2016'}
+(target) typology.
+}
+\details{
+A usual task is for example to validate geo codes in the \code{'NUTS2016'}
 typology and translate them to the now obsolete the \code{'NUTS2010'} typology
 to join current data with historical data sets.
 }

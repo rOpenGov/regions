@@ -1,15 +1,16 @@
-#' Validate Conformity with NUTS Country Codes
+#' @title Validate Conformity with NUTS Country Codes
 #'
-#' This function is mainly a wrapper around the well-known
+#' @description This function is mainly a wrapper around the well-known
 #'  \link[countrycode]{countrycode} function, with three exception that are
 #'  particular to the European Union statistical nomenclature.
+#' @details All ISO-3166-1 country codes are validated, and also the
+#' three exceptions.
+#' 
 #' \describe{
 #'   \item{EL}{Treated valid, because NUTS uses EL instead of GR for Greece since 2010.}
 #'   \item{UK}{Treated valid, because NUTS uses UK instead of GB for the United Kingdom.}
 #'   \item{XK}{XK is used for Kosovo, because Eurostat uses this code, too.}
 #' }
-#' All ISO-3166-1 country codes are validated, and also the
-#' three exceptions.
 #' @param dat A data frame with a 2-character geo variable to be validated
 #' @param geo_var Defaults to \code{"geo"}. The variable that contains the
 #' 2 character geo codes to be validated.

@@ -54,7 +54,7 @@ A typical workflow is this:
 
 4.	Aggregate and disaggregate unambiguous changes to the units in the `NUTS2016` – in these cases all the statistical information is present in different form, and any other imputation method would result in loss of existing data.
 
-5.	Impute or estimate other regions, using the structural information about the remaining data.  This will result in far more superior data than imputation techniques designed for non-aggregated, individual data points; usually a large part of the information is present in statistical tables that can be used for proximation.
+5.	Impute or estimate other regions, using the structural information about the remaining data.  This will result in far more superior data than imputation techniques designed for non-aggregated, individual data points; usually a large part of the information is present in statistical tables that can be used for approximation.
 
 When you are working with individual data, you are omitting steps 2-4. When working with national data, especially with small datasets, we can often  join data tables by a country name or country code without the problems of 2-4, but even in these cases, imputation rules like using the median value for missing cases is obviously wrong.  If the missing value represents a very small member state like Malta, which has a total population smaller than most capital cities in Europe, then using a median or mean country value will very much overestimate a count data for Malta.
 

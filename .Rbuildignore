@@ -21,3 +21,4 @@
 ^\.github$
 ^paper$
 ^not_included$
+^\._pkgdown\.yml$

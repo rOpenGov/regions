@@ -2,65 +2,59 @@ Package: regions
 Title: Processing Regional Statistics
 Version: 0.1.8
 Date: 2021-06-19
-Authors@R: 
-    c(
-  person(given = "Daniel",
-         family = "Antal",
-         role = c("aut", "cre"),
-         email = "daniel.antal@ceemid.eu",
-         comment = c(ORCID = "0000-0001-7513-6760")),
-  person(given = "Kasia",
-         family = "Kulma",
-         role = "ctb", 
-         comment = c(ORCID = "0000-0002-2952-9720")),
-  person(given = "Istvan",
-         family = "Zsoldos",
-         role = c("ctb"), 
-         email = "istvan.zsoldos@gmail.com",
-         comment = c(ORCID = "0000-0001-5712-2103")),
-  person(given = "Leo",
-         family = "Lahti",
-         role = c("ctb"), 
-         email = "leo.lahti@iki.fi",
-         comment = c(ORCID = "0000-0001-5537-637X"))
-    )
-Description: Validating sub-national statistical typologies, re-coding across 
-    standard typologies of sub-national statistics, and making valid aggregate
-    level imputation, re-aggregation, re-weighting and projection down to 
-    lower hierarchical levels to create meaningful data panels and time series.
+Authors@R: c(
+    person("Daniel", "Antal", , "daniel.antal@ceemid.eu", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0001-7513-6760")),
+    person("Kasia", "Kulma", role = "ctb",
+           comment = c(ORCID = "0000-0002-2952-9720")),
+    person("Istvan", "Zsoldos", , "istvan.zsoldos@gmail.com", role = "ctb",
+           comment = c(ORCID = "0000-0001-5712-2103")),
+    person("Leo", "Lahti", , "leo.lahti@iki.fi", role = "ctb",
+           comment = c(ORCID = "0000-0001-5537-637X"))
+  )
+Description: Validating sub-national statistical typologies, re-coding
+    across standard typologies of sub-national statistics, and making
+    valid aggregate level imputation, re-aggregation, re-weighting and
+    projection down to lower hierarchical levels to create meaningful data
+    panels and time series.
 License: GPL-3
-Encoding: UTF-8
-Language: en-US
-URL: https://regions.dataobservatory.eu/
-BugReports: https://github.com/rOpenGov/regions
-LazyData: true
-Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1
+URL: https://regions.dataobservatory.eu/,
+    https://ropengov.github.io/regions/,
+    https://github.com/rOpenGov/regions
+BugReports: https://github.com/rOpenGov/regions/issues
 Depends: 
     R (>= 2.10)
 Imports: 
-    dplyr,
-    magrittr,
-    countrycode,
-    tidyselect,
-    utils,
-    purrr,
-    rlang,
-    glue,
-    stats,
-    tidyr,
-    readxl,
-    stringr,
     assertthat,
+    countrycode,
+    dplyr,
+    glue,
+    here,
+    magrittr,
+    purrr,
+    readxl,
+    rlang,
+    stats,
+    stringr,
     tibble,
-    here
+    tidyr,
+    tidyselect,
+    utils
 Suggests: 
-    knitr,
-    testthat,    
-    rmarkdown,
     covr,
-    spelling,
     devtools,
     eurostat,
-    ggplot2
-VignetteBuilder: knitr
+    ggplot2,
+    knitr,
+    rmarkdown,
+    spelling,
+    testthat
+VignetteBuilder: 
+    knitr
+Encoding: UTF-8
+Language: en-US
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
+X-schema.org-isPartOf: http://ropengov.org/
+X-schema.org-keywords: ropengov

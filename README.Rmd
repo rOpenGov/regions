@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 # regions
 
 <!-- badges: start -->
-[![Codecov test coverage](https://codecov.io/gh/antaldaniel/regions/branch/master/graph/badge.svg)](https://codecov.io/gh/antaldaniel/regions?branch=master)
+[![Codecov test coverage](https://app.codecov.io/gh/antaldaniel/regions/branch/master/graph/badge.svg)](https://codecov.io/gh/antaldaniel/regions?branch=master)
 [![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 [![license](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/regions)](https://cran.r-project.org/package=regions)

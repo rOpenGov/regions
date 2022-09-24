@@ -1,18 +1,17 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# regions
+# regions <a href='https://regions.dataobservatory.eu/'><img src='man/figures/logo.png' align="right"/></a>
 
-<!-- badges: start -->
-
+![retroharmonize](man/figures/logo20.png) <!-- badges: start -->
 [![Codecov test
 coverage](https://codecov.io/gh/antaldaniel/regions/branch/master/graph/badge.svg)](https://codecov.io/gh/antaldaniel/regions?branch=master)
 [![Project Status: WIP – Initial development is in progress, but there
 has not yet been a stable, usable release suitable for the
 public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 [![license](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
-[![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/regions)](https://cran.r-project.org/package=regions)
-[![CRAN\_Status\_Badge\_version\_last\_release](https://www.r-pkg.org/badges/version-last-release/regions)](https://cran.r-project.org/package=regions)"
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/regions)](https://cran.r-project.org/package=regions)
+[![CRAN_Status_Badge_version_last_release](https://www.r-pkg.org/badges/version-last-release/regions)](https://cran.r-project.org/package=regions)”
 [![metacran
 downloads](https://cranlogs.r-pkg.org/badges/regions)](https://cran.r-project.org/package=regions)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5006056.svg)](https://doi.org/10.5281/zenodo.5006056)
@@ -61,16 +60,7 @@ of the aggregation level and high number of observations can allow more
 precise control of model parameters and errors, and the number of
 observations grows from 20 to 200-300.
 
-<div class="figure" style="text-align: center">
-
-<img src="C:/_packages/regions/vignettes/indicator_with_map.png" alt="The change from national to sub-national level comes with a huge data processing price: internal administrative boundaries, their names, codes codes change very frequently." width="80%" />
-<p class="caption">
-The change from national to sub-national level comes with a huge data
-processing price: internal administrative boundaries, their names, codes
-codes change very frequently.
-</p>
-
-</div>
+<img src="vignettes/indicator_with_map.png" alt="The change from national to sub-national level comes with a huge data processing price: internal administrative boundaries, their names, codes codes change very frequently." width="80%" style="display: block; margin: auto;" />
 
 Yet the change from national to sub-national level comes with a huge
 data processing price. While national boundaries are relatively stable,
@@ -82,15 +72,7 @@ and boundary definitions of sub-national regions change very frequently.
 Joining data from different sources and different years can be very
 difficult.
 
-<div class="figure" style="text-align: center">
-
-<img src="C:/_packages/regions/vignettes/recoded_indicator_with_map.png" alt="Our regions R package helps the data processing, validation and imputation of sub-national, regional datasets and their coding." width="80%" />
-<p class="caption">
-Our regions R package helps the data processing, validation and
-imputation of sub-national, regional datasets and their coding.
-</p>
-
-</div>
+<img src="vignettes/recoded_indicator_with_map.png" alt="Our regions R package helps the data processing, validation and imputation of sub-national, regional datasets and their coding." width="80%" style="display: block; margin: auto;" />
 
 There are numerous advantages of switching from a national level of the
 analysis to a sub-national level comes with a huge price in data
@@ -139,14 +121,14 @@ recode_nuts(dat = example_df,
   knitr::kable()
 ```
 
-| geo   |   values | code\_2013 |
-|:------|---------:|:-----------|
-| FR    | 79.70385 | FR         |
-| UKI3  | 53.50594 | UKI3       |
-| DED   | 84.45034 | DED        |
-| FRK   | 63.54153 | FR7        |
-| HU12  | 23.97015 | NA         |
-| DEE32 | 26.95203 | NA         |
+| geo   |   values | code_2013 |
+|:------|---------:|:----------|
+| FR    | 66.63397 | FR        |
+| UKI3  | 84.36175 | UKI3      |
+| DED   | 65.95632 | DED       |
+| FRK   | 13.87023 | FR7       |
+| HU12  | 77.24010 | NA        |
+| DEE32 | 13.32974 | NA        |
 
 **Hierarchical aggregation and special imputation**: missingness is very
 frequent in sub-national statistics, because they are created with a
@@ -180,24 +162,24 @@ imputed <- impute_down (
 knitr::kable(imputed)
 ```
 
-| geo\_code | year | geo\_name                              | country\_code | my\_var | method                 |
-|:----------|-----:|:---------------------------------------|:--------------|--------:|:-----------------------|
-| AU-NSW    | 2019 | New South Wales state                  | AU            |      10 | imputed from AU actual |
-| AU-QLD    | 2019 | Queensland state                       | AU            |      10 | imputed from AU actual |
-| AU-SA     | 2019 | South Australia state                  | AU            |      10 | imputed from AU actual |
-| AU-TAS    | 2019 | Tasmania state                         | AU            |      10 | imputed from AU actual |
-| AU-VIC    | 2019 | Victoria state                         | AU            |      10 | imputed from AU actual |
-| AU-WA     | 2019 | Western Australia state                | AU            |      10 | imputed from AU actual |
-| AU-ACT    | 2019 | Australian Capital Territory territory | AU            |      10 | imputed from AU actual |
-| AU-NT     | 2019 | Northern Territory territory           | AU            |      10 | imputed from AU actual |
-| AU-NSW    | 2020 | New South Wales state                  | AU            |      12 | imputed from AU actual |
-| AU-QLD    | 2020 | Queensland state                       | AU            |      12 | imputed from AU actual |
-| AU-SA     | 2020 | South Australia state                  | AU            |      12 | imputed from AU actual |
-| AU-TAS    | 2020 | Tasmania state                         | AU            |      12 | imputed from AU actual |
-| AU-VIC    | 2020 | Victoria state                         | AU            |      12 | imputed from AU actual |
-| AU-WA     | 2020 | Western Australia state                | AU            |      12 | imputed from AU actual |
-| AU-ACT    | 2020 | Australian Capital Territory territory | AU            |      12 | imputed from AU actual |
-| AU-NT     | 2020 | Northern Territory territory           | AU            |      12 | imputed from AU actual |
+| geo_code | year | geo_name                               | country_code | my_var | method                 |
+|:---------|-----:|:---------------------------------------|:-------------|-------:|:-----------------------|
+| AU-NSW   | 2019 | New South Wales state                  | AU           |     10 | imputed from AU actual |
+| AU-QLD   | 2019 | Queensland state                       | AU           |     10 | imputed from AU actual |
+| AU-SA    | 2019 | South Australia state                  | AU           |     10 | imputed from AU actual |
+| AU-TAS   | 2019 | Tasmania state                         | AU           |     10 | imputed from AU actual |
+| AU-VIC   | 2019 | Victoria state                         | AU           |     10 | imputed from AU actual |
+| AU-WA    | 2019 | Western Australia state                | AU           |     10 | imputed from AU actual |
+| AU-ACT   | 2019 | Australian Capital Territory territory | AU           |     10 | imputed from AU actual |
+| AU-NT    | 2019 | Northern Territory territory           | AU           |     10 | imputed from AU actual |
+| AU-NSW   | 2020 | New South Wales state                  | AU           |     12 | imputed from AU actual |
+| AU-QLD   | 2020 | Queensland state                       | AU           |     12 | imputed from AU actual |
+| AU-SA    | 2020 | South Australia state                  | AU           |     12 | imputed from AU actual |
+| AU-TAS   | 2020 | Tasmania state                         | AU           |     12 | imputed from AU actual |
+| AU-VIC   | 2020 | Victoria state                         | AU           |     12 | imputed from AU actual |
+| AU-WA    | 2020 | Western Australia state                | AU           |     12 | imputed from AU actual |
+| AU-ACT   | 2020 | Australian Capital Territory territory | AU           |     12 | imputed from AU actual |
+| AU-NT    | 2020 | Northern Territory territory           | AU           |     12 | imputed from AU actual |
 
 ## Package functionality
 
